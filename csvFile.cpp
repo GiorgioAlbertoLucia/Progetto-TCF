@@ -45,7 +45,7 @@ std::vector<std::string> split_words(const std::string input)
 }
 
 // functions from header file
-                    CsvFile::CsvFile(const std::string file_path)
+                    CsvFile::CsvFile(const char * file_path)
 {
     // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
@@ -63,17 +63,19 @@ std::vector<std::string> split_words(const std::string input)
 
 // file_path setter and getter
 
-void                CsvFile::set_path(const std::string file_path)
+void                CsvFile::set_path(const char * file_path)
 {
-    CsvFile::file_path = file_path;
+    std::string str(file_path);
+    CsvFile::file_path = str;
 }
 
-std::string         CsvFile::get_path()                 const
+const char        CsvFile::get_path()                         const
 {
-    return CsvFile::file_path;
+    const char * file_path_char = CsvFile::file_path.c_str();
+    return * file_path_char;
 }
 
-void                CsvFile::set_entries(const std::string file_path)
+void                CsvFile::set_entries(const char * file_path)
 {
     std::ifstream file;
     file.open(file_path);
@@ -81,23 +83,23 @@ void                CsvFile::set_entries(const std::string file_path)
     if(file.is_open())
     {
     // count entries
-    CsvFile::file_lines = 0;
+    CsvFile::entries = 0;
     std::string line;
-    while(getline(file, line))  CsvFile::file_lines++;
+    while(getline(file, line))  CsvFile::entries++;
 
     file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-int                 CsvFile::get_entries()                  const
+int                 CsvFile::get_entries()                      const
 {
-    return CsvFile::file_lines;
+    return CsvFile::entries;
 }
 
 
 // write into the file, deleting all previous content
-void                CsvFile::write(const std::string line)        const
+void                CsvFile::write(const std::string line)      const
 {
     std::ofstream file;
     file.open(CsvFile::file_path);
@@ -112,11 +114,10 @@ void                CsvFile::write(const std::string line)        const
         }
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 // write into the file, keeping all previous content
-void                CsvFile::append(const std::string line)       const
+void                CsvFile::append(const std::string line)     const
 {
     std::ofstream file;
     file.open(CsvFile::file_path, std::ios::app);
@@ -132,9 +133,20 @@ void                CsvFile::append(const std::string line)       const
         }
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
+// write into the file, deleting all previous content
+void                CsvFile::write(const char * line)           const
+{
+    std::string str(line);
+    CsvFile::write(str);
+}
+// write into the file, keeping all previous content
+void                CsvFile::append(const char * line)          const
+{
+    std::string str(line);
+    CsvFile::append(str);
+}
 
 
 
@@ -149,6 +161,12 @@ void                CsvFile::getLine(const int line)              const
     std::ifstream file;
     file.open(CsvFile::file_path);
 
+    if(line >= entries)
+    {
+        std::cerr << "Error: line " << line << " does not exist. The file has " << entries << " lines." << std::endl;
+        return;
+    }
+
     if(file.is_open())
     {   
         int i = 0;
@@ -158,7 +176,7 @@ void                CsvFile::getLine(const int line)              const
 
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 
 }
 
@@ -186,6 +204,12 @@ std::vector<double> CsvFile::getColumn(const int column)          const
         file.clear();
         file.seekg(0, std::ios::beg);
 
+        if(column >= n_columns)
+        {
+            std::cerr << "Error: column " << column << " does not exist. The file has " << n_columns << " columns." << std::endl;
+            return vector;
+        }
+
         int i = 0;
 
         while (! file.eof())
@@ -203,7 +227,7 @@ std::vector<double> CsvFile::getColumn(const int column)          const
 
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 
     return vector;
 }
@@ -232,7 +256,7 @@ std::ostream&       operator<<  (std::ostream& out, const CsvFile& txt_file)
 
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 
     return out;
 }

@@ -6,7 +6,9 @@
 #include <fstream>
 #include <vector>
 
-// useful functions
+/* USEFUL FUNCTIONS */
+
+
 int countcolumn_txt(const std::string row)
 {
     std::cout << "first string is:" << row << std::endl;
@@ -30,8 +32,10 @@ int countcolumn_txt(const std::string row)
 }
 
 
-// functions from header file
-                    TxtFile::TxtFile(const std::string file_path)
+/* FUNCTIONS FROM HEADER FILE */
+
+
+                    TxtFile::TxtFile(const char * file_path)
 {
     // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
@@ -47,19 +51,22 @@ int countcolumn_txt(const std::string row)
 
 };
 
-// file_path setter and getter
 
-void                TxtFile::set_path(const std::string file_path)
+// setter and getter
+
+void                TxtFile::set_path(const char * file_path)
 {
-    TxtFile::file_path = file_path;
+    std::string str(file_path);
+    TxtFile::file_path = str;
 }
 
-std::string         TxtFile::get_path()                 const
+const char          TxtFile::get_path()                         const
 {
-    return TxtFile::file_path;
+    const char * file_path_char = TxtFile::file_path.c_str();
+    return * file_path_char;
 }
 
-void                TxtFile::set_entries(const std::string file_path)
+void                TxtFile::set_entries(const char * file_path)
 {
     std::ifstream file;
     file.open(file_path);
@@ -67,23 +74,23 @@ void                TxtFile::set_entries(const std::string file_path)
     if(file.is_open())
     {
     // count entries
-    TxtFile::file_lines = 0;
+    TxtFile::entries = 0;
     std::string line;
-    while(getline(file, line))  TxtFile::file_lines++;
+    while(getline(file, line))  TxtFile::entries++;
 
     file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-int                 TxtFile::get_entries()                  const
+int                 TxtFile::get_entries()                      const
 {
-    return TxtFile::file_lines;
+    return TxtFile::entries;
 }
 
 
 // write into the file, deleting all previous content
-void                TxtFile::write(const std::string line)        const
+void                TxtFile::write(const std::string line)      const
 {
     std::ofstream file;
     file.open(TxtFile::file_path);
@@ -93,11 +100,10 @@ void                TxtFile::write(const std::string line)        const
         file << line;
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 // write into the file, keeping all previous content
-void                TxtFile::append(const std::string line)       const
+void                TxtFile::append(const std::string line)     const
 {
     std::ofstream file;
     file.open(TxtFile::file_path, std::ios::app);
@@ -107,12 +113,25 @@ void                TxtFile::append(const std::string line)       const
         file << "\n" << line;
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
+}
+// write into the file, deleting all previous content
+void                TxtFile::write(const char * line)           const
+{
+    std::string str(line);
+    TxtFile::write(str);
+}
+// write into the file, keeping all previous content
+void                TxtFile::append(const char * line)          const
+{
+    std::string str(line);
+    TxtFile::append(str);
 }
 
 
 
-void                TxtFile::getLine(const int line)              const
+
+void                TxtFile::getLine(const int line)            const
 {
     /*
     Lines are numbered beginning with zero.
@@ -121,6 +140,12 @@ void                TxtFile::getLine(const int line)              const
 
     std::ifstream file;
     file.open(TxtFile::file_path);
+
+    if(line >= entries)
+    {
+        std::cerr << "Error: line " << line << " does not exist. The file has " << entries << " lines." << std::endl;
+        return;
+    }
 
     if(file.is_open())
     {   
@@ -131,7 +156,7 @@ void                TxtFile::getLine(const int line)              const
 
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 
 }
 
@@ -140,7 +165,7 @@ void                TxtFile::getLine(const int line)              const
     Columns are numbered beginning with zero.
     int column: number referring to the column you want to print
 */
-std::vector<double> TxtFile::getColumn(const int column)          const
+std::vector<double> TxtFile::getColumn(const int column)        const
 {
     std::vector<double> vector;
 
@@ -153,11 +178,16 @@ std::vector<double> TxtFile::getColumn(const int column)          const
         std::string first_line;
         getline(file, first_line);
         int n_columns = countcolumn_txt(first_line);
-        std::cout << "n_cols is:" << n_columns << std::endl;
 
         // get back to the top of the file, then print the selected column
         file.clear();
         file.seekg(0, std::ios::beg);
+
+        if(column >= n_columns)
+        {
+            std::cerr << "Error: column " << column << " does not exist. The file has " << n_columns << " columns." << std::endl;
+            return vector;
+        }
 
         int i = 0;
 
@@ -181,7 +211,7 @@ std::vector<double> TxtFile::getColumn(const int column)          const
     return vector;
 }
 
-void                TxtFile::current_file()                 const
+void                TxtFile::current_file()                     const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << TxtFile::file_path << std::endl;
 }
@@ -205,7 +235,7 @@ std::ostream&       operator<<  (std::ostream& out, const TxtFile& txt_file)
 
         file.close();
     }
-    else    std::cout << "Error: unable to open file" << std::endl;
+    else    std::cerr << "Error: unable to open file" << std::endl;
 
     return out;
 }
