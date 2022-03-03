@@ -11,49 +11,48 @@
 
 class TxtData: public TxtFile
 {
-    friend  std::ostream&   operator<<  (std::ostream&, const TxtData&);
+    friend  std::ostream&       operator<<  (std::ostream&, const TxtData&);
 
 public:
-                            TxtData(const char *, int, const char *);                   // file_path, file_column and data_name
-                            ~TxtData();
-                            TxtData(const TxtData&);                                    // copy constructor
+                                TxtData(const char *, const int, const char *);             // file_path, file_column and data_name
+                                ~TxtData();
+                                TxtData(const TxtData&);                                    // copy constructor
 
     // setter / getter
-            void            set_file(const TxtFile);
-            TxtFile         get_file()                                  const;
-    virtual void            set_name(const char *);
-    virtual std::string     get_name()                                  const;
+            TxtData&            set_file(const char *);
+            TxtFile             get_file()                                  const;
+    virtual void                set_data(const char *);
+    virtual std::vector<double> get_data()                                  const;
+    virtual void                set_name(const char *);
+    virtual const char          get_name()                                  const;
 
-    virtual void            add_element();
-    virtual void            replace_element(const double, const int);
+    virtual void                add_element(const double);
+    virtual void                replace_element(const double, const int);
     
 
     // operators
-            TxtData&        operator+   (const TxtData&);
-            TxtData&        operator-   (const TxtData&);
-            TxtData&        operator*   (const double);
-            TxtData&        operator*   (const int); 
-            bool            operator==  (const TxtData&);
-            bool            operator!=  (const TxtData& right)    {return !(*this == right);};
+            TxtData&            operator+   (const TxtData&);
+            TxtData&            operator-   (const TxtData&);
+            TxtData&            operator*   (const double);                             // multiply by a scalar
+            TxtData&            operator*   (const int); 
+            bool                operator==  (const TxtData&);
+            bool                operator!=  (const TxtData& itself)    {return !(*this == itself);};
 
-            double          mean        ()                              const;
-            double          std         ()                              const;
-            void            rnd_dist    (const double, const double)    const;           // inputs are min and max of the uniform distribution
-            double          get_min     ()                              const;
-            double          get_max     ()                              const;
-            double          get         (const int)                     const;           // returns the nth element
+    // statistical functions
+            double              mean        ()                              const;
+            double              std         ()                              const;
+            void                rnd_dist    (const double, const double)    const;           // inputs are min and max of the uniform distribution
+            double              get_min     ()                              const;
+            double              get_max     ()                              const;
+            double              get         (const int)                     const;           // returns the nth element
 
 
 private:
-            std::vector<double>         Txtdata_vector;
-            TxtFile                     Txtdata_file_txt;
+            std::vector<double>         data_vector;
             std::string                 name;
 
 
 
 };
-
-
-
 
 #endif

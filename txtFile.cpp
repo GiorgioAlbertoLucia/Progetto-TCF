@@ -42,14 +42,14 @@ int countcolumn_txt(const std::string row)
     file.open(file_path, std::ios::app);
     file.close();
 
-    TxtFile::set_path(file_path);
-    TxtFile::set_entries(file_path);
+    set_path(file_path);
+    set_entries(file_path);
 }
 
                     TxtFile::~TxtFile()
 {
 
-};
+}
 
 
 // setter and getter
@@ -89,7 +89,9 @@ int                 TxtFile::get_entries()                      const
 }
 
 
-// write into the file, deleting all previous content
+/** Writes into the file, deleting all previous content.
+ * @param line: line you want to write into the file.
+ */ 
 void                TxtFile::write(const std::string line)      const
 {
     std::ofstream file;
@@ -102,7 +104,10 @@ void                TxtFile::write(const std::string line)      const
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-// write into the file, keeping all previous content
+
+/** @brief Writes into the file, keeping all previous content.
+ *  @param line: line you want to append to the file.
+ */ 
 void                TxtFile::append(const std::string line)     const
 {
     std::ofstream file;
@@ -115,13 +120,20 @@ void                TxtFile::append(const std::string line)     const
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-// write into the file, deleting all previous content
+
+/** Writes into the file, deleting all previous content.
+ * @param line: line you want to write into the file.
+ */ 
 void                TxtFile::write(const char * line)           const
 {
     std::string str(line);
     TxtFile::write(str);
 }
-// write into the file, keeping all previous content
+
+/** 
+ * @brief Writes into the file, keeping all previous content.
+ * @param line: line you want to append to the file.
+ */ 
 void                TxtFile::append(const char * line)          const
 {
     std::string str(line);
@@ -160,11 +172,11 @@ void                TxtFile::getLine(const int line)            const
 
 }
 
-/*
-    This only works with .txt files using a space (' ') or a tab ('\t') as delimiter between columns.
-    Columns are numbered beginning with zero.
-    int column: number referring to the column you want to print
-*/
+/** 
+ * @brief  This only works with .txt files using a space (' ') or a tab as delimiter between columns. 
+ * Columns are numbered beginning with zero.
+ * @param column: number referring to the column you want to print
+ */
 std::vector<double> TxtFile::getColumn(const int column)        const
 {
     std::vector<double> vector;
