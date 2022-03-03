@@ -12,7 +12,12 @@
 
 /*  FUNCTIONS FROM HEADER FILE  */  
 
-
+/**
+ * @brief Construct a new Txt Data:: Txt Data object.
+ * @param file_path path of the file the data will be imported from. 
+ * @param file_column column of the file the data will be imported from.
+ * @param name name of the data distribution.
+ */
                     TxtData::TxtData(const char * file_path, const int file_column, const char * name):TxtFile(file_path)
 {   
     set_file(file_path);
@@ -20,6 +25,9 @@
     set_data(file_path);
 }
 
+/**
+ * @brief Destroy the Txt Data:: Txt Data object
+ */
                     TxtData::~TxtData()
 {
 
@@ -222,3 +230,16 @@ double              TxtData::get(const int index)                               
     return value;
 }
 
+
+
+// friend functions
+
+std::ostream&       operator<<(std::ostream& out, const TxtData& data)
+{
+    out << "Print: " << data.get_name() << std::endl;
+    for (std::vector<double>::iterator i = data.get_data().begin(); i != data.get_data.end(); i++)
+    {
+        out << *i << std::endl;
+    }
+    return out;
+}

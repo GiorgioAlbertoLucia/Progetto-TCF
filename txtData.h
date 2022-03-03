@@ -9,6 +9,10 @@
 
 // This one is for doubles, the final one will be a template class
 
+/**
+ * @brief 
+ * 
+ */
 class TxtData: public TxtFile
 {
     friend  std::ostream&       operator<<  (std::ostream&, const TxtData&);
