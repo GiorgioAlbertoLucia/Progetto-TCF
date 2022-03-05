@@ -15,10 +15,11 @@ public:
     virtual                 ~Data(){};
 
     // setter / getter
-    virtual void                set_name(const char *)                            = 0;
-    virtual const char          get_name()                                  const = 0;
-    virtual void                set_data(const char *)                            = 0;
+    virtual void                set_data(const char *, const int)                 = 0;
     virtual std::vector<double> get_data()                                  const = 0;
+    virtual void                set_name(const char *)                            = 0;
+    virtual std::string         get_name()                                  const = 0;
+
     virtual void                add_element(const double)                         = 0;
     virtual void                replace_element(const double, const int)          = 0;
 

@@ -22,7 +22,18 @@
 {   
     set_file(file_path);
     set_name(name);
-    set_data(file_path);
+    set_data(file_path, file_column);
+}
+
+/**
+ * @brief Copy Constructor. 
+ * Construct a new Txt Data:: Txt Data object.
+ * @param txt_data 
+ */
+                    TxtData::TxtData(const TxtData& txt_data):TxtFile(txt_data.get_path())
+{
+    TxtData::data_vector = txt_data.data_vector;
+    TxtData::name = txt_data.name;
 }
 
 /**
@@ -57,10 +68,10 @@ TxtFile             TxtData::get_file()                                         
     return txt_file;
 }
 
-void                TxtData::set_data(const char * file_path)
+void                TxtData::set_data(const char * file_path, const int file_column)
 {
     set_file(file_path);
-    TxtData::data_vector = get_file().get_column(file_column);
+    TxtData::data_vector = get_file().get_column(file_column);   
 }
 
 std::vector<double> TxtData::get_data()                                                     const
@@ -74,10 +85,9 @@ void                TxtData::set_name(const char * name)
     TxtData::name = str;
 }
 
-const char          TxtData::get_name()                                                     const
+std::string         TxtData::get_name()                                                     const
 {
-    const char * name_char = TxtData::name.c_str();
-    return * name_char;
+    return TxtData::name;
 }
 
 
@@ -134,7 +144,7 @@ TxtData&            TxtData::operator*(const double scalar)
 {
     for (std::vector<double>::iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(); i++)
     {
-        i = i * scalar;
+        *i = *i * scalar;
     }
     return *this;
 }
@@ -143,7 +153,7 @@ TxtData&            TxtData::operator*(const int scalar)
 {
     for (std::vector<double>::iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(); i++)
     {
-        i = i * scalar;
+        *i = *i * scalar;
     }
     return *this;
 }
@@ -198,7 +208,7 @@ double              TxtData::std()                                              
 double              TxtData::get_min()                                                      const
 {
     double min = TxtData::data_vector.front();
-    for (std::vector<double>::iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(), i++)
+    for (std::vector<double>::const_iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(); i++)
     {
         if (min > *i)   min = *i;
     }
@@ -212,7 +222,7 @@ double              TxtData::get_min()                                          
 double              TxtData::get_max()                                                      const
 {
     double max = TxtData::data_vector.front();
-    for (std::vector<double>::iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(), i++)
+    for (std::vector<double>::const_iterator i = TxtData::data_vector.begin(); i != TxtData::data_vector.end(); i++)
     {
         if (max < *i)   max = *i;
     }
@@ -236,10 +246,13 @@ double              TxtData::get(const int index)                               
 
 std::ostream&       operator<<(std::ostream& out, const TxtData& data)
 {
+    std::vector<double> storing_data = data.get_data();
+
     out << "Print: " << data.get_name() << std::endl;
-    for (std::vector<double>::iterator i = data.get_data().begin(); i != data.get_data.end(); i++)
+    for (std::vector<double>::const_iterator i = storing_data.begin(); i != storing_data.end(); i++)
     {
         out << *i << std::endl;
     }
+
     return out;
 }

@@ -45,9 +45,14 @@ std::vector<std::string> split_words(const std::string input)
 }
 
 // functions from header file
+
+/**
+ * @brief Construct a new Csv File:: Csv File object
+ * @param file_path 
+ */
                     CsvFile::CsvFile(const char * file_path)
 {
-    // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
+    // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
     file.open(file_path, std::ios::app);
     file.close();
@@ -56,6 +61,38 @@ std::vector<std::string> split_words(const std::string input)
     CsvFile::set_entries(file_path);
 }
 
+/**
+ * @brief Construct a new Csv File:: Csv File object. Alternative constructor taking string as an input.
+ * 
+ * @param str_file_path 
+ */
+                    CsvFile::CsvFile(std::string str_file_path)
+{
+    // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
+    const char * file_path = str_file_path.c_str();
+
+    std::ofstream file;
+    file.open(file_path, std::ios::app);
+    file.close();
+
+    set_path(file_path);
+    set_entries(file_path);
+}
+
+/**
+ * @brief Copy constructor.
+ * Construct a new Csv File:: Csv File object.
+ * @param csv_file 
+ */
+                    CsvFile::CsvFile(const CsvFile& csv_file)
+{
+    CsvFile::file_path = csv_file.file_path;
+    CsvFile::entries = csv_file.entries;
+}
+
+/**
+ * @brief Destroy the Csv File:: Csv File object.
+ */
                     CsvFile::~CsvFile()
 {
 
@@ -63,18 +100,29 @@ std::vector<std::string> split_words(const std::string input)
 
 // file_path setter and getter
 
+/**
+ * @brief 
+ * @param file_path 
+ */
 void                CsvFile::set_path(const char * file_path)
 {
     std::string str(file_path);
     CsvFile::file_path = str;
 }
 
-const char        CsvFile::get_path()                         const
+/**
+ * @brief 
+ * @return std::string 
+ */
+std::string         CsvFile::get_path()                             const
 {
-    const char * file_path_char = CsvFile::file_path.c_str();
-    return * file_path_char;
+    return CsvFile::file_path;
 }
 
+/**
+ * @brief 
+ * @param file_path 
+ */
 void                CsvFile::set_entries(const char * file_path)
 {
     std::ifstream file;
@@ -92,14 +140,18 @@ void                CsvFile::set_entries(const char * file_path)
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-int                 CsvFile::get_entries()                      const
+/**
+ * @brief 
+ * @return int 
+ */
+int                 CsvFile::get_entries()                          const
 {
     return CsvFile::entries;
 }
 
 
 // write into the file, deleting all previous content
-void                CsvFile::write(const std::string line)      const
+void                CsvFile::write(const std::string line)          const
 {
     std::ofstream file;
     file.open(CsvFile::file_path);
@@ -117,7 +169,7 @@ void                CsvFile::write(const std::string line)      const
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 // write into the file, keeping all previous content
-void                CsvFile::append(const std::string line)     const
+void                CsvFile::append(const std::string line)         const
 {
     std::ofstream file;
     file.open(CsvFile::file_path, std::ios::app);
@@ -136,13 +188,13 @@ void                CsvFile::append(const std::string line)     const
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 // write into the file, deleting all previous content
-void                CsvFile::write(const char * line)           const
+void                CsvFile::write(const char * line)               const
 {
     std::string str(line);
     CsvFile::write(str);
 }
 // write into the file, keeping all previous content
-void                CsvFile::append(const char * line)          const
+void                CsvFile::append(const char * line)              const
 {
     std::string str(line);
     CsvFile::append(str);
@@ -150,14 +202,12 @@ void                CsvFile::append(const char * line)          const
 
 
 
-
-void                CsvFile::getLine(const int line)              const
+/**
+ * @brief Returns a line from the file. Lines are numbered beginning with zero.
+ * @param line line you want to return.
+ */
+void                CsvFile::get_line(const int line)               const
 {
-    /*
-    Lines are numbered beginning with zero.
-    int line: number referring to the line you want to print
-    */
-
     std::ifstream file;
     file.open(CsvFile::file_path);
 
@@ -180,12 +230,12 @@ void                CsvFile::getLine(const int line)              const
 
 }
 
-/*
-    This only works with .txt files using a space (' ') or a tab ('\t') as delimiter between columns.
-    Columns are numbered beginning with zero.
-    int column: number referring to the column you want to print
-*/
-std::vector<double> CsvFile::getColumn(const int column)          const
+/** 
+ * @brief  This only works with .Csv files using a space (' ') or a tab as delimiter between columns. 
+ * Columns are numbered beginning with zero.
+ * @param column: number referring to the column you want to print
+ */
+std::vector<double> CsvFile::get_column(const int column)           const
 {
     std::vector<double> vector;
 
@@ -232,7 +282,7 @@ std::vector<double> CsvFile::getColumn(const int column)          const
     return vector;
 }
 
-void                CsvFile::current_file()                 const
+void                CsvFile::current_file()                         const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << CsvFile::file_path << std::endl;
 }
@@ -240,13 +290,13 @@ void                CsvFile::current_file()                 const
 
 // friend functions
 
-std::ostream&       operator<<  (std::ostream& out, const CsvFile& txt_file)
+std::ostream&       operator<<  (std::ostream& out, const CsvFile& Csv_file)
 {
     std::ifstream file;
-    file.open(txt_file.file_path);
+    file.open(Csv_file.file_path);
     if(file.is_open())
     {
-        out << "Print " << txt_file.file_path << ": " << std::endl;
+        out << "Print " << Csv_file.file_path << ": " << std::endl;
         while (!file.eof())
         {
             std::string this_line;

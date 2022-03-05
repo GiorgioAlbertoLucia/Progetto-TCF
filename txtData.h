@@ -19,16 +19,16 @@ class TxtData: public TxtFile
 
 public:
                                 TxtData(const char *, const int, const char *);             // file_path, file_column and data_name
-                                ~TxtData();
                                 TxtData(const TxtData&);                                    // copy constructor
+                                ~TxtData();
 
     // setter / getter
             TxtData&            set_file(const char *);
             TxtFile             get_file()                                  const;
-    virtual void                set_data(const char *);
+    virtual void                set_data(const char *, const int);
     virtual std::vector<double> get_data()                                  const;
     virtual void                set_name(const char *);
-    virtual const char          get_name()                                  const;
+    virtual std::string         get_name()                                  const;
 
     virtual void                add_element(const double);
     virtual void                replace_element(const double, const int);
@@ -37,7 +37,7 @@ public:
     // operators
             TxtData&            operator+   (const TxtData&);
             TxtData&            operator-   (const TxtData&);
-            TxtData&            operator*   (const double);                             // multiply by a scalar
+            TxtData&            operator*   (const double);                                 // multiply by a scalar
             TxtData&            operator*   (const int); 
             bool                operator==  (const TxtData&);
             bool                operator!=  (const TxtData& itself)    {return !(*this == itself);};

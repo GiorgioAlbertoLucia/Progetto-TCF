@@ -13,10 +13,12 @@ class CsvFile: public File
 
     public:
         CsvFile(const char *);
+        CsvFile(std::string);
+        CsvFile(const CsvFile&);
         ~CsvFile();
         
         virtual void                set_path(const char *);                         // choose a txt file to work with
-        virtual const char          get_path()                          const;
+        virtual std::string         get_path()                          const;
         virtual void                set_entries(const char *);      
         virtual int                 get_entries()                       const;
 
@@ -25,8 +27,8 @@ class CsvFile: public File
         virtual void                write(const char *)                 const;
         virtual void                append(const char *)                const;
 
-        virtual void                getLine(const int)                  const;
-        virtual std::vector<double> getColumn(const int)                const;
+        virtual void                get_line(const int)                  const;
+        virtual std::vector<double> get_column(const int)                const;
         //getColumn per udouble
         virtual void                current_file()                      const;
 

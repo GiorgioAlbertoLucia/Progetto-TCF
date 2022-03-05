@@ -8,10 +8,13 @@
 
 /* USEFUL FUNCTIONS */
 
-
+/**
+ * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
+ * @param row string you want the number of columns of.
+ * @return int number of columns.
+ */
 int countcolumn_txt(const std::string row)
 {
-    std::cout << "first string is:" << row << std::endl;
     int columns = 1;
     bool previous_was_space = false;
 
@@ -34,7 +37,10 @@ int countcolumn_txt(const std::string row)
 
 /* FUNCTIONS FROM HEADER FILE */
 
-
+/**
+ * @brief Construct a new Txt File:: Txt File object.
+ * @param file_path 
+ */
                     TxtFile::TxtFile(const char * file_path)
 {
     // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
@@ -46,6 +52,38 @@ int countcolumn_txt(const std::string row)
     set_entries(file_path);
 }
 
+/**
+ * @brief Construct a new Txt File:: Txt File object. Alternative constructor taking string as an input.
+ * 
+ * @param str_file_path 
+ */
+                    TxtFile::TxtFile(std::string str_file_path)
+{
+    // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
+    const char * file_path = str_file_path.c_str();
+
+    std::ofstream file;
+    file.open(file_path, std::ios::app);
+    file.close();
+
+    set_path(file_path);
+    set_entries(file_path);
+}
+
+/**
+ * @brief Copy constructor.
+ * Construct a new Txt File:: Txt File object.
+ * @param txt_file 
+ */
+                    TxtFile::TxtFile(const TxtFile& txt_file)
+{
+    TxtFile::file_path = txt_file.file_path;
+    TxtFile::entries = txt_file.entries;
+}
+
+/**
+ * @brief Destroy the Txt File:: Txt File object
+ */
                     TxtFile::~TxtFile()
 {
 
@@ -54,16 +92,23 @@ int countcolumn_txt(const std::string row)
 
 // setter and getter
 
+/**
+ * @brief 
+ * @param file_path 
+ */
 void                TxtFile::set_path(const char * file_path)
 {
     std::string str(file_path);
     TxtFile::file_path = str;
 }
 
-const char          TxtFile::get_path()                         const
+/**
+ * @brief 
+ * @return std::string 
+ */
+std::string         TxtFile::get_path()                         const
 {
-    const char * file_path_char = TxtFile::file_path.c_str();
-    return * file_path_char;
+    return TxtFile::file_path;
 }
 
 void                TxtFile::set_entries(const char * file_path)
@@ -142,8 +187,11 @@ void                TxtFile::append(const char * line)          const
 
 
 
-
-void                TxtFile::getLine(const int line)            const
+/**
+ * @brief Returns a line from the file. Lines are numbered beginning with zero.
+ * @param line line you want to return.
+ */
+void                TxtFile::get_line(const int line)           const
 {
     /*
     Lines are numbered beginning with zero.
@@ -177,7 +225,7 @@ void                TxtFile::getLine(const int line)            const
  * Columns are numbered beginning with zero.
  * @param column: number referring to the column you want to print
  */
-std::vector<double> TxtFile::getColumn(const int column)        const
+std::vector<double> TxtFile::get_column(const int column)       const
 {
     std::vector<double> vector;
 
@@ -219,7 +267,6 @@ std::vector<double> TxtFile::getColumn(const int column)        const
         file.close();
     }
     else    std::cout << "Error: unable to open file" << std::endl;
-
     return vector;
 }
 
