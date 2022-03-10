@@ -13,7 +13,7 @@
  * @brief 
  * 
  */
-class TxtData: public TxtFile
+class TxtData: public TxtFile, public Data
 {
     friend  std::ostream&       operator<<  (std::ostream&, const TxtData&);
 
@@ -54,9 +54,6 @@ public:
 private:
             std::vector<double>         data_vector;
             std::string                 name;
-
-
-
 };
 
 #endif

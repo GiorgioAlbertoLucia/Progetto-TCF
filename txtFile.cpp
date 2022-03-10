@@ -5,35 +5,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <sstream>
+#include <cstddef>
 
 /* USEFUL FUNCTIONS */
-
-/**
- * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
- * @param row string you want the number of columns of.
- * @return int number of columns.
- */
-int countcolumn_txt(const std::string row)
-{
-    int columns = 1;
-    bool previous_was_space = false;
-
-    for(int i=0; i<row.size(); i++)
-    {
-        if(row[i] == ' ' || row[i] == '\t' || row[i] == ',')
-        {
-            if(! previous_was_space)
-            {
-                columns++;
-                previous_was_space = true;
-            }
-        }
-        else        previous_was_space = false;
-    }
-
-    return columns;
-}
-
 
 /* FUNCTIONS FROM HEADER FILE */
 
@@ -41,7 +16,7 @@ int countcolumn_txt(const std::string row)
  * @brief Construct a new Txt File:: Txt File object.
  * @param file_path 
  */
-                    TxtFile::TxtFile(const char * file_path)
+                            TxtFile::TxtFile(const char * file_path)
 {
     // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
@@ -57,7 +32,7 @@ int countcolumn_txt(const std::string row)
  * 
  * @param str_file_path 
  */
-                    TxtFile::TxtFile(std::string str_file_path)
+                            TxtFile::TxtFile(std::string str_file_path)
 {
     // creates an empty .txt file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     const char * file_path = str_file_path.c_str();
@@ -75,7 +50,7 @@ int countcolumn_txt(const std::string row)
  * Construct a new Txt File:: Txt File object.
  * @param txt_file 
  */
-                    TxtFile::TxtFile(const TxtFile& txt_file)
+                            TxtFile::TxtFile(const TxtFile& txt_file)
 {
     TxtFile::file_path = txt_file.file_path;
     TxtFile::entries = txt_file.entries;
@@ -84,7 +59,7 @@ int countcolumn_txt(const std::string row)
 /**
  * @brief Destroy the Txt File:: Txt File object
  */
-                    TxtFile::~TxtFile()
+                            TxtFile::~TxtFile()
 {
 
 }
@@ -96,7 +71,7 @@ int countcolumn_txt(const std::string row)
  * @brief 
  * @param file_path 
  */
-void                TxtFile::set_path(const char * file_path)
+void                        TxtFile::set_path(const char * file_path)
 {
     std::string str(file_path);
     TxtFile::file_path = str;
@@ -106,12 +81,12 @@ void                TxtFile::set_path(const char * file_path)
  * @brief 
  * @return std::string 
  */
-std::string         TxtFile::get_path()                         const
+std::string                 TxtFile::get_path()                             const
 {
     return TxtFile::file_path;
 }
 
-void                TxtFile::set_entries(const char * file_path)
+void                        TxtFile::set_entries(const char * file_path)
 {
     std::ifstream file;
     file.open(file_path);
@@ -128,7 +103,7 @@ void                TxtFile::set_entries(const char * file_path)
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-int                 TxtFile::get_entries()                      const
+int                         TxtFile::get_entries()                          const
 {
     return TxtFile::entries;
 }
@@ -137,7 +112,7 @@ int                 TxtFile::get_entries()                      const
 /** Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
  */ 
-void                TxtFile::write(const std::string line)      const
+void                        TxtFile::write(const std::string line)          const
 {
     std::ofstream file;
     file.open(TxtFile::file_path);
@@ -153,7 +128,7 @@ void                TxtFile::write(const std::string line)      const
 /** @brief Writes into the file, keeping all previous content.
  *  @param line: line you want to append to the file.
  */ 
-void                TxtFile::append(const std::string line)     const
+void                        TxtFile::append(const std::string line)         const
 {
     std::ofstream file;
     file.open(TxtFile::file_path, std::ios::app);
@@ -169,7 +144,7 @@ void                TxtFile::append(const std::string line)     const
 /** Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
  */ 
-void                TxtFile::write(const char * line)           const
+void                        TxtFile::write(const char * line)               const
 {
     std::string str(line);
     TxtFile::write(str);
@@ -179,32 +154,38 @@ void                TxtFile::write(const char * line)           const
  * @brief Writes into the file, keeping all previous content.
  * @param line: line you want to append to the file.
  */ 
-void                TxtFile::append(const char * line)          const
+void                        TxtFile::append(const char * line)              const
 {
     std::string str(line);
     TxtFile::append(str);
 }
 
-
+/**
+ * @brief Gets an element from the file as a string.
+ * @param line 
+ * @param column 
+ * @return std::string 
+ */
+std::string                 TxtFile::get_element(const int line, const int column)  const
+{
+    std::string file_line = TxtFile::get_line(line);
+    std::vector<std::string> words = TxtFile::split_words(file_line);
+    return words.at(column);
+}
 
 /**
  * @brief Returns a line from the file. Lines are numbered beginning with zero.
  * @param line line you want to return.
  */
-void                TxtFile::get_line(const int line)           const
+std::string                 TxtFile::get_line(const int line)               const
 {
-    /*
-    Lines are numbered beginning with zero.
-    int line: number referring to the line you want to print
-    */
-
     std::ifstream file;
     file.open(TxtFile::file_path);
 
     if(line >= entries)
     {
         std::cerr << "Error: line " << line << " does not exist. The file has " << entries << " lines." << std::endl;
-        return;
+        return 0;
     }
 
     if(file.is_open())
@@ -212,20 +193,21 @@ void                TxtFile::get_line(const int line)           const
         int i = 0;
         std::string str;
         while(i <= line) getline(file, str);        // reads all the lines until the one you need
-        std::cout << str << std::endl;
-
         file.close();
+
+        return str;
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
-
+    return 0;
 }
 
 /** 
  * @brief  This only works with .txt files using a space (' ') or a tab as delimiter between columns. 
  * Columns are numbered beginning with zero.
- * @param column: number referring to the column you want to print
+ * @param column: number referring to the column you want to print.
+ * @param first_row = 0: row you want to start importing from. Lines are numbered from 0.
  */
-std::vector<double> TxtFile::get_column(const int column)       const
+std::vector<double>         TxtFile::get_column(const int column, const int first_row = 0)       const
 {
     std::vector<double> vector;
 
@@ -234,14 +216,7 @@ std::vector<double> TxtFile::get_column(const int column)       const
 
     if(file.is_open())
     {
-        // count number of columns
-        std::string first_line;
-        getline(file, first_line);
-        int n_columns = countcolumn_txt(first_line);
-
-        // get back to the top of the file, then print the selected column
-        file.clear();
-        file.seekg(0, std::ios::beg);
+        int n_columns = TxtFile::count_column();
 
         if(column >= n_columns)
         {
@@ -249,8 +224,11 @@ std::vector<double> TxtFile::get_column(const int column)       const
             return vector;
         }
 
-        int i = 0;
+        // skip lines
+        std::string skip;
+        for (int j = 0; j < first_row; j++) getline(file, skip);
 
+        int i = 0;
         while (! file.eof())
         {   
             std::string column_element;
@@ -270,11 +248,105 @@ std::vector<double> TxtFile::get_column(const int column)       const
     return vector;
 }
 
-void                TxtFile::current_file()                     const
+void                        TxtFile::current_file()                         const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << TxtFile::file_path << std::endl;
 }
 
+/**
+ * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
+ * If different lines of the file have a different amount of columns, an error is displayed.
+ * @return int number of columns.
+ */
+int                         TxtFile::count_column()                         const
+{
+    int columns = 1;
+    int save_columns = 0;       // used to check if each line has the same number of columns
+
+    std::ifstream file;
+    file.open(TxtFile::file_path);
+
+    if(file.is_open())
+    {
+        for (int j = 0; j < TxtFile::entries; j++)
+        {
+            std::string row;
+            getline(file, row);
+
+            bool previous_was_space = false;
+
+            for(int i=0; i<row.size(); i++)
+            {
+                if(row[i] == ' ' || row[i] == '\t' || row[i] == ',')
+                {
+                    if(! previous_was_space)
+                    {
+                        columns++;
+                        previous_was_space = true;
+                    }
+                }
+                else        previous_was_space = false;
+            }
+
+            if (j > 0 && columns != save_columns)
+            {
+                std::cerr << "Error: not all the lines have the same amount of columns. First " << j << " lines have "
+                << save_columns << " columns (this value will be returned)." << std::endl;
+                return save_columns;
+            }
+            
+            save_columns = columns;
+            columns = 1;
+        }
+    }
+    return columns;
+}
+
+/**
+ * @brief Extract single words (elements separated by space) from a string.
+ * @param input string you want to extraxt words from.
+ * @return vector containing single words.
+ */
+std::vector<std::string>    TxtFile::split_words(const std::string input)   const
+{
+    std::istringstream ss(input);
+    std::string word;
+    std::vector<std::string> vector1;
+
+    while(ss >> word)   vector1.push_back(word);
+
+    return vector1;
+}
+
+/**
+ * @brief Checks if the first line of the file contains words. This function is used in txtDataset.cpp to use the words in the 
+ * first line as names for the TxtData objects generated.
+ * NOTE: "file1" will not be regarded as a number although it does contain a digit in it. 
+ * @return true if no number is present in each element of the first line.
+ * @return false if a number is found in the first line.
+ */
+bool                        TxtFile::check_words()                          const
+{
+    std::ifstream file;
+    file.open(TxtFile::file_path);
+    if(file.is_open())
+    {
+        std::string first_line;
+        getline(file, first_line);
+
+        bool check = true;
+
+        std::vector<std::string> words = TxtFile::split_words(first_line);
+        for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++)
+        {
+            std::string word = *i;
+            if (word.find_first_not_of("0123456789") == std::string::npos)  return false;
+        }
+        file.close();
+        return true;
+    }
+    else    std::cerr << "Error: unable to open file" << std::endl;
+}
 
 // friend functions
 

@@ -2,6 +2,8 @@
 #define DATA_H
 
 #include "file.h"
+
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,26 +14,44 @@
 class Data
 {
 public:
-    virtual                 ~Data(){};
+                                Data(const char *, const int, const char *);             // file_path, file_column and data_name
+                                Data(const Data&);                                    // copy constructor
+                                ~Data();
 
     // setter / getter
-    virtual void                set_data(const char *, const int)                 = 0;
-    virtual std::vector<double> get_data()                                  const = 0;
-    virtual void                set_name(const char *)                            = 0;
-    virtual std::string         get_name()                                  const = 0;
+            Data&               set_data(const char *, const int);
+            std::vector<double> get_data()                                  const;
+            Data&               set_name(const char *);
+            std::string         get_name()                                  const;
+            Data&               set_file(const char *);
+            std::string         get_file()                                  const;
+            //
+            int                 get_entries()                               const;
 
-    virtual void                add_element(const double)                         = 0;
-    virtual void                replace_element(const double, const int)          = 0;
+            Data&               add_element(const double);
+            Data&               replace_element(const double, const int);
 
     // operators
+            Data&               operator+   (const Data&);
+            Data&               operator-   (const Data&);
+            Data&               operator*   (const double);                                 // multiply by a scalar
+            Data&               operator*   (const int); 
+            bool                operator==  (const Data&);
+            bool                operator!=  (const Data& itself)    {return !(*this == itself);};
 
-    virtual double              mean        ()                              const = 0;
-    virtual double              std         ()                              const = 0;
-    virtual void                rnd_dist    (const double, const double)    const = 0;      // inputs are min and max of the uniform distribution
-    virtual double              get_min     ()                              const = 0;
-    virtual double              get_max     ()                              const = 0;
-    virtual double              get         (const int)                     const = 0;       // returns the nth element
+    // statistical functions
 
+            double              mean        ()                              const;
+            double              std         ()                              const;
+            void                rnd_dist    (const double, const double)    const;      // inputs are min and max of the uniform distribution
+            double              get_min     ()                              const;
+            double              get_max     ()                              const;
+            double              get         (const int)                     const;       // returns the nth element
+private:
+            std::vector<double>         data_vector;
+            std::string                 name;
+            std::string                 file_path;
+            int                         entries;
 
 };
 
