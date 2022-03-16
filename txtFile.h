@@ -13,7 +13,7 @@
 class TxtFile: public File
 {
 
-        friend  std::ostream&       operator<< (std::ostream&, const TxtFile&);
+        friend  std::ostream&               operator<<(std::ostream&, const TxtFile&);
 
     public:
         TxtFile();
@@ -22,7 +22,7 @@ class TxtFile: public File
         TxtFile(const TxtFile&);
         ~TxtFile();
         
-        virtual void                        set_path(const char *);                    // choose a txt file to work with
+        virtual void                        set_path(const char *);                    
         virtual std::string                 get_path()                              const;
         virtual void                        set_entries(const char *);      
         virtual int                         get_entries()                           const;
@@ -35,7 +35,12 @@ class TxtFile: public File
         virtual std::string                 get_element(const int, const int)       const;
         virtual std::string                 get_line(const int)                     const;
         virtual std::vector<double>         get_column(const int, const int = 0)    const;
-        //getColumn per udouble
+        /**
+         * @brief Get the column<udouble> object. Specialized implementation for get_column (udouble is a measure and an error,
+         * therefore tow columns at a time need to be read from the file)
+         * @return std::vector<udouble> 
+         */
+        //virtual std::vector<udouble>      get_column<udouble>(const int, const int = 0)   const = 0;
 
         virtual void                        current_file()                          const;
         virtual int                         count_column()                          const;

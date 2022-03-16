@@ -109,7 +109,8 @@ int                         TxtFile::get_entries()                          cons
 }
 
 
-/** Writes into the file, deleting all previous content.
+/** 
+ * @brief Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
  */ 
 void                        TxtFile::write(const std::string line)          const
@@ -125,7 +126,8 @@ void                        TxtFile::write(const std::string line)          cons
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-/** @brief Writes into the file, keeping all previous content.
+/** 
+ * @brief Writes into the file, keeping all previous content.
  *  @param line: line you want to append to the file.
  */ 
 void                        TxtFile::append(const std::string line)         const
@@ -141,7 +143,8 @@ void                        TxtFile::append(const std::string line)         cons
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
 
-/** Writes into the file, deleting all previous content.
+/** 
+ * @brief Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
  */ 
 void                        TxtFile::write(const char * line)               const
@@ -207,7 +210,7 @@ std::string                 TxtFile::get_line(const int line)               cons
  * @param column: number referring to the column you want to print.
  * @param first_row = 0: row you want to start importing from. Lines are numbered from 0.
  */
-std::vector<double>         TxtFile::get_column(const int column, const int first_row = 0)       const
+std::vector<double>         TxtFile::get_column(const int column, const int first_row)       const
 {
     std::vector<double> vector;
 
@@ -345,7 +348,8 @@ bool                        TxtFile::check_words()                          cons
         file.close();
         return true;
     }
-    else    std::cerr << "Error: unable to open file" << std::endl;
+    std::cerr << "Error: unable to open file" << std::endl;
+    return false;
 }
 
 // friend functions

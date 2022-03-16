@@ -213,7 +213,7 @@ std::string                 CsvFile::get_line(const int line)                   
  * Columns are numbered beginning with zero.
  * @param column: number referring to the column you want to print
  */
-std::vector<double>         CsvFile::get_column(const int column, const int first_row = 0)  const
+std::vector<double>         CsvFile::get_column(const int column, const int first_row)  const
 {
     std::vector<double> vector;
 
@@ -305,7 +305,8 @@ bool                        CsvFile::check_words()                              
         file.close();
         return true;
     }
-    else    std::cerr << "Error: unable to open file" << std::endl;
+    std::cerr << "Error: unable to open file" << std::endl;
+    return false;
 }
 
 /**

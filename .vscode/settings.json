@@ -71,6 +71,8 @@
         "filesystem": "cpp",
         "NaIresolution-1.C": "cpp",
         "computeAcceptanceCosmics.C": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "BJT_data.C": "cpp",
+        "BJT.C": "cpp"
     }
 }

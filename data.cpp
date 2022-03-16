@@ -76,7 +76,8 @@ Data&               Data::set_data(const char * file_path, const int file_column
     }
     else    std::cerr << "Error: file only contains " << file->count_column() << " columns." << std::endl;
 
-    delete factory, file;
+    delete factory;
+    delete file;
     return *this;  
 }
 
