@@ -354,6 +354,8 @@ int                         CsvFile::count_column()                             
             save_columns = columns;
             columns = 1;
         }
+
+        file.close();
     }
     return columns;
 }

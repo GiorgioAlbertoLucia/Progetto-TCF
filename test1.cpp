@@ -1,6 +1,6 @@
 #include "txtFile.h"
 #include "csvFile.h"
-#include "txtData.h"
+#include "data.h"
 
 #include <iostream>
 #include <string>
@@ -13,19 +13,19 @@ int main()
     TxtFile txt_file("test.txt");
     
 
-    //txt_file.write("1   2   3   4");
-    //txt_file.append("5  6   7   8");
+    txt_file.write("1   2   3   4");
+    txt_file.append("5   6   7   8");
 
-    TxtData txt_data1("test.txt", 2, "colonna 2");
-    TxtData txt_data2("test.txt", 3, "colonna 3");
+    Data data1("test.txt", 2, "colonna 2");
+    Data data2("test.txt", 3, "colonna 3");
 
-    cout << txt_data1 << endl;
-    cout << txt_data2 << endl;
+    cout << data1 << endl;
+    cout << data2 << endl;
 
-    TxtData txt_data3 = txt_data1 + txt_data2;
-    txt_data3.set_name("somma");
+    Data data3 = data1 + data2;
+    data3.set_name("somma");
 
-    cout << txt_data3 << endl;
+    cout << data3 << endl;
 
 
     //cout << txt_file.get_path() << endl;
