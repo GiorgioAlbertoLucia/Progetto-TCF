@@ -220,7 +220,6 @@ std::vector<double>         TxtFile::get_column(const int column, const int firs
     if(file.is_open())
     {
         int n_columns = TxtFile::count_column();
-
         if(column >= n_columns)
         {
             std::cerr << "Error: column " << column << " does not exist. The file has " << n_columns << " columns." << std::endl;
@@ -228,21 +227,20 @@ std::vector<double>         TxtFile::get_column(const int column, const int firs
         }
 
         // skip lines
-        std::string skip;
-        for (int j = 0; j < first_row; j++) getline(file, skip);
-
+        std::string row;
+        for(int j = 0; j < first_row; j++)  getline(file, row);
+        
         int i = 0;
-        while (! file.eof())
+        while (getline(file, row))
         {   
+            std::istringstream iss(row);
             std::string column_element;
-            file >> column_element;
-            if(i == column)
+            while(getline(iss, column_element))
             {
-                double element = atof(column_element.c_str());
-                vector.push_back(element);
+                if(i==column)   vector.push_back(std::stod(column_element));
+                i++;
             }
-            i++;
-            if(i == n_columns)  i = 0;
+            i = 0;
         }
 
         file.close();
@@ -263,33 +261,20 @@ void                        TxtFile::current_file()                         cons
  */
 int                         TxtFile::count_column()                         const
 {
-    int columns = 1;
+    int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
 
     std::ifstream file;
     file.open(TxtFile::file_path);
 
     if(file.is_open())
-    {
+    {   
         for (int j = 0; j < TxtFile::entries; j++)
         {
-            std::string row;
+            std::string row, item;
             getline(file, row);
-
-            bool previous_was_space = false;
-
-            for(int i=0; i<row.size(); i++)
-            {
-                if(row[i] == ' ' || row[i] == '\t' || row[i] == ',')
-                {
-                    if(! previous_was_space)
-                    {
-                        columns++;
-                        previous_was_space = true;
-                    }
-                }
-                else        previous_was_space = false;
-            }
+            std::istringstream iss(row);
+            while(iss >> item)   if(item.length())  columns++;
 
             if (j > 0 && columns != save_columns)
             {
@@ -299,7 +284,7 @@ int                         TxtFile::count_column()                         cons
             }
             
             save_columns = columns;
-            columns = 1;
+            columns = 0;
         }
     }
     return columns;

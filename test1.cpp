@@ -16,6 +16,14 @@ int main()
     txt_file.write("1   2   3   4");
     txt_file.append("5   6   7   8");
 
+    vector<double> data = txt_file.get_column(1);
+    for (vector<double>::const_iterator i = data.begin(); i != data.end(); i++)
+    {
+        cout << *i << " ";
+    }
+    cout << endl;
+    
+
     Data data1("test.txt", 2, "colonna 2");
     Data data2("test.txt", 3, "colonna 3");
 

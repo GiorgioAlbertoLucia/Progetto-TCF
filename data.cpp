@@ -71,8 +71,7 @@ Data&               Data::set_data(const char * file_path, const int file_column
         {
             Data::data_vector = file->get_column(file_column);
             Data::entries = file->get_entries();
-        } 
-        
+        }   
     }
     else    std::cerr << "Error: file only contains " << file->count_column() << " columns." << std::endl;
 

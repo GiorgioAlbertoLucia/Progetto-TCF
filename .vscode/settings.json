@@ -73,6 +73,9 @@
         "computeAcceptanceCosmics.C": "cpp",
         "numeric": "cpp",
         "BJT_data.C": "cpp",
-        "BJT.C": "cpp"
+        "BJT.C": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "variant": "cpp"
     }
 }
