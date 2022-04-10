@@ -223,9 +223,6 @@ std::vector<double>         CsvFile::get_column(const int column, const int firs
     if(file.is_open())
     {
         int n_columns = CsvFile::count_column();
-        file.clear();
-        file.seekg(0, std::ios::beg);
-
         if(column >= n_columns)
         {
             std::cerr << "Error: column " << column << " does not exist. The file has " << n_columns << " columns." << std::endl;
@@ -233,27 +230,20 @@ std::vector<double>         CsvFile::get_column(const int column, const int firs
         }
 
         // skip lines
-        std::string skip;
-        for (int j = 0; j < first_row; j++) getline(file, skip);
-
+        std::string row;
+        for(int j = 0; j < first_row; j++)  getline(file, row);
+        
         int i = 0;
-        while (! file.eof())
+        while (getline(file, row))
         {   
-            std::string column_element;
-            file >> column_element;
-            if(i == column)
-            {
-                double element = atof(column_element.c_str());
-                vector.push_back(element);
-            }
-            i++;
-            if(i == n_columns)  i = 0;
+            std::istringstream iss(row);
+            double column_element;
+            for(int i = 0; i <= column; i++)    iss >> column_element;
+            vector.push_back(column_element);
         }
-
         file.close();
     }
-    else    std::cerr << "Error: unable to open file" << std::endl;
-
+    else    std::cout << "Error: unable to open file" << std::endl;
     return vector;
 }
 
@@ -316,33 +306,20 @@ bool                        CsvFile::check_words()                              
  */
 int                         CsvFile::count_column()                                         const
 {
-    int columns = 1;
+    int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
 
     std::ifstream file;
     file.open(CsvFile::file_path);
 
     if(file.is_open())
-    {
+    {   
         for (int j = 0; j < CsvFile::entries; j++)
         {
-            std::string row;
+            std::string row, item;
             getline(file, row);
-
-            bool previous_was_space = false;
-
-            for(int i=0; i<row.size(); i++)
-            {
-                if(row[i] == ' ' || row[i] == '\t' || row[i] == ',')
-                {
-                    if(! previous_was_space)
-                    {
-                        columns++;
-                        previous_was_space = true;
-                    }
-                }
-                else        previous_was_space = false;
-            }
+            std::istringstream iss(row);
+            while(iss >> item)   if(item.length())  columns++;
 
             if (j > 0 && columns != save_columns)
             {
@@ -352,12 +329,10 @@ int                         CsvFile::count_column()                             
             }
             
             save_columns = columns;
-            columns = 1;
+            columns = 0;
         }
-
-        file.close();
     }
-    return columns;
+    return save_columns;
 }
 
 

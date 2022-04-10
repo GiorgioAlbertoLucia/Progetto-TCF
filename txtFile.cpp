@@ -234,15 +234,10 @@ std::vector<double>         TxtFile::get_column(const int column, const int firs
         while (getline(file, row))
         {   
             std::istringstream iss(row);
-            std::string column_element;
-            while(getline(iss, column_element))
-            {
-                if(i==column)   vector.push_back(std::stod(column_element));
-                i++;
-            }
-            i = 0;
+            double column_element;
+            for(int i = 0; i <= column; i++)    iss >> column_element;
+            vector.push_back(column_element);
         }
-
         file.close();
     }
     else    std::cout << "Error: unable to open file" << std::endl;
@@ -287,7 +282,7 @@ int                         TxtFile::count_column()                         cons
             columns = 0;
         }
     }
-    return columns;
+    return save_columns;
 }
 
 /**

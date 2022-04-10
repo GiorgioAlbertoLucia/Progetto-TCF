@@ -22,7 +22,6 @@ int main()
         cout << *i << " ";
     }
     cout << endl;
-    
 
     Data data1("test.txt", 2, "colonna 2");
     Data data2("test.txt", 3, "colonna 3");
