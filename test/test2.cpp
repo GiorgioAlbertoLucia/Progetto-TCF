@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "dataset.h"
-#include "data.h"
+#include "dataset.hpp"
+#include "data.hpp"
 
 using namespace std;
 

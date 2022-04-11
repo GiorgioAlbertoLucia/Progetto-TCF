@@ -1,5 +1,5 @@
-#include "data.h"
-#include "fileFactory.h"
+#include "data.hpp"
+#include "fileFactory.hpp"
 
 #include <iostream>
 #include <vector>

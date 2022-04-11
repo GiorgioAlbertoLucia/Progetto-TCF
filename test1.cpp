@@ -1,6 +1,6 @@
-#include "txtFile.h"
-#include "csvFile.h"
-#include "data.h"
+#include "txtFile.hpp"
+#include "csvFile.hpp"
+#include "data.hpp"
 
 #include <iostream>
 #include <string>

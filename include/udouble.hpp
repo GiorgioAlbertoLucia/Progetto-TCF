@@ -7,24 +7,24 @@
 class Udouble
 {
     friend  std::ostream&   operator<<(std::ostream&, const Udouble&);
-    friend  Udouble&        sin(Udouble&);
-    friend  Udouble&        cos(Udouble&);
-    friend  Udouble&        tan(Udouble&);
-    friend  Udouble&        sinh(Udouble&);
-    friend  Udouble&        cosh(Udouble&);
-    friend  Udouble&        tanh(Udouble&);
-    friend  Udouble&        asin(Udouble&);
-    friend  Udouble&        acos(Udouble&);
-    friend  Udouble&        atan(Udouble&);
-    friend  Udouble&        asinh(Udouble&);
-    friend  Udouble&        acosh(Udouble&);
-    friend  Udouble&        atanh(Udouble&);
-    friend  Udouble&        exp(Udouble&);
-    friend  Udouble&        pow(Udouble&, const double);
-    friend  Udouble&        pow(Udouble&, const int);
-    friend  Udouble&        pow(Udouble&, const Udouble&);
-    friend  Udouble&        log(Udouble&);
-    friend  Udouble&        log10(Udouble&);
+    friend  Udouble         sin(const Udouble&);
+    friend  Udouble         cos(const Udouble&);
+    friend  Udouble         tan(const Udouble&);
+    friend  Udouble         sinh(const Udouble&);
+    friend  Udouble         cosh(const Udouble&);
+    friend  Udouble         tanh(const Udouble&);
+    friend  Udouble         asin(const Udouble&);
+    friend  Udouble         acos(const Udouble&);
+    friend  Udouble         atan(const Udouble&);
+    friend  Udouble         asinh(const Udouble&);
+    friend  Udouble         acosh(const Udouble&);
+    friend  Udouble         atanh(const Udouble&);
+    friend  Udouble         exp(const Udouble&);
+    friend  Udouble         pow(const Udouble&, const double);
+    friend  Udouble         pow(const Udouble&, const int);
+    friend  Udouble         pow(const Udouble&, const Udouble&);
+    friend  Udouble         log(const Udouble&);
+    friend  Udouble         log10(const Udouble&);
 
 public:
                             Udouble(){};

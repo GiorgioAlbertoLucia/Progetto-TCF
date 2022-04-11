@@ -1,7 +1,7 @@
-#include "data.h"
-#include "dataset.h"
+#include "data.hpp"
+#include "dataset.hpp"
 
-#include "fileFactory.h"
+#include "fileFactory.hpp"
 
 #include <iostream>
 #include <vector>

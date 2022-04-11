@@ -1,140 +1,160 @@
 #include <iostream>
 #include <math.h>
 
-#include "../include/udouble.h"
+#include "../include/udouble.hpp"
 
 std::ostream&    operator<<(std::ostream& out, const Udouble& udouble)
 {
-    if(udouble.get_format()){;}
+    if(udouble.get_format()){return out;}
     else                            return out << udouble.get_value() << " +/- " << udouble.get_error();
 }
 
-Udouble&         sin(Udouble&  udouble)
+Udouble         sin(const Udouble& udouble)
 {
-    double error = udouble.get_error() * cos(udouble.get_value());
-    udouble.set_value(sin(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    Udouble result;
+    /*
+    std::cout << "check: value = " << udouble.get_value() << ", error = " << udouble.get_error() << std::endl;
+    std::cout << "check: sin(value) = " << sin(udouble.get_value()) << ", error_p = " << udouble.get_error() * cos(udouble.get_value()) << std::endl;
+    */
+    result.set_value(sin(udouble.get_value()));
+    result.set_error(udouble.get_error() * cos(udouble.get_value()));
+    return result;
 }
-Udouble&         cos(Udouble& udouble)
+Udouble         cos(const Udouble& udouble)
 {
-    double error = udouble.get_error() * sin(udouble.get_value());
-    udouble.set_value(cos(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    Udouble result;
+    result.set_value(cos(udouble.get_value()));
+    result.set_error(udouble.get_error() * sin(udouble.get_value()));
+    return result;
 }
-Udouble&         tan(Udouble& udouble)
+Udouble         tan(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(tan(udouble.get_value()));
     double error = udouble.get_error() / pow(cos(udouble.get_value()), 2);
-    udouble.set_value(tan(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         sinh(Udouble& udouble)
+Udouble         sinh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(sinh(udouble.get_value()));
     double error = udouble.get_error() * cosh(udouble.get_value());
-    udouble.set_value(sinh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         cosh(Udouble& udouble)
+Udouble         cosh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(cosh(udouble.get_value()));
     double error = udouble.get_error() * sinh(udouble.get_value());
-    udouble.set_value(cosh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         tanh(Udouble& udouble)
+Udouble         tanh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(tanh(udouble.get_value()));
     double error = udouble.get_error() / pow(cosh(udouble.get_value()), 2);
-    udouble.set_value(tanh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         asin(Udouble& udouble)
+Udouble         asin(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(asin(udouble.get_value()));
     double error = udouble.get_error() / sqrt(1 - udouble.get_value()*udouble.get_value());
-    udouble.set_value(asin(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         acos(Udouble& udouble)
+Udouble         acos(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(acos(udouble.get_value()));
     double error = udouble.get_error() / sqrt(1 - udouble.get_value()*udouble.get_value());
-    udouble.set_value(acos(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         atan(Udouble& udouble)
+Udouble         atan(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(atan(udouble.get_value()));
     double error = udouble.get_error() / sqrt(1 + udouble.get_value()*udouble.get_value());
-    udouble.set_value(atan(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         asinh(Udouble& udouble)
+Udouble         asinh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(asinh(udouble.get_value()));
     double error = udouble.get_error() / sqrt(1 + udouble.get_value()*udouble.get_value());
-    udouble.set_value(asinh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         acosh(Udouble& udouble)
+Udouble         acosh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(acosh(udouble.get_value()));
     double error = udouble.get_error() / (sqrt(1 - udouble.get_value())*sqrt(1 + udouble.get_value()));
-    udouble.set_value(acosh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         atanh(Udouble& udouble)
+Udouble         atanh(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(atanh(udouble.get_value()));
     double error = udouble.get_error() / (1 - udouble.get_value()*udouble.get_value());
-    udouble.set_value(atanh(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         exp(Udouble& udouble)
+Udouble         exp(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(exp(udouble.get_value()));
     double error = udouble.get_error() * exp(udouble.get_value());
-    udouble.set_value(exp(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         pow(Udouble& udouble, const double n)
+Udouble         pow(const Udouble& udouble, const double n)
 {
+    Udouble result;
+    result.set_value(pow(udouble.get_value(), n));
     double error = udouble.get_error() * n * pow(udouble.get_value(), n-1);
-    udouble.set_value(pow(udouble.get_value(), n));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         pow(Udouble& udouble, const int n)
+Udouble         pow(const Udouble& udouble, const int n)
 {
+    Udouble result;
+    result.set_value(pow(udouble.get_value(), n));
     double error = udouble.get_error() * n * pow(udouble.get_value(), n-1);
-    udouble.set_value(pow(udouble.get_value(), n));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         pow(Udouble& udouble, const Udouble& n)
+Udouble         pow(const Udouble& udouble, const Udouble& n)
 {
+    Udouble result;
+    result.set_value(pow(udouble.get_value(), n.get_value()));
     double error = sqrt(pow(udouble.get_error() * n.get_value() * pow(udouble.get_value(), n.get_value()-1), 2)
                     + pow(n.get_error() * pow(udouble.get_value(), n.get_value()) * log(udouble.get_value()), 2));
-    udouble.set_value(pow(udouble.get_value(), n.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         log(Udouble& udouble)
+Udouble         log(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(log(udouble.get_value()));
     double error = udouble.get_error() / udouble.get_value();
-    udouble.set_value(log(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
-Udouble&         log10(Udouble& udouble)
+Udouble         log10(const Udouble& udouble)
 {
+    Udouble result;
+    result.set_value(log10(udouble.get_value()));
     double error = udouble.get_error() / (udouble.get_value()*log(10));
-    udouble.set_value(log10(udouble.get_value()));
-    udouble.set_error(error);
-    return udouble;
+    result.set_error(error);
+    return result;
 }
 
 Udouble::Udouble(const double value, const double error, const bool format)
