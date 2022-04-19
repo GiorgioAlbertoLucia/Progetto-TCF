@@ -76,6 +76,7 @@
         "BJT.C": "cpp",
         "compare": "cpp",
         "concepts": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "map": "cpp"
     }
 }

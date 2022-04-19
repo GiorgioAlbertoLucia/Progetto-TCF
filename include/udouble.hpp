@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <math.h>
-
+ 
 class Udouble
 {
     friend  std::ostream&   operator<<(std::ostream&, const Udouble&);

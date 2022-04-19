@@ -5,7 +5,7 @@
 
 PartDer::PartDer(){}
 
-PartDer::PartDer(double x, std::vector<double> df){
+PartDer::PartDer(const double x, const std::vector<double> df){
     PartDer::f = x;
     PartDer::df = df;
 }

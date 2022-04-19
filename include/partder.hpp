@@ -1,5 +1,5 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef PARTDER_H
+#define PARTDER_H
 
 #include <vector>
 #include <string>
@@ -20,6 +20,7 @@
  */
 class PartDer
 {
+
     friend  PartDer         sin(const PartDer&);
     friend  PartDer         cos(const PartDer&);
     friend  PartDer         tan(const PartDer&);
