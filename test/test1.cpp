@@ -1,6 +1,6 @@
-#include "txtFile.hpp"
-#include "csvFile.hpp"
-#include "data.hpp"
+#include "../include/txtFile.hpp"
+#include "../include/csvFile.hpp"
+#include "../include/data.hpp"
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-    TxtFile txt_file("test.txt");
+    TxtFile txt_file("../data/test.txt");
     
 
     txt_file.write("1   2   3   4");
@@ -40,7 +40,7 @@ int main()
 
 
     /*
-    CsvFile csv_file("test.csv");
+    CsvFile csv_file("../data/test.csv");
 
     vector<double> vector1 = csv_file.getColumn(2);
 

@@ -1,10 +1,11 @@
-#include "data.hpp"
-#include "fileFactory.hpp"
+#include "../include/data.hpp"
+#include "../include/fileFactory.hpp"
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <numeric>
+#include <functional>
 
 /*  USEFUL FUNCTIONS  */
 

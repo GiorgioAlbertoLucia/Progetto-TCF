@@ -1,7 +1,7 @@
 #ifndef TXTFILE_H
 #define TXTFILE_H
 
-#include "file.hpp"
+#include "../include/file.hpp"
 #include <iostream>
 #include <string>
 #include <vector>

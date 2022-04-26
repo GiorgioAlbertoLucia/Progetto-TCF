@@ -1,7 +1,7 @@
-#include "data.hpp"
-#include "dataset.hpp"
+#include "../include/data.hpp"
+#include "../include/dataset.hpp"
 
-#include "fileFactory.hpp"
+#include "../include/fileFactory.hpp"
 
 #include <iostream>
 #include <vector>
@@ -153,7 +153,7 @@ std::ostream&           operator<<(std::ostream& out, Dataset& dataset)
     std::vector<Data> output_vector = dataset.get_dataset();
     for (std::vector<Data>::const_iterator i = output_vector.begin(); i != output_vector.end(); i++)
     {
-        out << *i;
+        out << *i << std::endl;
     }
     return out;
 }

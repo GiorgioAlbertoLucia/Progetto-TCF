@@ -4,8 +4,8 @@
 #include <string>
 #include <fstream>
 
-#include "txtFile.hpp"
-#include "csvFile.hpp"
+#include "../include/txtFile.hpp"
+#include "../include/csvFile.hpp"
 
 /**
  * @brief Class factory that creates TxtFile and CsvFile. In this way, the client can choose, for instance, by checking the extension

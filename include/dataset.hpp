@@ -1,7 +1,7 @@
 #ifndef DATASET_H
 #define DATASET_H
 
-#include "data.hpp"
+#include "../include/data.hpp"
 
 #include <vector>
 #include <string>

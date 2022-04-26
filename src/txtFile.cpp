@@ -1,5 +1,5 @@
-#include "file.hpp"
-#include "txtFile.hpp"
+#include "../include/file.hpp"
+#include "../include/txtFile.hpp"
 
 #include <iostream>
 #include <string>

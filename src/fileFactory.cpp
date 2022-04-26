@@ -1,9 +1,9 @@
 #include <string>
 #include <fstream>
 
-#include "fileFactory.hpp"
-#include "txtFile.hpp"
-#include "csvFile.hpp"
+#include "../include/fileFactory.hpp"
+#include "../include/txtFile.hpp"
+#include "../include/csvFile.hpp"
 
 /**
  * @brief Create a TxtFile object
