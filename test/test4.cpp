@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "../include/partder.hpp"
 
@@ -10,9 +11,9 @@ using namespace std;
 // test partder
 int main()
 {
-    vector<double> dx, dy;
-    dx.push_back(1);    dx.push_back(0);
-    dy.push_back(0);    dy.push_back(1);
+    map<string, double> dx {{"x", 1.},};
+    map<string, double> dy {{"y", 1},};
+
     PartDer * x = new PartDer(PI, dx);
     PartDer * y = new PartDer(3, dy);
 

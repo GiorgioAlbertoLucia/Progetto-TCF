@@ -193,9 +193,8 @@ std::string                 TxtFile::get_line(const int line)               cons
 
     if(file.is_open())
     {   
-        int i = 0;
         std::string str;
-        while(i <= line) getline(file, str);        // reads all the lines until the one you need
+        for(int i=0; i<=line; i++) getline(file, str);        // reads all the lines until the one you need
         file.close();
 
         return str;

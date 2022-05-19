@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 /**
  * @brief I believe this is a little counterintuitive and a detailed explaination is needed. The class data memebers are
@@ -39,20 +40,21 @@ class PartDer
     friend  PartDer         pow(const PartDer&, const PartDer&);
     friend  PartDer         log(const PartDer&);
     friend  PartDer         log10(const PartDer&);
+    
 
 public:
     PartDer();
-    PartDer(const double, const std::vector<double>);
-    PartDer(const PartDer&);
+    PartDer(const double, const std::map<std::string, double>, const char * = 0);
+    PartDer(const PartDer&, const char * = 0);
     ~PartDer();
 
-    const   PartDer& set_f(const double f)                    {PartDer::f=f; return *this;};
-    const   PartDer& set_dfi(const double dfi, const int i)   {PartDer::df.at(i)=dfi; return *this;};
-    const   PartDer& add_df(const double dfi)                 {PartDer::df.push_back(dfi); return *this;};
+    const   PartDer& set_f(const double f)                       {PartDer::f=f; return *this;};
+    const   PartDer& set_dfi(const char *, const double);
+    const   PartDer& add_df(const char *, const double dfi);
 
-    const double get_f() const                              {return PartDer::f;};
-    const std::vector<double> get_df() const                {return PartDer::df;}
-    const double get_dfi(int xi) const                      {return PartDer::df.at(xi);};
+    const   double      get_f() const                               {return PartDer::f;};
+    const   std::map<std::string, double> get_df() const            {return PartDer::df;}
+    const   double      get_dfi(const std::string key) const        {return PartDer::df.at(key);};
 
             PartDer operator+(const PartDer&); // f + g
             PartDer operator-(const PartDer&); // f - g
@@ -68,9 +70,9 @@ public:
     void print();
 
 private:
-    double f;                   // function value at (x1, x2, ..., xn)
-    std::vector<double> df;     // vector containing partial derivatives df/dxi
-    std::string label;          // name of the function
+    double f;                               // function value at (x1, x2, ..., xn)
+    std::map<std::string, double> df;       // map containing "variable of diff" - "derivative in that variable at (x1,...,xn)"
+    std::string label;                      // name of the function
 };
 
 

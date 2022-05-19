@@ -77,6 +77,11 @@
         "compare": "cpp",
         "concepts": "cpp",
         "variant": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "__tree": "cpp",
+        "list": "cpp",
+        "queue": "cpp",
+        "set": "cpp",
+        "thread": "cpp"
     }
 }
