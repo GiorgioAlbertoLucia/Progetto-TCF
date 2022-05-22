@@ -12,18 +12,16 @@
  * for all the xi parameters, then create a function f as a composition of those function object (that is, using a copy 
  * constructor). 
  * 
- * Each of the xi parameters is conveniently written as an object xi(xi, vector_df) where the vector contains 0 for each value
- * except for the i-th value that is 1 (essencially, the vector is dxi/dxj) for j=0,...,n 
+ * Each of the xi parameters is conveniently written as an object xi(xi, map_df) where the map contains a label for the
+ * i-th parameter and the value 1
  * 
  * If you, instead, define e.g. PartDer f = sin(1), the class will not know that there is a sine in there, and f will be 
- * treated as a constant function of value sin(1)!
+ * treated as a constant function of value sin(1).
  * 
  */
 class PartDer
 {
-
-    friend  PartDer         sin(const PartDer&);
-    friend  PartDer         cos(const PartDer&);
+    /*
     friend  PartDer         tan(const PartDer&);
     friend  PartDer         sinh(const PartDer&);
     friend  PartDer         cosh(const PartDer&);
@@ -40,36 +38,48 @@ class PartDer
     friend  PartDer         pow(const PartDer&, const PartDer&);
     friend  PartDer         log(const PartDer&);
     friend  PartDer         log10(const PartDer&);
+    */
     
 
 public:
-    PartDer();
-    PartDer(const double, const std::map<std::string, double>, const char * = 0);
-    PartDer(const PartDer&, const char * = 0);
-    ~PartDer();
+                        PartDer();
+                        PartDer(const double, const std::map<std::string, double>, const char * = "");
+                        PartDer(const PartDer&);
+                        ~PartDer();
 
-    const   PartDer& set_f(const double f)                       {PartDer::f=f; return *this;};
-    const   PartDer& set_dfi(const char *, const double);
-    const   PartDer& add_df(const char *, const double dfi);
-
-    const   double      get_f() const                               {return PartDer::f;};
-    const   std::map<std::string, double> get_df() const            {return PartDer::df;}
-    const   double      get_dfi(const std::string key) const        {return PartDer::df.at(key);};
-
-            PartDer operator+(const PartDer&); // f + g
-            PartDer operator-(const PartDer&); // f - g
-            PartDer operator*(const PartDer&); // f * g
-            PartDer operator/(const PartDer&); // f / g
-       
-    friend  PartDer operator+(const double, const PartDer&); //c+f
-    friend  PartDer operator-(const double, const PartDer&); //c-f
-    friend  PartDer operator*(const double, const PartDer&); //c*f
-    friend  PartDer operator/(const double, const PartDer&); //c/f
-            PartDer operator^(double); // f^c,  Where c is constant
+            PartDer&    set_f(const double f)                           {PartDer::f=f; return *this;};
+            PartDer&    set_dfi(const char *, const double);
+            PartDer&    add_df(const char *, const double dfi);
     
-    void print();
+            void        set_df(const std::map<std::string, double> df)  {PartDer::df=df;};
+            void        set_label(const char * label)                   {PartDer::label = std::string(label);};
+            void        set_label(std::string label)                    {PartDer::label = label;};
+    
+    const   double      get_f()                     const               {return PartDer::f;};
+    const   std::map<std::string, double> get_df()  const               {return PartDer::df;};
+    const   std::string get_label()                 const               {return PartDer::label;};
+
+    static  int     get_count()                                         {return PartDer::count;};
+
+            PartDer     operator+(const PartDer&); // f + g
+            PartDer     operator-(const PartDer&); // f - g
+            PartDer     operator*(const PartDer&); // f * g
+            PartDer     operator/(const PartDer&); // f / g
+
+    friend  PartDer     sin(const PartDer&);
+    friend  PartDer     cos(const PartDer&);
+
+    friend  PartDer     operator+(const double, const PartDer&); //c+f
+    friend  PartDer     operator-(const double, const PartDer&); //c-f
+    friend  PartDer     operator*(const double, const PartDer&); //c*f
+    friend  PartDer     operator/(const double, const PartDer&); //c/f
+            PartDer     operator^(double); // f^c,  Where c is constant
+    
+    void                print();
 
 private:
+    static int count;                       // how many number of PartDer objects are created in the int
+
     double f;                               // function value at (x1, x2, ..., xn)
     std::map<std::string, double> df;       // map containing "variable of diff" - "derivative in that variable at (x1,...,xn)"
     std::string label;                      // name of the function

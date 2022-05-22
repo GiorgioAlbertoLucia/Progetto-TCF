@@ -1,6 +1,7 @@
 #include "../include/txtFile.hpp"
 #include "../include/csvFile.hpp"
 #include "../include/data.hpp"
+#include "../include/fileFactory.hpp"
 
 #include <iostream>
 #include <string>
@@ -10,7 +11,7 @@ using namespace std;
 
 int main()
 {
-    TxtFile txt_file("../data/test.txt");
+    TxtFile txt_file("data/test.txt");
     
 
     txt_file.write("1   2   3   4");
@@ -23,8 +24,8 @@ int main()
     }
     cout << endl;
 
-    Data data1("test.txt", 2, "colonna 2");
-    Data data2("test.txt", 3, "colonna 3");
+    Data data1("data/test.txt", 2, "colonna 2");
+    Data data2("data/test.txt", 3, "colonna 3");
 
     cout << data1 << endl;
     cout << data2 << endl;

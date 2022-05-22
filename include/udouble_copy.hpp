@@ -6,7 +6,7 @@
 
 #include "../include/partder.hpp"
  
-class Udouble
+class Udouble: public PartDer
 {
     friend  std::ostream&   operator<<(std::ostream&, const Udouble&);
     friend  Udouble         sin(const Udouble&);
@@ -30,7 +30,7 @@ class Udouble
 
 public:
                             Udouble(){count++;};
-                            Udouble(const PartDer&, const double, const char * = "", const bool = false);
+                            Udouble(const double, const std::map<std::string, double>, const double, const char * = 0, const bool = 0);
                             Udouble(const Udouble&);
                             ~Udouble();
 
@@ -47,16 +47,13 @@ public:
 
             Udouble&        operator+(const Udouble&);
             Udouble&        operator-(const Udouble&);
-            Udouble&        operator*(const Udouble&); 
-            Udouble&        operator/(const Udouble&);
-            Udouble&        operator=(const Udouble&) noexcept; 
-
-
             Udouble&        operator*(const double);                                 // multiply by a scalar
             Udouble&        operator*(const int);
+            Udouble&        operator*(const Udouble&); 
             Udouble&        operator/(const double);
             Udouble&        operator/(const int);
-
+            Udouble&        operator/(const Udouble&);
+            Udouble&        operator=(const Udouble&); 
             bool            operator==(const Udouble&);
             bool            operator!=(const Udouble& itself)    {return !(*this == itself);};
 

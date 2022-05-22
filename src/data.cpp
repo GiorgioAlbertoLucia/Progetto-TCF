@@ -237,15 +237,17 @@ double              Data::mean()                                                
  * @brief Returns the standard deviation of stored distribution.
  * @return double 
  */
+/*
 double              Data::std()                                                          const
 {
     std::vector<double> difference(Data::data_vector.size());
-    std::transform(Data::data_vector.begin(), Data::data_vector.end(), difference.begin(),
+    std::transform( Data::data_vector.begin(), Data::data_vector.end(), difference.begin(),
                     std::bind2nd(std::minus<double>(), mean()) );
     double squared_sum = std::inner_product(difference.begin(), difference.end(), difference.begin(), 0.0);
     double std = sqrt(squared_sum / Data::data_vector.size());
     return std;
 }
+*/
 
 /**
  * @brief Returns the minimum value of stored distribution.

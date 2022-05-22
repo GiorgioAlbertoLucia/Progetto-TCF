@@ -17,12 +17,15 @@ int main()
     PartDer * x = new PartDer(PI, dx);
     PartDer * y = new PartDer(3, dy);
 
-    PartDer f;
-    f = sin(*x) + *y * cos(*x);
+    //PartDer f;
+    //f = sin(*x) + *y * cos(*x);
 
     x->print();
     y->print();
-    f.print();
+    //f.print();
+
+    delete x;
+    delete y;
 
     return 0;
 }

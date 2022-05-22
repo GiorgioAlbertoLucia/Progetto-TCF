@@ -1,24 +1,40 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <map>
 
 #include "../include/partder.hpp"
 
-PartDer::PartDer(){}
+int PartDer::count = 0;
+
+PartDer::PartDer()
+{
+    //count++;
+}
 PartDer::PartDer(const double x, const std::map<std::string, double> df, const char * label){
+    count++;
     PartDer::f = x;
     PartDer::df = df;
-    PartDer::label = label;
+    
+    std::string str(label);
+    if(str == "")  for(int i = 0; i < count; i++)  str+="p";
+    set_label(str);
+    
+    
 }
-PartDer::PartDer(const PartDer& derivative, const char * label)
+PartDer::PartDer(const PartDer& derivative)
 {
+    count++;
     PartDer::f = derivative.f;
     PartDer::df = derivative.df;
-    PartDer::label = label;
+    
+    std::string label("");
+    for(int i = 0; i < count; i++)  label+="p";
+    set_label(label);
+    
 }
 PartDer::~PartDer()
 {
-
+    count--;
 }
 
 PartDer PartDer::operator+(const PartDer& g)
@@ -29,6 +45,7 @@ PartDer PartDer::operator+(const PartDer& g)
     // checks if the two functions are functions of the same variable. If they are, the partial derivative is
     // determined via standard rules of differentiation, if not the partial derivative of the function of that 
     // variable is set 
+    
     for(std::map<std::string, double>::const_iterator i = df.begin(); i != df.end(); i++)
     {
         if(g.df.find(i->first) != g.df.end())
@@ -45,6 +62,7 @@ PartDer PartDer::operator+(const PartDer& g)
     {
         h.df.insert(std::make_pair(i->first, i->second));
     }
+    
 
     return h;
 }
@@ -52,6 +70,7 @@ PartDer PartDer::operator-(const PartDer& g)
 {
     PartDer h;
     h.f = PartDer::f - g.f;                              // -----
+    
     
     for(std::map<std::string, double>::const_iterator i = df.begin(); i != df.end(); i++)
     {
@@ -69,6 +88,7 @@ PartDer PartDer::operator-(const PartDer& g)
     {
         h.df.insert(std::make_pair(i->first, i->second));
     }
+    
 
     return h;
 }
@@ -76,6 +96,7 @@ PartDer PartDer::operator*(const PartDer& g)
 {
     PartDer h;
     h.f = PartDer::f * g.f;                       
+    
     
     for(std::map<std::string, double>::const_iterator i = df.begin(); i != df.end(); i++)
     {
@@ -95,6 +116,7 @@ PartDer PartDer::operator*(const PartDer& g)
         double diff = i->second * f;
         h.df.insert(std::make_pair(i->first, diff));
     }
+    
 
     return h;
 }
@@ -102,6 +124,7 @@ PartDer PartDer::operator/(const PartDer& g)
 {
     PartDer h;
     h.f = PartDer::f / g.f;                              
+    
     
     for(std::map<std::string, double>::const_iterator i = df.begin(); i != df.end(); i++)
     {
@@ -121,6 +144,7 @@ PartDer PartDer::operator/(const PartDer& g)
         double diff = i->second * f / pow(g.f, 2);
         h.df.insert(std::make_pair(i->first, i->second));
     }
+    
 
     return h;
 }
@@ -128,26 +152,30 @@ PartDer PartDer::operator/(const PartDer& g)
 PartDer sin(const PartDer& g)
 {
     PartDer h;
-    h.set_f( sin(g.get_f()) );                              
+    h.set_f( std::sin(g.f) );                              
+    
     
     for(std::map<std::string, double>::const_iterator i = g.df.begin(); i != g.df.end(); i++)
     {
-        double diff = cos( g.get_f() ) * i->second;
+        double diff = cos(g.f) * i->second;
         h.df.insert(std::make_pair(i->first, diff));
     }
+    
 
     return h;
 }
 PartDer cos(const PartDer& g)
 {
     PartDer h;
-    h.set_f( cos(g.get_f()) );                              
+    h.set_f( std::cos(g.f) );                              
+    
     
     for(std::map<std::string, double>::const_iterator i = g.df.begin(); i != g.df.end(); i++)
     {
-        double diff = - sin( g.get_f() ) * i->second;
+        double diff = - sin(g.f) * i->second;
         h.df.insert(std::make_pair(i->first, diff));
     }
+    
 
     return h;
 }
@@ -156,8 +184,10 @@ void PartDer::print()
 {
     std::cout << "f = " << PartDer::f << std::endl;
     std::cout << "Partial derivatives: " << std::endl;
+    
     for (std::map<std::string, double>::const_iterator i = df.begin(); i != df.end(); i++)
     {
         std::cout << "df/d" << i->first << " = " << i->second << std::endl;
     }
+    
 }

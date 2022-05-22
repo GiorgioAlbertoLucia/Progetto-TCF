@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 
-#include "../include/udouble.hpp"
+#include "../include/udouble_copy.hpp"
 #include "../include/partder.hpp"
 
 int Udouble::count = 0;
@@ -172,17 +172,17 @@ Udouble         log10(const Udouble& udouble)
 }
 */
 
-Udouble::Udouble(const PartDer& value, const double error, const char * label, const bool format)
+Udouble::Udouble(const double x, const std::map<std::string, double> df, const double error, const char * label, const bool format):PartDer(x, df)
 {
     count++;
 
     Udouble::set_value(value);
     Udouble::set_error(error);
 
-    std::string str(label);
-    if(str == "")  str += value.get_label();
-    if(str == "")  for(int i = 0; i < count; i++)  str+="u";
-    Udouble::label = str;
+    std::string s_label(label);
+    if(label == 0)  s_label += value.get_label();
+    if(label == 0)  for(int i = 0; i < count; i++)  s_label+="u";
+    Udouble::label = s_label;
     Udouble::set_format(format);
 }
 /**
@@ -192,7 +192,6 @@ Udouble::Udouble(const PartDer& value, const double error, const char * label, c
  */
 Udouble::Udouble(const Udouble& udouble)
 {
-    count++;
     Udouble::value = udouble.get_partder();
     
     double err = 0;
@@ -202,7 +201,6 @@ Udouble::Udouble(const Udouble& udouble)
         if(m.find(i->first) != m.end())     err += pow(i->second * m.at(i->first), 2);
     }
     Udouble::error = sqrt(err);
-
 
     std::string s_label("");
     for(int i = 0; i < count; i++)  s_label+="u";
@@ -215,7 +213,7 @@ Udouble::Udouble(const Udouble& udouble)
  */
 Udouble::~Udouble()
 {
-    count--;
+
 }
 
 /**
@@ -310,10 +308,8 @@ Udouble&    Udouble::operator/(const Udouble& udouble)
 
     return *this;
 }
-Udouble&    Udouble::operator=(const Udouble& udouble) noexcept
+Udouble&    Udouble::operator=(const Udouble& udouble)
 {
-    if(this == &udouble)    return *this;
-
     Udouble::value = udouble.get_partder();
     
     double err = 0;
