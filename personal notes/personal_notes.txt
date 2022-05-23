@@ -1,3 +1,3 @@
 Personal notes on developing some of the code
 
-*   Least-squares polynomial fit reference (theory): https://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
+*   Least-squares polynomial fit reference (theory): https://young.physics.ucsc.edu/250/lsfit.pdf

@@ -6,10 +6,7 @@
 
 int PartDer::count = 0;
 
-PartDer::PartDer()
-{
-    //count++;
-}
+
 PartDer::PartDer(const double x, const std::map<std::string, double> df, const char * label){
     count++;
     PartDer::f = x;
@@ -31,10 +28,6 @@ PartDer::PartDer(const PartDer& derivative)
     for(int i = 0; i < count; i++)  label+="p";
     set_label(label);
     
-}
-PartDer::~PartDer()
-{
-    count--;
 }
 
 PartDer PartDer::operator+(const PartDer& g)

@@ -10,8 +10,7 @@ std::ostream&    operator<<(std::ostream& out, const Udouble& udouble)
 {
     //if(udouble.get_format()){return out;}
     //else                            
-    return out << udouble.get_label() << " " 
-                                    << udouble.get_value() << " ± " << udouble.get_error();
+    return out << udouble.get_label() << " " << udouble.get_value() << " ± " << udouble.get_error();
 }
 
 Udouble         sin(const Udouble& udouble)
@@ -21,22 +20,24 @@ Udouble         sin(const Udouble& udouble)
     std::cout << "check: value = " << udouble.get_value() << ", error = " << udouble.get_error() << std::endl;
     std::cout << "check: sin(value) = " << sin(udouble.get_value()) << ", error_p = " << udouble.get_error() * cos(udouble.get_value()) << std::endl;
     */
-    result.set_value(sin(udouble.get_partder()));
-    
+    result.set_value( sin(udouble.value) );
+    /*
     std::map<std::string, double> m = udouble.errors;
     for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
-    
+    */
     return result;
 }
 Udouble         cos(const Udouble& udouble)
 {
     Udouble result;
-    result.set_value(cos(udouble.get_partder()));
+    result.set_value( cos(udouble.value) );
     
+    /*
     std::map<std::string, double> m = udouble.errors;
     for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
+    */
     
     return result;
 }
@@ -179,11 +180,13 @@ Udouble::Udouble(const PartDer& value, const double error, const char * label, c
     Udouble::set_value(value);
     Udouble::set_error(error);
 
+    /*
     std::string str(label);
     if(str == "")  str += value.get_label();
     if(str == "")  for(int i = 0; i < count; i++)  str+="u";
     Udouble::label = str;
     Udouble::set_format(format);
+    */
 }
 /**
  * @brief Copy Constructor.
@@ -194,7 +197,7 @@ Udouble::Udouble(const Udouble& udouble)
 {
     count++;
     Udouble::value = udouble.get_partder();
-    
+    /*
     double err = 0;
     for (std::map<std::string, double>::const_iterator i = Udouble::errors.begin(); i != Udouble::errors.end(); i++)
     {
@@ -202,20 +205,14 @@ Udouble::Udouble(const Udouble& udouble)
         if(m.find(i->first) != m.end())     err += pow(i->second * m.at(i->first), 2);
     }
     Udouble::error = sqrt(err);
+    */
 
-
+    /*
     std::string s_label("");
     for(int i = 0; i < count; i++)  s_label+="u";
     Udouble::label = s_label;
     Udouble::format = udouble.get_format();
-}
-/**
- * @brief Destroy the Udouble:: Udouble object
- * 
- */
-Udouble::~Udouble()
-{
-    count--;
+    */
 }
 
 /**
@@ -231,23 +228,56 @@ Udouble::~Udouble()
  */
 Udouble&    Udouble::operator+(const Udouble& udouble)
 {
-    Udouble::value = Udouble::value + udouble.get_partder();
+    Udouble::value = Udouble::value + udouble.value;
 
+    /*
     std::map<std::string, double> m = udouble.errors;
     for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
     Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
     Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
+    */
 
     return *this;
 }
 Udouble&    Udouble::operator-(const Udouble& udouble)
 {
-    Udouble::value = Udouble::value - udouble.get_partder();
+    Udouble::value = Udouble::value - udouble.value;
 
+    /*
     std::map<std::string, double> m = udouble.errors;
     for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
     Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
     Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
+    */
+
+    return *this;
+}
+
+
+
+Udouble&    Udouble::operator*(const Udouble& udouble)
+{
+    Udouble::value = Udouble::value * udouble.value;
+   
+   /*
+    std::map<std::string, double> m = udouble.errors;
+    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
+    Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
+    Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
+    */
+
+    return *this;
+} 
+Udouble&    Udouble::operator/(const Udouble& udouble)
+{
+    Udouble::value = Udouble::value / udouble.value;
+
+    /*
+    std::map<std::string, double> m = udouble.errors;
+    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
+    Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
+    Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
+    */
 
     return *this;
 }
@@ -270,21 +300,6 @@ Udouble&    Udouble::operator*(const int scalar)
     Udouble::error *= scalar;
     return *this;
 }
-*/
-
-Udouble&    Udouble::operator*(const Udouble& udouble)
-{
-    Udouble::value = Udouble::value * udouble.get_partder();
-   
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
-    Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
-    Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
-
-    return *this;
-} 
-
-/*
 Udouble&    Udouble::operator/(const double scalar)
 {
     Udouble::value /= scalar;
@@ -299,23 +314,13 @@ Udouble&    Udouble::operator/(const int scalar)
 }
 */
 
-Udouble&    Udouble::operator/(const Udouble& udouble)
-{
-    Udouble::value = Udouble::value * udouble.get_partder();
-
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    Udouble::errors.insert(std::make_pair(i->first, i->second));
-    Udouble::errors.insert(std::make_pair(udouble.label, udouble.error));
-    Udouble::errors.insert(std::make_pair(Udouble::label, Udouble::error));
-
-    return *this;
-}
 Udouble&    Udouble::operator=(const Udouble& udouble) noexcept
 {
     if(this == &udouble)    return *this;
 
     Udouble::value = udouble.get_partder();
     
+    /*
     double err = 0;
     for (std::map<std::string, double>::const_iterator i = Udouble::errors.begin(); i != Udouble::errors.end(); i++)
     {
@@ -323,10 +328,13 @@ Udouble&    Udouble::operator=(const Udouble& udouble) noexcept
         if(m.find(i->first) != m.end())     err += pow(i->second * m.at(i->first), 2);
     }
     Udouble::error = sqrt(err);
+    */
 
+    /*
     std::string s_label("");
     for(int i = 0; i < count; i++)  s_label+="u";
     Udouble::label = s_label;
+    */
 
     std::map<std::string, double> m {{Udouble::label, 1},};
     Udouble::value.set_df(m);

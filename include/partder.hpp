@@ -42,10 +42,10 @@ class PartDer
     
 
 public:
-                        PartDer();
+                        PartDer(){count++;};
                         PartDer(const double, const std::map<std::string, double>, const char * = "");
                         PartDer(const PartDer&);
-                        ~PartDer();
+                        ~PartDer(){count--;};
 
             PartDer&    set_f(const double f)                           {PartDer::f=f; return *this;};
             PartDer&    set_dfi(const char *, const double);
