@@ -18,15 +18,16 @@ public:
     ~LeastSquares();
 
     //void set_ssquared(const char *);      to expand class to use errors on x
-    void    fit(const char * = "");
-    void    set_pvalue(const double);
+            void            fit(const char * = "");
+            void            set_pvalue(const double);
 
-    double  get_parameter(int);
-    double  get_parerror(int);
-    
-    double  get_chisquared();
-    double  get_pvalue();
-    double  get_DoF();
+    const   double          get_parameter(int i)    const       {return coeff[i];};
+    const   double          get_parerror(int i)     const       {return sqrt( (matrix.matrix()).inverse()[i,i] );};
+
+    const   Eigen::VectorXd get_yfit()              const       {return yfit;};  
+    const   double          get_chisquared()        const       {return chi_squared;};
+    const   double          get_pvalue()            const       {return p_value;};
+    const   double          get_DoF()               const       {return DoF;};
 
 
 private:
@@ -38,6 +39,7 @@ private:
     Eigen::VectorXd coeff;          // coefficients vector
     Eigen::ArrayXXd matrix;         // coefficient matrix (U in documentation - wolfram)        
 
+    Eigen::VectorXd yfit;           // values from fit
     int DoF;
     double chi_squared;
     double p_value;

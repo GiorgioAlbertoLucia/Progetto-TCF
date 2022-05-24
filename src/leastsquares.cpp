@@ -9,6 +9,9 @@
 LeastSquares::LeastSquares(){}
 LeastSquares::LeastSquares(const std::vector<double> x, const std::vector<double> y, const std::vector<double> sy, const char * formula)
 {
+    if(x.size() != y.size())    std::cerr << "Data vector x and y have different sizes." << std::endl;
+    if(x.size() != sy.size())   std::cerr << "Data vector x and sy have different sizes." << std::endl;
+
     LeastSquares::n = x.size();
 
     LeastSquares::x.resize(n);
@@ -19,6 +22,8 @@ LeastSquares::LeastSquares(const std::vector<double> x, const std::vector<double
 
     LeastSquares::sy.resize(n);
     for(int i = 0; i < n; i++)   LeastSquares::sy[i] = sy.at(i);
+
+    LeastSquares::yfit.resize(n);
 
     LeastSquares::formula = std::string(formula);
 }
@@ -70,20 +75,23 @@ void LeastSquares::fit(const char * formula)
         std::vector<double> sum_elem;
         for(int k = 0; k < n; k++)
         {
-            double num = y[k];
             for(int i = 0; i < grade+1; i++)
             {
-                num -= coeff[i] * pow(x[k], i);
-            }  
+                yfit[k] += coeff[i] * pow(x[k], i);
+            } 
+            double num = y[k] - yfit[k]; 
             sum_elem.push_back( pow(num,2)/pow(sy[k],2) );
         }
         LeastSquares::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0);
     }
     
     
+
+    // print fit results
+    std::cout << "Fit results:" << std::endl;
 }
 
 void set_pvalue(const double chi_squared)
 {
-    
+
 }
