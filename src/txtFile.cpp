@@ -76,7 +76,6 @@ void                        TxtFile::set_path(const char * file_path)
     std::string str(file_path);
     TxtFile::file_path = str;
 }
-
 /**
  * @brief 
  * @return std::string 
@@ -85,11 +84,13 @@ std::string                 TxtFile::get_path()                             cons
 {
     return TxtFile::file_path;
 }
-
 void                        TxtFile::set_entries(const char * file_path)
 {
-    std::ifstream file;
-    file.open(file_path);
+    std::ifstream file(TxtFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n'); 
 
     if(file.is_open())
     {
@@ -102,7 +103,6 @@ void                        TxtFile::set_entries(const char * file_path)
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 int                         TxtFile::get_entries()                          const
 {
     return TxtFile::entries;
@@ -125,7 +125,6 @@ void                        TxtFile::write(const std::string line)          cons
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 /** 
  * @brief Writes into the file, keeping all previous content.
  *  @param line: line you want to append to the file.
@@ -142,7 +141,6 @@ void                        TxtFile::append(const std::string line)         cons
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 /** 
  * @brief Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
@@ -152,7 +150,6 @@ void                        TxtFile::write(const char * line)               cons
     std::string str(line);
     TxtFile::write(str);
 }
-
 /** 
  * @brief Writes into the file, keeping all previous content.
  * @param line: line you want to append to the file.
@@ -161,6 +158,30 @@ void                        TxtFile::append(const char * line)              cons
 {
     std::string str(line);
     TxtFile::append(str);
+}
+/**
+ * @brief This function add a column of floats (with their description as top line) to an existing .txt file
+ * @param col_name description of the column data
+ * @param column data to add in the column
+ */
+void                        TxtFile::append_column(const char * col_name, std::vector<double> column) const
+{
+    std::fstream file(TxtFile::file_path, std::ios::in);
+    std::string line;
+    std::vector<std::string> file_lines;
+    while(getline(file, line))  file_lines.push_back(line);     // fill a vector with the file content
+    file.close();
+
+    int comment = TxtFile::comment();
+
+    file.open(TxtFile::file_path, std::ios::out);
+    for (int i = 0; i < file_lines.size(); i++)
+    {
+        if (i < comment)        file << file_lines.at(i) << std::endl;
+        else if (i == comment)  file << file_lines.at(i) << "\t\t" << col_name << std::endl;
+        else                    file << file_lines.at(i) << "\t\t\t" << column.at(i-comment-1) << std::endl;                          
+    }
+    file.close();
 }
 
 /**
@@ -175,15 +196,17 @@ std::string                 TxtFile::get_element(const int line, const int colum
     std::vector<std::string> words = TxtFile::split_words(file_line);
     return words.at(column);
 }
-
 /**
  * @brief Returns a line from the file. Lines are numbered beginning with zero.
  * @param line line you want to return.
  */
 std::string                 TxtFile::get_line(const int line)               const
 {
-    std::ifstream file;
-    file.open(TxtFile::file_path);
+    std::ifstream file(TxtFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n'); 
 
     if(line >= entries)
     {
@@ -202,7 +225,6 @@ std::string                 TxtFile::get_line(const int line)               cons
     else    std::cerr << "Error: unable to open file" << std::endl;
     return 0;
 }
-
 /** 
  * @brief  This only works with .txt files using a space (' ') or a tab as delimiter between columns. 
  * Columns are numbered beginning with zero.
@@ -213,8 +235,11 @@ std::vector<double>         TxtFile::get_column(const int column, const int firs
 {
     std::vector<double> vector;
 
-    std::ifstream file;
-    file.open(TxtFile::file_path);
+    std::ifstream file(TxtFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n'); 
 
     if(file.is_open())
     {
@@ -243,11 +268,11 @@ std::vector<double>         TxtFile::get_column(const int column, const int firs
     return vector;
 }
 
+
 void                        TxtFile::current_file()                         const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << TxtFile::file_path << std::endl;
 }
-
 /**
  * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
  * If different lines of the file have a different amount of columns, an error is displayed.
@@ -258,8 +283,11 @@ int                         TxtFile::count_column()                         cons
     int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
 
-    std::ifstream file;
-    file.open(TxtFile::file_path);
+    std::ifstream file(TxtFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n'); 
 
     if(file.is_open())
     {   
@@ -283,7 +311,6 @@ int                         TxtFile::count_column()                         cons
     }
     return save_columns;
 }
-
 /**
  * @brief Extract single words (elements separated by space) from a string.
  * @param input string you want to extraxt words from.
@@ -299,7 +326,6 @@ std::vector<std::string>    TxtFile::split_words(const std::string input)   cons
 
     return vector1;
 }
-
 /**
  * @brief Checks if the first line of the file contains words. This function is used in txtDataset.cpp to use the words in the 
  * first line as names for the TxtData objects generated.
@@ -309,8 +335,12 @@ std::vector<std::string>    TxtFile::split_words(const std::string input)   cons
  */
 bool                        TxtFile::check_words()                          const
 {
-    std::ifstream file;
-    file.open(TxtFile::file_path);
+    std::ifstream file(TxtFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n'); 
+    
     if(file.is_open())
     {
         std::string first_line;
@@ -330,10 +360,22 @@ bool                        TxtFile::check_words()                          cons
     std::cerr << "Error: unable to open file" << std::endl;
     return false;
 }
+/**
+         * @brief Skips all comment lines in the file. A line beginning with # is a comment line.
+         */
+int                         TxtFile::comment()                              const
+{
+    int comment = 0;
+    std::string line;
+    std::ifstream file(TxtFile::file_path);
+    if(file.is_open())  while(file >> line) if(line.at(0)=='#') comment++;
+    file.close();
+    return comment;
+}
 
 // friend functions
 
-std::ostream&       operator<<  (std::ostream& out, const TxtFile& txt_file)
+std::ostream&               operator<<  (std::ostream& out, const TxtFile& txt_file)
 {
     std::ifstream file;
     file.open(txt_file.file_path);

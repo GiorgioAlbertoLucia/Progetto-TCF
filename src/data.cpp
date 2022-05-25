@@ -62,10 +62,10 @@ Data&               Data::set_data(const char * file_path, const int file_column
 
     if (file_column < file->count_column())
     {
-        if(file->check_words())
+        if(Data::name != "" && file->check_words())
         {
             Data::data_vector = file->get_column(file_column, 1);
-            Data::name = file->get_element(file_column, 0);
+            Data::name = file->get_element(0, file_column);
             Data::entries = file->get_entries() - 1;
         }
         else   
@@ -80,7 +80,6 @@ Data&               Data::set_data(const char * file_path, const int file_column
     delete file;
     return *this;  
 }
-
 std::vector<double> Data::get_data()                                                     const
 {
     return Data::data_vector;
@@ -92,13 +91,12 @@ std::vector<double> Data::get_data()                                            
  * @param name name of the Data object. 
  * @return Data& 
  */
-Data&               Data::set_name(const char * name = 0)
+Data&               Data::set_name(const char * name = "")
 {
-    if (name == 0)  return *this;
+    if (std::string(name) == "")  return *this;
     Data::name = name;
     return *this;
 }
-
 std::string         Data::get_name()                                                     const
 {
     return Data::name;
@@ -114,7 +112,6 @@ Data&               Data::set_file(const char * file_path)
     Data::file_path = file_path;
     return *this;
 }
-
 /**
  * @brief Gets the TxtFile where data is stored.
  * @returns TxtFile
@@ -170,7 +167,6 @@ Data&               Data::operator+(const Data& data2)
     }
     return *this;
 }
-
 Data&               Data::operator-(const Data& data2)
 {
     std::vector<double> vector2 = data2.get_data();
@@ -185,7 +181,6 @@ Data&               Data::operator-(const Data& data2)
     }
     return *this;
 }
-
 Data&               Data::operator*(const double scalar)
 {
     for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
@@ -194,7 +189,6 @@ Data&               Data::operator*(const double scalar)
     }
     return *this;
 }
-
 Data&               Data::operator*(const int scalar)
 {
     for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)

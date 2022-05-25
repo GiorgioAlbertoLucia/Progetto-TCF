@@ -25,7 +25,6 @@
     CsvFile::set_path(file_path);
     CsvFile::set_entries(file_path);
 }
-
 /**
  * @brief Construct a new Csv File:: Csv File object. Alternative constructor taking string as an input.
  * 
@@ -43,7 +42,6 @@
     set_path(file_path);
     set_entries(file_path);
 }
-
 /**
  * @brief Copy constructor.
  * Construct a new Csv File:: Csv File object.
@@ -54,7 +52,6 @@
     CsvFile::file_path = csv_file.file_path;
     CsvFile::entries = csv_file.entries;
 }
-
 /**
  * @brief Destroy the Csv File:: Csv File object.
  */
@@ -74,7 +71,6 @@ void                        CsvFile::set_path(const char * file_path)
     std::string str(file_path);
     CsvFile::file_path = str;
 }
-
 /**
  * @brief 
  * @return std::string 
@@ -83,15 +79,17 @@ std::string                 CsvFile::get_path()                                 
 {
     return CsvFile::file_path;
 }
-
 /**
  * @brief 
  * @param file_path 
  */
 void                        CsvFile::set_entries(const char * file_path)
 {
-    std::ifstream file;
-    file.open(file_path);
+    std::ifstream file(CsvFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
 
     if(file.is_open())
     {
@@ -104,7 +102,6 @@ void                        CsvFile::set_entries(const char * file_path)
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
 }
-
 /**
  * @brief 
  * @return int 
@@ -164,7 +161,30 @@ void                        CsvFile::append(const char * line)                  
     std::string str(line);
     CsvFile::append(str);
 }
+/**
+ * @brief This function add a column of floats (with their description as top line) to an existing .csv file
+ * @param col_name description of the column data
+ * @param column data to add in the column
+ */
+void                        CsvFile::append_column(const char * col_name, std::vector<double> column) const
+{
+    std::fstream file(CsvFile::file_path, std::ios::in);
+    std::string line;
+    std::vector<std::string> file_lines;
+    while(getline(file, line))  file_lines.push_back(line);     // fill a vector with the file content
+    file.close();
 
+    int comment = CsvFile::comment();
+
+    file.open(CsvFile::file_path, std::ios::out);
+    for (int i = 0; i < file_lines.size(); i++)
+    {
+        if (i < comment)        file << file_lines.at(i) << std::endl;
+        else if (i == comment)  file << file_lines.at(i) << "," << col_name << std::endl;
+        else                    file << file_lines.at(i) << "," << column.at(i-comment-1) << std::endl;                          
+    }
+    file.close();
+}
 
 
 /**
@@ -179,15 +199,17 @@ std::string                 CsvFile::get_element(const int line, const int colum
     std::vector<std::string> words = CsvFile::split_words(file_line);
     return words.at(column);
 }
-
 /**
  * @brief Returns a line from the file. Lines are numbered beginning with zero.
  * @param line line you want to return.
  */
 std::string                 CsvFile::get_line(const int line)                               const
 {
-    std::ifstream file;
-    file.open(CsvFile::file_path);
+    std::ifstream file(CsvFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
 
     if(line >= entries)
     {
@@ -207,7 +229,6 @@ std::string                 CsvFile::get_line(const int line)                   
     else    std::cerr << "Error: unable to open file" << std::endl;
     return 0;
 }
-
 /** 
  * @brief  This only works with .Csv files using a space (' ') or a tab as delimiter between columns. 
  * Columns are numbered beginning with zero.
@@ -217,8 +238,11 @@ std::vector<double>         CsvFile::get_column(const int column, const int firs
 {
     std::vector<double> vector;
 
-    std::ifstream file;
-    file.open(CsvFile::file_path);
+    std::ifstream file(CsvFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
 
     if(file.is_open())
     {
@@ -247,11 +271,11 @@ std::vector<double>         CsvFile::get_column(const int column, const int firs
     return vector;
 }
 
+
 void                        CsvFile::current_file()                                         const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << CsvFile::file_path << std::endl;
 }
-
 /**
  * @brief Extract single words (elements separated by space) from a string.
  * @param input string you want to extraxt words from.
@@ -267,7 +291,6 @@ std::vector<std::string>    CsvFile::split_words(const std::string input)       
 
     return vector1;
 }
-
 /**
  * @brief Checks if the first line of the file contains words. This function is used in Data.cpp to use the words in the 
  * first line as names for the CsvData objects generated.
@@ -277,8 +300,12 @@ std::vector<std::string>    CsvFile::split_words(const std::string input)       
  */
 bool                        CsvFile::check_words()                                          const
 {
-    std::ifstream file;
-    file.open(CsvFile::file_path);
+    std::ifstream file(CsvFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
+
     if(file.is_open())
     {
         std::string first_line;
@@ -298,7 +325,6 @@ bool                        CsvFile::check_words()                              
     std::cerr << "Error: unable to open file" << std::endl;
     return false;
 }
-
 /**
  * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
  * If different lines of the file have a different amount of columns, an error is displayed.
@@ -309,8 +335,11 @@ int                         CsvFile::count_column()                             
     int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
 
-    std::ifstream file;
-    file.open(CsvFile::file_path);
+    std::ifstream file(CsvFile::file_path);
+
+    // skip comment
+    int first_line = comment();
+    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
 
     if(file.is_open())
     {   
@@ -333,6 +362,18 @@ int                         CsvFile::count_column()                             
         }
     }
     return save_columns;
+}
+/**
+         * @brief Skips all comment lines in the file. A line beginning with # is a comment line.
+         */
+int                         CsvFile::comment()                              const
+{
+    int comment = 0;
+    std::string line;
+    std::ifstream file(CsvFile::file_path);
+    if(file.is_open())  while(file >> line) if(line.at(0)=='#') comment++;
+    file.close();
+    return comment;
 }
 
 

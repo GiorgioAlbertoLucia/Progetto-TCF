@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include "../include/file.hpp"
+#include "file.hpp"
 
 
 #include <iostream>
@@ -16,7 +16,7 @@ class Data
         friend  std::ostream&           operator<<(std::ostream&, const Data&);  
 
 public:
-                                        Data(const char *, const int, const char * = 0);   // file_path, file_column and data_name
+                                        Data(const char *, const int, const char * = "");   // file_path, file_column and data_name
                                         Data(const Data&);                                 // copy constructor
                                         ~Data();
 
