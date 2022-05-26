@@ -5,25 +5,19 @@
 
 using namespace std;
 
+// STATUS: OK
+
 int main()
 {
-    cout << "Start session" << endl;
-    Data * data = new Data("../data/test2.txt", 0);
-    cout << "computing..." << endl;
+    Data * data = new Data("data/test7.txt", 0);
     cout << *data << endl;
-    cout << "computing..." << endl;
     delete data;
 
-    cout << "computing..." << endl;
-    Dataset * dataset = new Dataset("../data/test2.txt");
-    cout << "computing..." << endl;
-    Dataset * dataset2 = new Dataset("../data/test2.txt", 1);
+    Dataset * dataset = new Dataset("data/test7.txt", 0, "Dataset 1");
+    Dataset * dataset2 = new Dataset("data/test7.txt", 1, "Dataset 2");
 
-    cout << "computing..." << endl;
-    cout << *dataset << *dataset2 << endl;
-    cout << "computing..." << endl;
+    cout << *dataset << endl << *dataset2 << endl;
     delete dataset;
-    cout << "computing..." << endl;
     delete dataset2;
 
     return 0;

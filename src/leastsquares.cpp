@@ -5,6 +5,7 @@
 
 #include "../Eigen/Dense"
 #include "../include/leastsquares.hpp"
+#include "../include/data.hpp"
 
 LeastSquares::LeastSquares(){}
 LeastSquares::LeastSquares(const std::vector<double> x, const std::vector<double> y, const std::vector<double> sy, const char * formula)
@@ -17,6 +18,19 @@ LeastSquares::LeastSquares(const std::vector<double> x, const std::vector<double
     LeastSquares::x = x;
     LeastSquares::y = y;
     LeastSquares::sy = sy;
+
+    LeastSquares::formula = std::string(formula);
+}
+LeastSquares::LeastSquares(const Data& x, const Data& y, const Data& sy, const char * formula)
+{
+    if(x.get_entries() != y.get_entries())    std::cerr << "Data vector x and y have different sizes." << std::endl;
+    if(x.get_entries() != sy.get_entries())   std::cerr << "Data vector x and sy have different sizes." << std::endl;
+
+    LeastSquares::n = x.get_entries();
+
+    LeastSquares::x = x.get_data();
+    LeastSquares::y = y.get_data();
+    LeastSquares::sy = sy.get_data();
 
     LeastSquares::formula = std::string(formula);
 }
@@ -93,6 +107,7 @@ void LeastSquares::fit(const char * formula)
             sum_elem.push_back( pow(num,2)/pow(sy_vec(k),2) );
         }
         LeastSquares::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0);
+        std::cout << "Pol grade = " << grade << std::endl;
     }
     
     

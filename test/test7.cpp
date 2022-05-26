@@ -13,6 +13,8 @@
 namespace plt = matplotlibcpp;
 using namespace std;
 
+// STATUS: NOT WORKING
+
 int main()
 {
     const char * path = "../data/test7.txt";

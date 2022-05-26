@@ -6,14 +6,16 @@
 
 #include "../Eigen/Dense"
 #include "udouble.hpp"
+#include "data.hpp"
 
 class LeastSquares
 {
 public:
     LeastSquares();
     //LeastSquares(const std::vector<Udouble>, const std::vector<Udouble>);
-    LeastSquares(const std::vector<double>, const std::vector<double>, const std::vector<double>, const std::vector<double>, const char * = "");
+    //LeastSquares(const std::vector<double>, const std::vector<double>, const std::vector<double>, const std::vector<double>, const char * = "");
     LeastSquares(const std::vector<double>, const std::vector<double>, const std::vector<double>, const char * = "");
+    LeastSquares(const Data&, const Data&, const Data&, const char * = "");
     LeastSquares(const LeastSquares&);
     ~LeastSquares();
 

@@ -11,23 +11,33 @@
 
 using namespace std;
 
+// STATUS: OK
+
 int main()
 {
-    const char * path = "data/test7.txt";
+    const char * path = "data/example.txt";
     TxtFile txt_file(path);
 
-    Data x(path, 0, "x");
-    Data y(path, 1, "y");
+    Data x(path, 1, "x");
+    Data y(path, 0, "y");
     Data sy(path, 2, "sy");
 
     cout << x << endl;
     cout << y << endl;
     cout << sy << endl;
     
-    LeastSquares ls(x.get_data(), y.get_data(), sy.get_data());
-    ls.fit("pol2");
+    LeastSquares ls(x, y, sy);
+    ls.fit("pol1");
 
     cout << "chi = " << ls.get_chisquared() << endl;
+    cout << "yfit" << endl;
+    std::vector<double> v = ls.get_yfit();
+    for (std::vector<double>::const_iterator i = v.begin(); i != v.end(); i++)
+    {
+        cout << *i << endl;
+    }
+    cout << endl;
+    
 
     return 0;
 }

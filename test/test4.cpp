@@ -6,6 +6,8 @@
 
 #define PI 3.14159265
 
+// STATUS: OK
+
 using namespace std;
 
 // test partder

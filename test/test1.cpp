@@ -9,6 +9,8 @@
 
 using namespace std;
 
+// STATUS: OK
+
 int main()
 {
     TxtFile txt_file("data/test.txt");

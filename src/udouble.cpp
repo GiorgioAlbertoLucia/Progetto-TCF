@@ -181,10 +181,9 @@ Udouble::Udouble(const PartDer& value, const double error, const char * label, c
     Udouble::set_error(error);
 
     /*
-    std::string str(label);
-    if(str == "")  str += value.get_label();
-    if(str == "")  for(int i = 0; i < count; i++)  str+="u";
-    Udouble::label = str;
+    Udouble::label = std::string(label);
+    if(Udouble::label == "")    Udouble::label += value.get_label();
+    if(Udouble::label == "")    for(int i = 0; i < count; i++)  Udouble::label += "u";
     Udouble::set_format(format);
     */
 }

@@ -22,13 +22,20 @@ public:
 
     // setter / getter
                 Data&                   set_data(const char *, const int);
-                std::vector<double>     get_data()                                  const;
+                std::vector<double>     get_data()                                  const       {return Data::data_vector;};
                 Data&                   set_name(const char *);
-                std::string             get_name()                                  const;
+                std::string             get_name()                                  const       {return Data::name;};
                 Data&                   set_file(const char *);
-                std::string             get_file()                                  const;
+                std::string             get_file()                                  const       {return Data::file_path;};
                 //
-                int                     get_entries()                               const;
+
+        /**
+        * @brief Returns the number of entries in the data vector
+        * 
+        * @return int 
+        */
+        const   int                     get_entries()                               const       {return Data::entries;};
+        const   double                  get_element(const int i)                    const       {return Data::data_vector.at(i);};
 
                 Data&                   add_element(const double);
                 Data&                   replace_element(const double, const int);
@@ -39,7 +46,7 @@ public:
                 Data&                   operator*   (const double);                                 // multiply by a scalar
                 Data&                   operator*   (const int); 
                 bool                    operator==  (const Data&);
-                bool                    operator!=  (const Data& itself)    {return !(*this == itself);};
+                bool                    operator!=  (const Data& itself)                        {return !(*this == itself);};
 
     // statistical functions
 
@@ -48,7 +55,6 @@ public:
                 void                    rnd_dist    (const double, const double)    const;      // inputs are min and max of the uniform distribution
                 double                  get_min     ()                              const;
                 double                  get_max     ()                              const;
-                double                  get         (const int)                     const;       // returns the nth element
 private:
                 std::vector<double>     data_vector;
                 std::string             name;

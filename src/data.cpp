@@ -62,10 +62,15 @@ Data&               Data::set_data(const char * file_path, const int file_column
 
     if (file_column < file->count_column())
     {
-        if(Data::name != "" && file->check_words())
+        if(Data::name == "" && file->check_words())
         {
             Data::data_vector = file->get_column(file_column, 1);
             Data::name = file->get_element(0, file_column);
+            Data::entries = file->get_entries() - 1;
+        }
+        else if(file->check_words())
+        {
+            Data::data_vector = file->get_column(file_column, 1);
             Data::entries = file->get_entries() - 1;
         }
         else   
@@ -80,11 +85,6 @@ Data&               Data::set_data(const char * file_path, const int file_column
     delete file;
     return *this;  
 }
-std::vector<double> Data::get_data()                                                     const
-{
-    return Data::data_vector;
-}
-
 /**
  * @brief Sets the name of the Data object. The first condition will skip the operation if the inserted name is 0
  * (it will come in handy in the constructor).
@@ -97,11 +97,6 @@ Data&               Data::set_name(const char * name = "")
     Data::name = name;
     return *this;
 }
-std::string         Data::get_name()                                                     const
-{
-    return Data::name;
-}
-
 /**
  * @brief Sets the file (choosing a path) from which you want to import data.
  * @param const_char_* file_path: path to the file.
@@ -112,24 +107,7 @@ Data&               Data::set_file(const char * file_path)
     Data::file_path = file_path;
     return *this;
 }
-/**
- * @brief Gets the TxtFile where data is stored.
- * @returns TxtFile
- */
-std::string         Data::get_file()                                                       const
-{
-    return Data::file_path;
-}
 
-/**
- * @brief Returns the number of entries in the data vector
- * 
- * @return int 
- */
-int                 Data::get_entries()                                                     const
-{
-    return Data::entries;
-}
 
 
 
@@ -138,7 +116,6 @@ Data&               Data::add_element(const double element)
     Data::data_vector.push_back(element);
     return *this;
 }
-
 /**
  * @brief Replaces an element of stored distribution with given value.
  * @param new_element new replacing value.
@@ -226,7 +203,6 @@ double              Data::mean()                                                
     double mean = sum / Data::data_vector.size();
     return mean;
 }
-
 /**
  * @brief Returns the standard deviation of stored distribution.
  * @return double 
@@ -271,16 +247,6 @@ double              Data::get_max()                                             
     return max;
 }
 
-/**
- * @brief Returns an element of stored distribution.
- * @param index: position of the element in the vector. First position is 0.
- * @return double 
- */
-double              Data::get(const int index)                                           const
-{
-    double value = Data::data_vector.at(index);
-    return value;
-}
 
 
 

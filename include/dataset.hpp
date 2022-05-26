@@ -16,8 +16,8 @@ class Dataset
     friend  std::ostream&           operator<<(std::ostream&, const Dataset&);
 
 public:
-                                    Dataset(const char *, const int = 0);     // file_path, first_column
-                                    Dataset(std::string, const int = 0);  
+                                    Dataset(const char *, const int = 0, const char * = "");     // file_path, first_column
+                                    Dataset(std::string, const int = 0, const char * = "");  
                                     Dataset(const Dataset&);
                                     ~Dataset();
             
@@ -34,6 +34,8 @@ public:
 private:
     std::vector<Data>               dataset;
     int                             entries;
+    std::vector<int>                data_entries;   // entries for each Data object ()
+    std::string                     label;
 };
 
 #endif
