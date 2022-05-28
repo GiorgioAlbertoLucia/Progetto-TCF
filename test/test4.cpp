@@ -17,14 +17,15 @@ int main()
     map<string, double> dy {{"y", 1},};
 
     PartDer * x = new PartDer(PI, dx);
-    PartDer * y = new PartDer(3, dy);
+    PartDer * y = new PartDer(2, dy);
 
-    //PartDer f;
+    PartDer f;
     //f = sin(*x) + *y * cos(*x);
+    f = *x^(*y);
 
     x->print();
     y->print();
-    //f.print();
+    f.print();
 
     delete x;
     delete y;

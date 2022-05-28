@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// STATUS: OK
+// STATUS: CHECK IF LEASTSQUARES CODE IS WRITTEN PROPERLY 
 
 int main()
 {

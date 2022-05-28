@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// STATUS: OK
+// STATUS: CHECK DATA NAMES
 
 int main()
 {

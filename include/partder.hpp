@@ -21,28 +21,9 @@
  */
 class PartDer
 {
-    /*
-    friend  PartDer         tan(const PartDer&);
-    friend  PartDer         sinh(const PartDer&);
-    friend  PartDer         cosh(const PartDer&);
-    friend  PartDer         tanh(const PartDer&);
-    friend  PartDer         asin(const PartDer&);
-    friend  PartDer         acos(const PartDer&);
-    friend  PartDer         atan(const PartDer&);
-    friend  PartDer         asinh(const PartDer&);
-    friend  PartDer         acosh(const PartDer&);
-    friend  PartDer         atanh(const PartDer&);
-    friend  PartDer         exp(const PartDer&);
-    friend  PartDer         pow(const PartDer&, const double);
-    friend  PartDer         pow(const PartDer&, const int);
-    friend  PartDer         pow(const PartDer&, const PartDer&);
-    friend  PartDer         log(const PartDer&);
-    friend  PartDer         log10(const PartDer&);
-    */
     
-
 public:
-                        PartDer(){count++;};
+                        PartDer();
                         PartDer(const double, const std::map<std::string, double>, const char * = "");
                         PartDer(const PartDer&);
                         ~PartDer(){count--;};
@@ -59,26 +40,47 @@ public:
     const   std::map<std::string, double> get_df()  const               {return PartDer::df;};
     const   std::string get_label()                 const               {return PartDer::label;};
 
-    static  int     get_count()                                         {return PartDer::count;};
+    static  int         get_count()                                     {return PartDer::count;};
 
             PartDer     operator+(const PartDer&); // f + g
             PartDer     operator-(const PartDer&); // f - g
             PartDer     operator*(const PartDer&); // f * g
             PartDer     operator/(const PartDer&); // f / g
+            PartDer     operator^(const double n)                       {return pow(*this, n);}; // f^c,  Where c is constant
+            PartDer     operator^(const int n)                          {return pow(*this, n);};
+            PartDer     operator^(const PartDer& n)                     {return pow(*this, n);};
+    
 
     friend  PartDer     sin(const PartDer&);
     friend  PartDer     cos(const PartDer&);
+    friend  PartDer     tan(const PartDer&);
+    friend  PartDer     sinh(const PartDer&);
+    friend  PartDer     cosh(const PartDer&);
+    friend  PartDer     tanh(const PartDer&);
+    friend  PartDer     asin(const PartDer&);
+    friend  PartDer     acos(const PartDer&);
+    friend  PartDer     atan(const PartDer&);
+    friend  PartDer     asinh(const PartDer&);
+    friend  PartDer     acosh(const PartDer&);
+    friend  PartDer     atanh(const PartDer&);
+    friend  PartDer     exp(const PartDer&);
+    friend  PartDer     pow(const PartDer&, const double);
+    friend  PartDer     pow(const PartDer&, const int);
+    friend  PartDer     pow(const PartDer&, const PartDer&);
+    friend  PartDer     log(const PartDer&);
+    friend  PartDer     log10(const PartDer&);
+    
 
     friend  PartDer     operator+(const double, const PartDer&); //c+f
     friend  PartDer     operator-(const double, const PartDer&); //c-f
     friend  PartDer     operator*(const double, const PartDer&); //c*f
     friend  PartDer     operator/(const double, const PartDer&); //c/f
-            PartDer     operator^(double); // f^c,  Where c is constant
-    
+    friend  PartDer     operator/(const PartDer&, const double); //f/c
+            
     void                print();
 
 private:
-    static int count;                       // how many number of PartDer objects are created in the int
+    static int count;                       // how many number of PartDer objects are created in the main
 
     double f;                               // function value at (x1, x2, ..., xn)
     std::map<std::string, double> df;       // map containing "variable of diff" - "derivative in that variable at (x1,...,xn)"
