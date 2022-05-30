@@ -3,7 +3,7 @@
 #include "../include/data.hpp"
 #include "../include/fileFactory.hpp"
 
-#include "../include/leastsquares.hpp"
+#include "../include/polyfit.hpp"
 #include "../matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>

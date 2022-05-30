@@ -1,5 +1,5 @@
-#ifndef LEASTSQUARES_H
-#define LEASTSQUARES_H
+#ifndef POLYFIT_H
+#define POLYFIT_H
 
 #include <vector>
 #include <string>
@@ -8,19 +8,17 @@
 #include "udouble.hpp"
 #include "data.hpp"
 
-class LeastSquares
+class PolyFit
 {
 public:
-    LeastSquares();
-    //LeastSquares(const std::vector<Udouble>, const std::vector<Udouble>);
-    //LeastSquares(const std::vector<double>, const std::vector<double>, const std::vector<double>, const std::vector<double>, const char * = "");
-    LeastSquares(const std::vector<double>, const std::vector<double>, const std::vector<double>, const char * = "");
-    LeastSquares(const Data&, const Data&, const Data&, const char * = "");
-    LeastSquares(const LeastSquares&);
-    ~LeastSquares();
+    PolyFit();
+    PolyFit(const std::vector<Udouble>, const std::vector<Udouble>, const int = 1);
+    PolyFit(const std::vector<double>, const std::vector<double>, const std::vector<double>, const int = 1);
+    PolyFit(const Data&, const Data&, const Data&, const int = 1);
+    PolyFit(const PolyFit&);
+    ~PolyFit();
 
-    //void set_ssquared(const char *);      to expand class to use errors on x
-            void                fit(const char * = "");
+            void                fit(const int = 1);
             void                set_pvalue(const double);
 
     const   double              get_parameter(int i)    const       {return coeff.at(i);};
@@ -37,6 +35,7 @@ private:
     std::vector<double> x;              
     std::vector<double> y;              
     std::vector<double> sy;                         // errors on the y
+
     std::vector<double> coeff;                      // coefficients vector
     std::vector<std::vector<double>> matrix;        // coefficient matrix (U in documentation - wolfram)        
 
@@ -45,7 +44,7 @@ private:
     double chi_squared;
     double p_value;
 
-    std::string formula;
+    int polygrade;
 };
 
 #endif

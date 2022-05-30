@@ -1,4 +1,4 @@
-#include "../include/data.hpp"
+#include "../include_t/data_t.hpp"
 #include "../include/fileFactory.hpp"
 
 #include <iostream>
@@ -14,7 +14,7 @@
 /*  FUNCTIONS FROM HEADER FILE  */  
 
 /**
- * @brief Construct a new Txt Data:: Txt Data object.
+ * @brief Construct a new Data:: Data object.
  * @param file_path path of the file the data will be imported from. 
  * @param file_column column of the file the data will be imported from.
  * @param name name of the data distribution.
@@ -27,7 +27,7 @@
 }
 /**
  * @brief Copy Constructor. 
- * Construct a new Txt Data:: Txt Data object.
+ * Construct a new Data:: Data object.
  * @param data 
  */
                     Data::Data(const Data& data)
@@ -36,7 +36,7 @@
     Data::name = data.name;
 }
 /**
- * @brief Destroy the Txt Data:: Txt Data object
+ * @brief Destroy the Data:: Data object
  */
                     Data::~Data()
 {
@@ -46,6 +46,7 @@
 
 // setter and getter
 
+// UPDATE WITH CLASS TEMPLATE
 /**
  * @brief Stores data into the data vector from a column of the file. If the first line is a string, it will be automatically set
  * as the name of the Data object.
@@ -99,7 +100,7 @@ Data&               Data::operator+(const Data& data2)
     else
     {
         std::transform(Data::data_vector.begin(), Data::data_vector.end(), data2.data_vector.begin(),
-                        Data::data_vector.begin(), std::plus<double>() );
+                        Data::data_vector.begin(), std::plus<T>() );
     }
     return *this;
 }
@@ -112,7 +113,7 @@ Data&               Data::operator-(const Data& data2)
     else
     {
         std::transform(Data::data_vector.begin(), Data::data_vector.end(), data2.data_vector.begin(),
-                        Data::data_vector.begin(), std::plus<double>() );
+                        Data::data_vector.begin(), std::plus<T>() );
     }
     return *this;
 }
@@ -136,8 +137,8 @@ bool                Data::operator==(const Data& data2)
     }   
     else
     {
-        if (Data::data_vector == data2.data_vector)    return true;
-        else                                    return false;
+        if (Data::data_vector == data2.data_vector)     return true;
+        else                                            return false;
     }
 }
 
@@ -174,10 +175,10 @@ double              Data::std()                                                 
  * @brief Returns the minimum value of stored distribution.
  * @return double 
  */
-double              Data::get_min()                                                      const
+const T&              Data::get_min()                                                      const
 {
-    double min = Data::data_vector.front();
-    for (std::vector<double>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
+    T min = Data::data_vector.front();
+    for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
     {
         if (min > *i)   min = *i;
     }
@@ -188,10 +189,10 @@ double              Data::get_min()                                             
  * @brief Returns the maximum value of stored distribution.
  * @return double 
  */
-double              Data::get_max()                                                      const
+const T&              Data::get_max()                                                      const
 {
-    double max = Data::data_vector.front();
-    for (std::vector<double>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
+    T max = Data::data_vector.front();
+    for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
     {
         if (max < *i)   max = *i;
     }
