@@ -30,12 +30,12 @@ class CsvFile: public File
                 * @brief Writes into the file, deleting all previous content.
                 * @param line: line you want to write into the file.
                 */
-        virtual void                        write(const char *)                                                 const   {TxtFile::write(std::string (line));};
+        virtual void                        write(const char *)                                                 const   {CsvFile::write(std::string (line));};
                 /** 
                 * @brief Writes into the file, keeping all previous content.
                 * @param line: line you want to append to the file.
                 */
-        virtual void                        append(const char *)                                                const   {TxtFile::append(std::string (line));};
+        virtual void                        append(const char *)                                                const   {CsvFile::append(std::string (line));};
         virtual void                        append_column(const char * col_name, std::vector<T> column)         const;
 
 

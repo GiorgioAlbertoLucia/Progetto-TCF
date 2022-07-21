@@ -15,7 +15,8 @@
  * @brief Construct a new Csv File:: Csv File object
  * @param file_path 
  */
-                            CsvFile::CsvFile(const char * file_path)
+template <class T>
+                            CsvFile<T>::CsvFile(const char * file_path)
 {
     // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
@@ -29,8 +30,9 @@
  * @brief Construct a new Csv File:: Csv File object. Alternative constructor taking string as an input.
  * 
  * @param str_file_path 
- */
-                            CsvFile::CsvFile(std::string str_file_path)
+*/
+template <class T> 
+                            CsvFile<T>::CsvFile(std::string str_file_path)
 {
     // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     const char * file_path = str_file_path.c_str();
@@ -47,7 +49,8 @@
  * Construct a new Csv File:: Csv File object.
  * @param csv_file 
  */
-                            CsvFile::CsvFile(const CsvFile& csv_file)
+template <class T>
+                            CsvFile<T>::CsvFile(const CsvFile<T>& csv_file)
 {
     CsvFile::file_path = csv_file.file_path;
     CsvFile::entries = csv_file.entries;
@@ -55,7 +58,8 @@
 /**
  * @brief Destroy the Csv File:: Csv File object.
  */
-                            CsvFile::~CsvFile()
+template <class T>
+                            CsvFile<T>::~CsvFile()
 {
 
 };
@@ -66,7 +70,8 @@
  * @brief 
  * @param file_path 
  */
-void                        CsvFile::set_entries(const char * file_path)
+template <class T>
+void                        CsvFile<T>::set_entries(const char * file_path)
 {
     std::ifstream file(CsvFile::file_path);
 
@@ -90,7 +95,8 @@ void                        CsvFile::set_entries(const char * file_path)
  * @brief Writes into the file, deleting all previous content.
  * @param line: line you want to write into the file.
  */ 
-void                        CsvFile::write(const std::string line)                          const
+template <class T>
+void                        CsvFile<T>::write(const std::string line)                          const
 {
     std::ofstream file;
     file.open(CsvFile::file_path);
@@ -111,7 +117,8 @@ void                        CsvFile::write(const std::string line)              
  * @brief Writes into the file, keeping all previous content.
  *  @param line: line you want to append to the file.
  */ 
-void                        CsvFile::append(const std::string line)                         const
+template <class T>
+void                        CsvFile<T>::append(const std::string line)                         const
 {
     std::ofstream file;
     file.open(CsvFile::file_path, std::ios::app);
@@ -134,7 +141,8 @@ void                        CsvFile::append(const std::string line)             
  * @param col_name description of the column data
  * @param column data to add in the column
  */
-void                        CsvFile::append_column(const char * col_name, std::vector<double> column) const
+template <class T>
+void                        CsvFile<T>::append_column(const char * col_name, std::vector<T> column) const
 {
     std::fstream file(CsvFile::file_path, std::ios::in);
     std::string line;
@@ -161,7 +169,8 @@ void                        CsvFile::append_column(const char * col_name, std::v
  * @param column 
  * @return std::string 
  */
-std::string                 CsvFile::get_element(const int line, const int column)          const
+template <class T>
+std::string                 CsvFile<T>::get_element(const int line, const int column)          const
 {
     std::string file_line = CsvFile::get_line(line);
     std::vector<std::string> words = CsvFile::split_words(file_line);
@@ -171,7 +180,8 @@ std::string                 CsvFile::get_element(const int line, const int colum
  * @brief Returns a line from the file. Lines are numbered beginning with zero.
  * @param line line you want to return.
  */
-std::string                 CsvFile::get_line(const int line)                               const
+template <class T>
+std::string                 CsvFile<T>::get_line(const int line)                               const
 {
     std::ifstream file(CsvFile::file_path);
 
@@ -202,9 +212,10 @@ std::string                 CsvFile::get_line(const int line)                   
  * Columns are numbered beginning with zero.
  * @param column: number referring to the column you want to print
  */
-std::vector<double>         CsvFile::get_column(const int column, const int first_row)  const
+template <class T>
+std::vector<T>         CsvFile<T>::get_column(const int column, const int first_row)  const
 {
-    std::vector<double> vector;
+    std::vector<T> vector;
 
     std::ifstream file(CsvFile::file_path);
 
@@ -240,7 +251,8 @@ std::vector<double>         CsvFile::get_column(const int column, const int firs
 }
 
 
-void                        CsvFile::current_file()                                         const
+template <class T>
+void                        CsvFile<T>::current_file()                                         const
 {
     std::cout << std::endl << "Il file attualmente in lettura è: " << CsvFile::file_path << std::endl;
 }
@@ -249,7 +261,8 @@ void                        CsvFile::current_file()                             
  * @param input string you want to extraxt words from.
  * @return vector containing single words.
  */
-std::vector<std::string>    CsvFile::split_words(const std::string input)                   const
+template <class T>
+std::vector<std::string>    CsvFile<T>::split_words(const std::string input)                   const
 {
     std::istringstream ss(input);
     std::string word;
@@ -266,7 +279,8 @@ std::vector<std::string>    CsvFile::split_words(const std::string input)       
  * @return true if no number is present in each element of the first line.
  * @return false if a number is found in the first line.
  */
-bool                        CsvFile::check_words()                                          const
+template <class T>
+bool                        CsvFile<T>::check_words()                                          const
 {
     std::ifstream file(CsvFile::file_path);
 
@@ -298,7 +312,8 @@ bool                        CsvFile::check_words()                              
  * If different lines of the file have a different amount of columns, an error is displayed.
  * @return int number of columns.
  */
-int                         CsvFile::count_column()                                         const
+template <class T>
+int                         CsvFile<T>::count_column()                                         const
 {
     int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
@@ -334,7 +349,8 @@ int                         CsvFile::count_column()                             
 /**
          * @brief Skips all comment lines in the file. A line beginning with # is a comment line.
          */
-int                         CsvFile::comment()                              const
+template <class T>
+int                         CsvFile<T>::comment()                              const
 {
     int comment = 0;
     std::string line;
@@ -347,7 +363,8 @@ int                         CsvFile::comment()                              cons
 
 // friend functions
 
-std::ostream&               operator<<  (std::ostream& out, const CsvFile& Csv_file)
+template <class T>
+std::ostream&               operator<<  (std::ostream& out, const CsvFile<T>& Csv_file)
 {
     std::ifstream file;
     file.open(Csv_file.file_path);

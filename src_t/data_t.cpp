@@ -19,7 +19,8 @@
  * @param file_column column of the file the data will be imported from.
  * @param name name of the data distribution.
  */
-                    Data::Data(const char * file_path, const int file_column, const char * name)
+template <class T>
+                    Data<T>::Data(const char * file_path, const int file_column, const char * name)
 {   
     set_file(file_path);
     set_name(name);
@@ -30,7 +31,8 @@
  * Construct a new Data:: Data object.
  * @param data 
  */
-                    Data::Data(const Data& data)
+template <class T>
+                    Data<T>::Data(const Data<T>& data)
 {
     Data::data_vector = data.data_vector;
     Data::name = data.name;
@@ -38,7 +40,8 @@
 /**
  * @brief Destroy the Data:: Data object
  */
-                    Data::~Data()
+template <class T>
+                    Data<T>::~Data()
 {
 
 }
@@ -54,7 +57,8 @@
  * @param file_column 
  * @return Data& 
  */
-Data&               Data::set_data(const char * file_path, const int file_column)
+template <class T>
+Data<T>&               Data<T>::set_data(const char * file_path, const int file_column)
 {
     FileFactory * factory = new FileFactory();
     File * file = factory->create_file(file_path);  // new file
@@ -91,7 +95,8 @@ Data&               Data::set_data(const char * file_path, const int file_column
 
 // operators
 
-Data&               Data::operator+(const Data& data2)
+template <class T>
+Data<T>&               Data<T>::operator+(const Data<T>& data2)
 {
     if (Data::data_vector.size() != data2.data_vector.size())
     {
@@ -104,7 +109,8 @@ Data&               Data::operator+(const Data& data2)
     }
     return *this;
 }
-Data&               Data::operator-(const Data& data2)
+template <class T>
+Data<T>&               Data<T>::operator-(const Data<T>& data2)
 {
     if (Data::data_vector.size() != data2.data_vector.size())
     {
@@ -117,18 +123,21 @@ Data&               Data::operator-(const Data& data2)
     }
     return *this;
 }
-Data&               Data::operator*(const double scalar)
+template <class T>
+Data<T>&               Data<T>::operator*(const double scalar)
 {
     for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)    *i = *i * scalar;
     return *this;
 }
-Data&               Data::operator*(const int scalar)
+template <class T>
+Data<T>&               Data<T>::operator*(const int scalar)
 {
     for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)    *i = *i * scalar;
     return *this;
 }
 
-bool                Data::operator==(const Data& data2)
+template <class T>
+bool                Data<T>::operator==(const Data<T>& data2)
 {
     if (Data::data_vector.size() != data2.data_vector.size())
     {
@@ -149,7 +158,8 @@ bool                Data::operator==(const Data& data2)
  * @brief Returns the mean value of stored distribution.
  * @return double 
  */
-double              Data::mean()                                                         const
+template <class T>
+double              Data<T>::mean()                                                         const
 {
     double sum = std::accumulate(Data::data_vector.begin(), Data::data_vector.end(), 0.0);
     double mean = sum / Data::data_vector.size();
@@ -160,7 +170,8 @@ double              Data::mean()                                                
  * @return double 
  */
 /*
-double              Data::std()                                                          const
+template <class T>
+double              Data<T>::std()                                                          const
 {
     std::vector<double> difference(Data::data_vector.size());
     std::transform( Data::data_vector.begin(), Data::data_vector.end(), difference.begin(),
@@ -175,7 +186,8 @@ double              Data::std()                                                 
  * @brief Returns the minimum value of stored distribution.
  * @return double 
  */
-const T&              Data::get_min()                                                      const
+template <class T>
+const T&              Data<T>::get_min()                                                      const
 {
     T min = Data::data_vector.front();
     for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
@@ -189,7 +201,8 @@ const T&              Data::get_min()                                           
  * @brief Returns the maximum value of stored distribution.
  * @return double 
  */
-const T&              Data::get_max()                                                      const
+template <class T>
+const T&              Data<T>::get_max()                                                      const
 {
     T max = Data::data_vector.front();
     for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
@@ -204,7 +217,8 @@ const T&              Data::get_max()                                           
 
 // friend functions
 
-std::ostream&       operator<<(std::ostream& out, const Data& data)
+template <class T>
+std::ostream&       operator<<(std::ostream& out, const Data<T>& data)
 {
     std::vector<double> storing_data = data.get_data();
 
