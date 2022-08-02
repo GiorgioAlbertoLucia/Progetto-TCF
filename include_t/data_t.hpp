@@ -23,34 +23,17 @@ public:
 
     // setter / getter
                 Data&                   set_data(const char *, const int);
-                Data&                   set_name(const char * name = "")                        {Data::name = std::string(name); return *this;};
-                Data&                   set_file(const char * filepath)                         {Data::file_path = std::string(file_path); return *this;};
+                Data&                   set_name(const char * name = "")                {Data::name = std::string(name); return *this;};
                 
-                
-        const   std::vector<T>          get_data()                                  const       {return Data::data_vector;};        
-        const   std::string             get_name()                                  const       {return Data::name;};        
-        const   std::string             get_file()                                  const       {return Data::file_path;};
-                /**
-                * @brief Returns the number of entries in the data vector
-                * 
-                * @return int 
-                */
-        const   int                     get_entries()                               const       {return Data::entries;};
-        const   T&                      get_element(const int i)                    const       {return Data::data_vector.at(i);};
+        const   std::vector<T>          get_data()                              const   {return Data::data;};        
+        const   std::string             get_name()                              const   {return Data::name;}; 
 
-                /**
-                 * @brief Add a single element to the data vector
-                 * 
-                 * @param element 
-                 * @return Data& 
-                 */
-                Data&                   add_element(const T& element)                           {Data::data_vector.push_back(element); return *this;};
-                /**
-                * @brief Replaces an element of data vectpr with given value.
-                * @param new_element new replacing value.
-                * @param position position of the element you want to swap new_element with.
-                */
-                Data&                   replace_element(const T& value, const int i)            {Data::data_vector.at(i) = value; return *this;};
+        const   void                    describe()                              const;
+        const   void                    head(const int = 5)                     const;
+        const   int                     size()                                  const   {return Data::data.size();};
+        const   T&                      at(const int i)                         const   {return Data::data.at(i);};
+                Data&                   add(const T& element)                           {Data::data.push_back(element); return *this;};
+                Data&                   replace(const T& value, const int i)            {Data::data.at(i) = value; return *this;};
 
     // operators
                 Data&                   operator+   (const Data&);
@@ -58,20 +41,19 @@ public:
                 Data&                   operator*   (const double);                                 // multiply by a scalar
                 Data&                   operator*   (const int); 
                 bool                    operator==  (const Data&);
-                bool                    operator!=  (const Data& itself)                        {return !(*this == itself);};
+                bool                    operator!=  (const Data& itself)                {return !(*this == itself);};
+                T&                      operator[]  (int n)                             {Data::at(n);}
 
     // statistical functions
 
-                double                  mean        ()                              const;
-                double                  std         ()                              const;
-                void                    rnd_dist    (const double, const double)    const;      // inputs are min and max of the uniform distribution
-        const   T&                      get_min     ()                              const;
-        const   T&                      get_max     ()                              const;
+        const   T&                      mean()                                  const;
+        const   T&                      std()                                   const;
+        const   T&                      min()                                   const;
+        const   T&                      max()                                   const;
+
 private:
-                std::vector<T>          data_vector;
+                std::vector<T>          data;
                 std::string             name;
-                std::string             file_path;
-                int                     entries;
 
 };
 

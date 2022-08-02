@@ -9,6 +9,15 @@
 
 /*  USEFUL FUNCTIONS  */
 
+const char separator = ' ';
+const int width = 6; 
+
+template <typename T> void print_element(T element, const char separator, const int width)
+{
+    cout << std::left << std::setw(width) << std::setfill(separator) << T;
+}
+
+
 
 
 /*  FUNCTIONS FROM HEADER FILE  */  
@@ -20,9 +29,8 @@
  * @param name name of the data distribution.
  */
 template <class T>
-                    Data<T>::Data(const char * file_path, const int file_column, const char * name)
+                        Data<T>::Data(const char * file_path, const int file_column, const char * name)
 {   
-    set_file(file_path);
     set_name(name);
     set_data(file_path, file_column);
 }
@@ -32,24 +40,22 @@ template <class T>
  * @param data 
  */
 template <class T>
-                    Data<T>::Data(const Data<T>& data)
+                        Data<T>::Data(const Data<T>& data)
 {
-    Data::data_vector = data.data_vector;
+    Data::data = data.data;
     Data::name = data.name;
 }
 /**
  * @brief Destroy the Data:: Data object
  */
 template <class T>
-                    Data<T>::~Data()
+                        Data<T>::~Data()
 {
 
 }
 
 
 // setter and getter
-
-// UPDATE WITH CLASS TEMPLATE
 /**
  * @brief Stores data into the data vector from a column of the file. If the first line is a string, it will be automatically set
  * as the name of the Data object.
@@ -58,7 +64,7 @@ template <class T>
  * @return Data& 
  */
 template <class T>
-Data<T>&               Data<T>::set_data(const char * file_path, const int file_column)
+Data<T>&                Data<T>::set_data(const char * file_path, const int file_column)
 {
     FileFactory * factory = new FileFactory();
     File * file = factory->create_file(file_path);  // new file
@@ -67,20 +73,11 @@ Data<T>&               Data<T>::set_data(const char * file_path, const int file_
     {
         if(Data::name == "" && file->check_words())
         {
-            Data::data_vector = file->get_column(file_column, 1);
+            Data::data = file->get_column(file_column, 1);
             Data::name = file->get_element(0, file_column);
-            Data::entries = file->get_entries() - 1;
         }
-        else if(file->check_words())
-        {
-            Data::data_vector = file->get_column(file_column, 1);
-            Data::entries = file->get_entries() - 1;
-        }
-        else   
-        {
-            Data::data_vector = file->get_column(file_column);
-            Data::entries = file->get_entries();
-        }   
+        else if(file->check_words())    Data::data = file->get_column(file_column, 1);
+        else                            Data::data = file->get_column(file_column); 
     }
     else    std::cerr << "Error: file only contains " << file->count_column() << " columns." << std::endl;
 
@@ -89,6 +86,55 @@ Data<T>&               Data<T>::set_data(const char * file_path, const int file_
     return *this;  
 }
 
+/**
+ * @brief Prints mean, std, min and max of the Data column
+ * 
+ * @tparam T 
+ */
+template <class T>
+const void              Data<T>::describe() const
+{
+    print_element(' ', width, separator);
+    print_element(Data::name, width, separator);
+    std::cout << std::endl;
+
+    print_element('Mean:', width, separator);
+    print_element(Data::mean(), width, separator);
+    std::cout << std::endl;
+
+    print_element('Std Dev:', width, separator);
+    print_element(Data::std(), width, separator);
+    std::cout << std::endl;
+
+    print_element('Min:', width, separator);
+    print_element(Data::min(), width, separator);
+    std::cout << std::endl;
+
+    print_element('Max:', width, separator);
+    print_element(Data::max(), width, separator);
+    std::cout << std::endl;
+
+}
+/**
+ * @brief Prints first n entries of the data column
+ * 
+ * @tparam T 
+ * @param n 
+ */
+template <class T>
+const void              Data<T>::head(const int n) const
+{
+    print_element(' ', width, separator);
+    print_element(Data::name, width, separator);
+    std::cout << std::endl;
+
+    for(int i = 0; i < n; i++)  
+    {
+        print_element(i, width, separator);
+        print_element(Data::data[i], width, separator);
+        std::cout << std::endl;
+    }
+}
 
 
 
@@ -96,57 +142,45 @@ Data<T>&               Data<T>::set_data(const char * file_path, const int file_
 // operators
 
 template <class T>
-Data<T>&               Data<T>::operator+(const Data<T>& data2)
+Data<T>&                Data<T>::operator+(const Data<T>& data2)
 {
-    if (Data::data_vector.size() != data2.data_vector.size())
-    {
-        std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
-    }
-    else
-    {
-        std::transform(Data::data_vector.begin(), Data::data_vector.end(), data2.data_vector.begin(),
-                        Data::data_vector.begin(), std::plus<T>() );
-    }
+    if (Data::data.size() != data2.data.size())   std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
+    else                                          std::transform(Data::data.begin(), Data::data.end(), data2.data.begin(), Data::data.begin(), std::plus<T>());
+    
     return *this;
 }
 template <class T>
-Data<T>&               Data<T>::operator-(const Data<T>& data2)
+Data<T>&                Data<T>::operator-(const Data<T>& data2)
 {
-    if (Data::data_vector.size() != data2.data_vector.size())
-    {
-        std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
-    }
-    else
-    {
-        std::transform(Data::data_vector.begin(), Data::data_vector.end(), data2.data_vector.begin(),
-                        Data::data_vector.begin(), std::plus<T>() );
-    }
+    if (Data::data.size() != data2.data.size())   std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
+    else                                          std::transform(Data::data.begin(), Data::data.end(), data2.data.begin(), Data::data.begin(), std::minus<T>());
+    
     return *this;
 }
 template <class T>
-Data<T>&               Data<T>::operator*(const double scalar)
+Data<T>&                Data<T>::operator*(const double scalar)
 {
-    for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)    *i = *i * scalar;
+    for (std::vector<double>::iterator i = Data::data.begin(); i != Data::data.end(); i++)    *i = *i * scalar;
     return *this;
 }
 template <class T>
-Data<T>&               Data<T>::operator*(const int scalar)
+Data<T>&                Data<T>::operator*(const int scalar)
 {
-    for (std::vector<double>::iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)    *i = *i * scalar;
+    for (std::vector<double>::iterator i = Data::data.begin(); i != Data::data.end(); i++)    *i = *i * scalar;
     return *this;
 }
 
 template <class T>
-bool                Data<T>::operator==(const Data<T>& data2)
+bool                    Data<T>::operator==(const Data<T>& data2)
 {
-    if (Data::data_vector.size() != data2.data_vector.size())
+    if (Data::size() != data2.size())
     {
         std::cerr << "Warning: size of the two vector is not the same." << std::endl;
         return false;
     }   
     else
     {
-        if (Data::data_vector == data2.data_vector)     return true;
+        if (Data::data == data2.data)                   return true;
         else                                            return false;
     }
 }
@@ -159,35 +193,34 @@ bool                Data<T>::operator==(const Data<T>& data2)
  * @return double 
  */
 template <class T>
-double              Data<T>::mean()                                                         const
+const T&                Data<T>::mean()                                                         const
 {
-    double sum = std::accumulate(Data::data_vector.begin(), Data::data_vector.end(), 0.0);
-    double mean = sum / Data::data_vector.size();
+    T sum = std::accumulate(Data::data.begin(), Data::data.end(), 0.0);
+    T mean = sum / Data::size();
     return mean;
 }
 /**
  * @brief Returns the standard deviation of stored distribution.
  * @return double 
  */
-/*
 template <class T>
-double              Data<T>::std()                                                          const
+const T&                Data<T>::std()                                                          const
 {
-    std::vector<double> difference(Data::data_vector.size());
-    std::transform( Data::data_vector.begin(), Data::data_vector.end(), difference.begin(),
-                    std::bind2nd(std::minus<double>(), mean()) );
-    double squared_sum = std::inner_product(difference.begin(), difference.end(), difference.begin(), 0.0);
-    double std = sqrt(squared_sum / Data::data_vector.size());
+    std::vector<T> num_terms;
+    for (std::vector<T>::const_iterator i = Data::data.begin(); i != Data::data.end(); i++)     num_terms.push_back(pow(*i - Data::mean(), 2));
+    T num = std::accumulate(num_terms.begin(), num_terms.end(), 0.0);
+    T std = sqrt(num / Data::size());
+    
     return std;
 }
-*/
+
 
 /**
  * @brief Returns the minimum value of stored distribution.
  * @return double 
  */
 template <class T>
-const T&              Data<T>::get_min()                                                      const
+const T&                Data<T>::min()                                                        const
 {
     T min = Data::data_vector.front();
     for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
@@ -196,13 +229,12 @@ const T&              Data<T>::get_min()                                        
     }
     return min;
 }
-
 /**
  * @brief Returns the maximum value of stored distribution.
  * @return double 
  */
 template <class T>
-const T&              Data<T>::get_max()                                                      const
+const T&                Data<T>::max()                                                      const
 {
     T max = Data::data_vector.front();
     for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
