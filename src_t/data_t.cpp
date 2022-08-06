@@ -1,5 +1,6 @@
 #include "../include_t/data_t.hpp"
-#include "../include/fileFactory.hpp"
+#include "../include_t/fileFactory_t.hpp"
+#include "../include_t/udouble_t.hpp"
 
 #include <iostream>
 #include <vector>
@@ -64,27 +65,47 @@ template <class T>
  * @return Data& 
  */
 template <class T>
-Data<T>&                Data<T>::set_data(const char * file_path, const int file_column)
+Data<T>&                Data<T>::set_data(const char * file_path, const int file_col, const int err_col)
 {
     FileFactory * factory = new FileFactory();
-    File * file = factory->create_file(file_path);  // new file
 
-    if (file_column < file->count_column())
+    if(Data::name == "" && factory->firstline_is_text(file_path))
     {
-        if(Data::name == "" && file->check_words())
-        {
-            Data::data = file->get_column(file_column, 1);
-            Data::name = file->get_element(0, file_column);
-        }
-        else if(file->check_words())    Data::data = file->get_column(file_column, 1);
-        else                            Data::data = file->get_column(file_column); 
+        Data::data = factory->vector_column(file_path, file_col, 1);
+        Data::name = factory->get_element(file_path, 0, file_col);
     }
-    else    std::cerr << "Error: file only contains " << file->count_column() << " columns." << std::endl;
-
+    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column(file_path, file_col, 1);
+    else                                            Data::data = factory->vector_column(file_path, file_col, 0); 
+    
     delete factory;
-    delete file;
     return *this;  
 }
+/**
+ * @brief Stores data into the data vector from a column of the file. If the first line is a string, it will be automatically set
+ * as the name of the Data object.
+ * @param file_path 
+ * @param file_column 
+ * @return Data& 
+ */
+template <>
+Data<Udouble>&          Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
+{
+    FileFactory * factory = new FileFactory();
+
+    if(Data::name == "" && factory->firstline_is_text(file_path))
+    {
+        Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+        Data::name = factory->get_element(file_path, 0, file_col);
+    }
+    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+    else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
+    
+    delete factory;
+    return *this;  
+}
+
+
+
 
 /**
  * @brief Prints mean, std, min and max of the Data column
@@ -213,8 +234,6 @@ const T&                Data<T>::std()                                          
     
     return std;
 }
-
-
 /**
  * @brief Returns the minimum value of stored distribution.
  * @return double 

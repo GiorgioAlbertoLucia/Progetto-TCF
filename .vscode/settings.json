@@ -82,6 +82,15 @@
         "list": "cpp",
         "queue": "cpp",
         "set": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "numbers": "cpp",
+        "random": "cpp",
+        "semaphore": "cpp",
+        "*.tcc": "cpp",
+        "memory_resource": "cpp",
+        "stop_token": "cpp",
+        "cinttypes": "cpp"
     }
 }

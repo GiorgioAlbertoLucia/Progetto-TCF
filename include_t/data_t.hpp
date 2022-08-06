@@ -8,9 +8,12 @@
 #include <vector>
 #include <string>
 
-// Abstract class for opening data from files and working with it.
-// This one is for doubles, the final one will be a template class
 
+/**
+ * @brief Data object. Stores a vector of values and can do basic operations with it. You can load the vector directly from a data file.
+ * 
+ * @tparam T Any
+ */
 template <class T>
 class Data
 {
@@ -22,7 +25,7 @@ public:
                                         ~Data();
 
     // setter / getter
-                Data&                   set_data(const char *, const int);
+                Data&                   set_data(const char *, const int, const int = 0);
                 Data&                   set_name(const char * name = "")                {Data::name = std::string(name); return *this;};
                 
         const   std::vector<T>          get_data()                              const   {return Data::data;};        

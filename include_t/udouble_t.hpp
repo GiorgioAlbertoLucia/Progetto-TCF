@@ -6,7 +6,6 @@
 
 #include "../include_t/partder_t.hpp"
  
-template <class T>
 class Udouble
 {
     friend  std::ostream&   operator<<(std::ostream&, const Udouble&);
@@ -30,20 +29,22 @@ class Udouble
 
 public:
                                                 Udouble();
-                                                Udouble(const PartDer<T>&, const T, const bool = false);
+                                                Udouble(const double, const double, const bool = false);
+                                                Udouble(const PartDer&, const double, const bool = false);
                                                 Udouble(const Udouble&);
                                                 ~Udouble(){};
 
+                Udouble&                        set_value(const double);
                 Udouble&                        set_value(const PartDer& value)                         {Udouble::value = value; return *this;};
-                Udouble&                        set_error(const T error)                                {Udouble::error = error; return *this;};
-                Udouble&                        insert_errors(const std::string var, const T err)       {Udouble::errors.insert(std::make_pair(var, err)); return *this;};
+                Udouble&                        set_error(const double error)                           {Udouble::error = error; return *this;};
+                Udouble&                        insert_errors(const std::string var, const double err)  {Udouble::errors.insert(std::make_pair(var, err)); return *this;};
                 Udouble&                        set_format(const bool format)                           {Udouble::format = format; return *this;};
                 Udouble&                        autoset_label();
 
-        const   T                               get_value()     const                                   {return Udouble::value.get_f();};
+        const   double                          get_value()     const                                   {return Udouble::value.get_f();};
         const   PartDer                         get_partder()   const                                   {return Udouble::value;};
-        const   T                               get_error()     const                                   {return Udouble::error;};
-        const   std::map<std::string, T>        get_errorsmap() const                                   {return Udouble::errors;};  
+        const   double                          get_error()     const                                   {return Udouble::error;};
+        const   std::map<std::string, double>   get_errorsmap() const                                   {return Udouble::errors;};  
         const   std::string                     get_label()     const                                   {return Udouble::label;};
         const   bool                            get_format()    const                                   {return Udouble::format;};
         static  int                             get_count()                                             {return count;};
@@ -71,9 +72,9 @@ public:
 private:
     static int count;                               // how many Udouble are created (delete does not reset nor reduce count)
 
-            PartDer<T> value;
-            T error;
-            std::map<std::string, T> errors;        // errors associated with variables in PartDer map
+            PartDer value;
+            double error;
+            std::map<std::string, double> errors;        // errors associated with variables in PartDer map
 
             std::string label;
             bool format;

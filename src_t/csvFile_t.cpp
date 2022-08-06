@@ -7,16 +7,48 @@
 #include <vector>
 #include <sstream>
 
-// useful functions
+/* USEFUL FUNCTIONS */
 
-// functions from header file
+/**
+ * @brief Extract single words (elements separated by space) from a string.
+ * @param input string you want to extraxt words from.
+ * @return vector containing single words.
+ */
+std::vector<std::string>    split_words(const std::string input)
+{
+    std::istringstream ss(input);
+    std::string word;
+    std::vector<std::string> vector;
+
+    while(ss >> word)   vector.push_back(word);
+
+    return vector;
+}
+/**
+ * @brief Checks if the first line of the file contains words. This function is used in txtDataset.cpp to use the words in the 
+ * first line as names for the TxtData objects generated.
+ * NOTE: "file1" will not be regarded as a number although it does contain a digit in it. 
+ * @return true if no number is present in each element of the first line.
+ * @return false if a number is found in the first line.
+ */
+bool                        check_words(const std::string line)
+{
+    std::vector<std::string> words = split_words(line);
+    for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++)
+    {
+        std::string word = *i;
+        if (word.find_first_not_of("0123456789.,") == std::string::npos)  return false;
+    }
+    return true;
+}
+
+/* FUNCTIONS FROM HEADER FILE */
 
 /**
  * @brief Construct a new Csv File:: Csv File object
  * @param file_path 
  */
-template <class T>
-                            CsvFile<T>::CsvFile(const char * file_path)
+                            CsvFile::CsvFile(const char * file_path)
 {
     // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     std::ofstream file;
@@ -24,15 +56,13 @@ template <class T>
     file.close();
 
     CsvFile::set_path(file_path);
-    CsvFile::set_entries(file_path);
 }
 /**
  * @brief Construct a new Csv File:: Csv File object. Alternative constructor taking string as an input.
  * 
  * @param str_file_path 
-*/
-template <class T> 
-                            CsvFile<T>::CsvFile(std::string str_file_path)
+*/ 
+                            CsvFile::CsvFile(std::string str_file_path)
 {
     // creates an empty .Csv file if none is actually in your folder (app prevents the deleting of contents of pre-existing files)
     const char * file_path = str_file_path.c_str();
@@ -42,291 +72,83 @@ template <class T>
     file.close();
 
     set_path(file_path);
-    set_entries(file_path);
 }
 /**
  * @brief Copy constructor.
  * Construct a new Csv File:: Csv File object.
  * @param csv_file 
  */
-template <class T>
-                            CsvFile<T>::CsvFile(const CsvFile<T>& csv_file)
+                            CsvFile::CsvFile(const CsvFile& csv)
 {
-    CsvFile::file_path = csv_file.file_path;
-    CsvFile::entries = csv_file.entries;
+    CsvFile::file_path = csv.file_path;
+    CsvFile::rows = csv.rows;
+    CsvFile::columns = csv.columns;
 }
 /**
  * @brief Destroy the Csv File:: Csv File object.
  */
-template <class T>
-                            CsvFile<T>::~CsvFile()
+                            CsvFile::~CsvFile()
 {
 
 };
 
 // file_path setter and getter
+/**
+ * @brief Sets the file path and automatically sets the number of rows and columns
+ * @param filepath complete path to the file
+ */
+void                        CsvFile::set_path(const char * file_path)                     
+{   
+    CsvFile::file_path = file_path;
+    CsvFile::rows = CsvFile::n_rows();
+    CsvFile::columns = CsvFile::n_columns();
+
+}
+
 
 /**
  * @brief 
- * @param file_path 
+ * @return number of rows in the file (not considering comment lines)
  */
-template <class T>
-void                        CsvFile<T>::set_entries(const char * file_path)
+int                         CsvFile::n_rows()                                const
 {
+    int rows = 0;
     std::ifstream file(CsvFile::file_path);
 
     // skip comment
-    int first_line = comment();
+    int first_line = comment_lines();
     for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
 
     if(file.is_open())
     {
     // count entries
-    CsvFile::entries = 0;
     std::string line;
-    while(getline(file, line))  CsvFile::entries++;
+    while(getline(file, line))  rows++;
 
     file.close();
     }
     else    std::cerr << "Error: unable to open file" << std::endl;
-}
-
-/** 
- * @brief Writes into the file, deleting all previous content.
- * @param line: line you want to write into the file.
- */ 
-template <class T>
-void                        CsvFile<T>::write(const std::string line)                          const
-{
-    std::ofstream file;
-    file.open(CsvFile::file_path);
-
-    if(file.is_open())
-    {
-        std::vector<std::string> words = split_words(line);
-        for(std::vector<std::string>::iterator i = words.begin(); i != words.end(); i++)
-        {
-            if (i == words.end()-1)     file << *i;
-            else                        file << *i << ",";
-        }
-        file.close();
-    }
-    else    std::cerr << "Error: unable to open file" << std::endl;
-}
-/** 
- * @brief Writes into the file, keeping all previous content.
- *  @param line: line you want to append to the file.
- */ 
-template <class T>
-void                        CsvFile<T>::append(const std::string line)                         const
-{
-    std::ofstream file;
-    file.open(CsvFile::file_path, std::ios::app);
-
-    if(file.is_open())
-    {
-        file << "\n";
-        std::vector<std::string> words = split_words(line);
-        for(std::vector<std::string>::iterator i = words.begin(); i != words.end(); i++)
-        {
-            if (i == words.end()-1)     file << *i;
-            else                        file << *i << ",";
-        }
-        file.close();
-    }
-    else    std::cerr << "Error: unable to open file" << std::endl;
-}
-/**
- * @brief This function add a column of floats (with their description as top line) to an existing .csv file
- * @param col_name description of the column data
- * @param column data to add in the column
- */
-template <class T>
-void                        CsvFile<T>::append_column(const char * col_name, std::vector<T> column) const
-{
-    std::fstream file(CsvFile::file_path, std::ios::in);
-    std::string line;
-    std::vector<std::string> file_lines;
-    while(getline(file, line))  file_lines.push_back(line);     // fill a vector with the file content
-    file.close();
-
-    int comment = CsvFile::comment();
-
-    file.open(CsvFile::file_path, std::ios::out);
-    for (int i = 0; i < file_lines.size(); i++)
-    {
-        if (i < comment)        file << file_lines.at(i) << std::endl;
-        else if (i == comment)  file << file_lines.at(i) << "," << col_name << std::endl;
-        else                    file << file_lines.at(i) << "," << column.at(i-comment-1) << std::endl;                          
-    }
-    file.close();
-}
-
-
-/**
- * @brief Gets an element from the file as a string.
- * @param line 
- * @param column 
- * @return std::string 
- */
-template <class T>
-std::string                 CsvFile<T>::get_element(const int line, const int column)          const
-{
-    std::string file_line = CsvFile::get_line(line);
-    std::vector<std::string> words = CsvFile::split_words(file_line);
-    return words.at(column);
-}
-/**
- * @brief Returns a line from the file. Lines are numbered beginning with zero.
- * @param line line you want to return.
- */
-template <class T>
-std::string                 CsvFile<T>::get_line(const int line)                               const
-{
-    std::ifstream file(CsvFile::file_path);
-
-    // skip comment
-    int first_line = comment();
-    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
-
-    if(line >= entries)
-    {
-        std::cerr << "Error: line " << line << " does not exist. The file has " << entries << " lines." << std::endl;
-        return 0;
-    }
-
-    if(file.is_open())
-    {   
-        int i = 0;
-        std::string str;
-        while(i <= line) getline(file, str);        // reads all the lines until the one you need
-        file.close();
-
-        return str;
-    }
-    else    std::cerr << "Error: unable to open file" << std::endl;
-    return 0;
-}
-/** 
- * @brief  This only works with .Csv files using a space (' ') or a tab as delimiter between columns. 
- * Columns are numbered beginning with zero.
- * @param column: number referring to the column you want to print
- */
-template <class T>
-std::vector<T>         CsvFile<T>::get_column(const int column, const int first_row)  const
-{
-    std::vector<T> vector;
-
-    std::ifstream file(CsvFile::file_path);
-
-    // skip comment
-    int first_line = comment();
-    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
-
-    if(file.is_open())
-    {
-        int n_columns = CsvFile::count_column();
-        if(column >= n_columns)
-        {
-            std::cerr << "Error: column " << column << " does not exist. The file has " << n_columns << " columns." << std::endl;
-            return vector;
-        }
-
-        // skip lines
-        std::string row;
-        for(int j = 0; j < first_row; j++)  getline(file, row);
-        
-        int i = 0;
-        while (getline(file, row))
-        {   
-            std::istringstream iss(row);
-            double column_element;
-            for(int i = 0; i <= column; i++)    iss >> column_element;
-            vector.push_back(column_element);
-        }
-        file.close();
-    }
-    else    std::cout << "Error: unable to open file" << std::endl;
-    return vector;
-}
-
-
-template <class T>
-void                        CsvFile<T>::current_file()                                         const
-{
-    std::cout << std::endl << "Il file attualmente in lettura è: " << CsvFile::file_path << std::endl;
-}
-/**
- * @brief Extract single words (elements separated by space) from a string.
- * @param input string you want to extraxt words from.
- * @return vector containing single words.
- */
-template <class T>
-std::vector<std::string>    CsvFile<T>::split_words(const std::string input)                   const
-{
-    std::istringstream ss(input);
-    std::string word;
-    std::vector<std::string> vector1;
-
-    while(ss >> word)   vector1.push_back(word);
-
-    return vector1;
-}
-/**
- * @brief Checks if the first line of the file contains words. This function is used in Data.cpp to use the words in the 
- * first line as names for the CsvData objects generated.
- * NOTE: "file1" will not be regarded as a number although it does contain a digit in it. 
- * @return true if no number is present in each element of the first line.
- * @return false if a number is found in the first line.
- */
-template <class T>
-bool                        CsvFile<T>::check_words()                                          const
-{
-    std::ifstream file(CsvFile::file_path);
-
-    // skip comment
-    int first_line = comment();
-    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
-
-    if(file.is_open())
-    {
-        std::string first_line;
-        getline(file, first_line);
-
-        bool check = true;
-
-        std::vector<std::string> words = CsvFile::split_words(first_line);
-        for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++)
-        {
-            std::string word = *i;
-            if (word.find_first_not_of("0123456789") == std::string::npos)  return false;
-        }
-        file.close();
-        return true;
-    }
-    std::cerr << "Error: unable to open file" << std::endl;
-    return false;
+    return rows;
 }
 /**
  * @brief Counts how many columns (text separated by a space, tab or comma) there are in a given string.
  * If different lines of the file have a different amount of columns, an error is displayed.
- * @return int number of columns.
+ * @return number of columns.
  */
-template <class T>
-int                         CsvFile<T>::count_column()                                         const
+int                         CsvFile::n_columns()                            const
 {
     int columns = 0;
     int save_columns = 0;       // used to check if each line has the same number of columns
 
     std::ifstream file(CsvFile::file_path);
 
-    // skip comment
-    int first_line = comment();
-    for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
-
     if(file.is_open())
     {   
-        for (int j = 0; j < CsvFile::entries; j++)
+        // skip comment
+        int first_line = comment_lines();
+        for(int i=0; i<first_line; i++) file.ignore(10000, '\n');
+
+        for (int j = 0; j < CsvFile::rows; j++)
         {
             std::string row, item;
             getline(file, row);
@@ -346,11 +168,25 @@ int                         CsvFile<T>::count_column()                          
     }
     return save_columns;
 }
+
+
+
+
 /**
-         * @brief Skips all comment lines in the file. A line beginning with # is a comment line.
-         */
-template <class T>
-int                         CsvFile<T>::comment()                              const
+ * @brief Clear content inside your file
+ * 
+ */
+void                        CsvFile::clear()
+{
+    std::fstream file;
+    file.open(CsvFile::file_path, std::ios::out | std::ios::trunc);
+    file.close();
+}
+/**
+ * @brief 
+ * @returns number of lines containing comments
+ */
+int                         CsvFile::comment_lines()                              const
 {
     int comment = 0;
     std::string line;
@@ -360,17 +196,14 @@ int                         CsvFile<T>::comment()                              c
     return comment;
 }
 
-
 // friend functions
-
-template <class T>
-std::ostream&               operator<<  (std::ostream& out, const CsvFile<T>& Csv_file)
+std::ostream&               operator<<  (std::ostream& out, const CsvFile& csv)
 {
     std::ifstream file;
-    file.open(Csv_file.file_path);
+    file.open(csv.file_path);
     if(file.is_open())
     {
-        out << "Print " << Csv_file.file_path << ": " << std::endl;
+        out << "Print " << csv.file_path << ": " << std::endl;
         while (!file.eof())
         {
             std::string this_line;

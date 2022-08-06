@@ -6,17 +6,15 @@
 #include <vector>
 #include <string>
 
-/**
- * @brief Class prototype. The final class will be a class template.
- * It is recommended to import data from a file having names of the observables in the first line and it is better if 
- * none of them have the same name.
- */
 
+/**
+ * @brief Dataset object. Stores a vector of Data. You can load a dataset from a file and inspect it with this class.
+ * 
+ * @tparam T Any
+ */
 template <class T>
 class Dataset
-{
-    friend  std::ostream&           operator<<(std::ostream&, const Dataset&);
-            Data<T>&                operator[](const char * column)                 {return Dataset::data[find(Dataset::columns.begin(), Dataset::columns.end(), column)]};
+{           
 
 public:
                                     Dataset(const char *, const int = 0, const char * = "");     // file_path, first_column
@@ -24,17 +22,20 @@ public:
                                     Dataset(const Dataset&);
                                     ~Dataset();
             
-            std::vector<Data<T>>    get_dataset()                           const;
-            Data<T>                 get_data(const int)                     const;
-            Data<T>                 get_data(const char *)                  const;
-            int                     get_entries()                           const;
+            std::vector<Data<T>>    get_dataset()                           const           {return data};
+            Data<T>                 get_data(const int)                     const           {return data.at(i)};
+            Data<T>                 get_data(const char *)                  const           {return data[find(columns.begin(), columns.end(), column)]};
 
+            const   void            describe()                              const;
+            const   void            head(const int = 5)                     const;
+            int                     size()                                  const           {return data.size()};
             Dataset<T>&             fill(const char *, const int = 0);
-            Dataset<T>&             concatenate(const Dataset<T>);
-            Dataset<T>&             add(const Data<T>);
+            Dataset<T>&             concatenate(const Dataset<T>&);
+            Dataset<T>&             add(const Data<T>&);
             Dataset<T>&             remove(const char *);
 
             Data<T>&                operator[](const char * column)                         {return data[find(columns.begin(), columns.end(), column)]};
+            Data<T>&                operator[](const int * column)                          {return data.at(column)};
 
 private:
     std::vector<Data<T>>            data;
