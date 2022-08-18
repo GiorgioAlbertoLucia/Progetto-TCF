@@ -9,38 +9,7 @@
 
 /* USEFUL FUNCTIONS */
 
-/**
- * @brief Extract single words (elements separated by space) from a string.
- * @param input string you want to extraxt words from.
- * @return vector containing single words.
- */
-std::vector<std::string>    split_words(const std::string input)
-{
-    std::istringstream ss(input);
-    std::string word;
-    std::vector<std::string> vector;
 
-    while(ss >> word)   vector.push_back(word);
-
-    return vector;
-}
-/**
- * @brief Checks if the first line of the file contains words. This function is used in txtDataset.cpp to use the words in the 
- * first line as names for the TxtData objects generated.
- * NOTE: "file1" will not be regarded as a number although it does contain a digit in it. 
- * @return true if no number is present in each element of the first line.
- * @return false if a number is found in the first line.
- */
-bool                        check_words(const std::string line)
-{
-    std::vector<std::string> words = split_words(line);
-    for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++)
-    {
-        std::string word = *i;
-        if (word.find_first_not_of("0123456789.,") == std::string::npos)  return false;
-    }
-    return true;
-}
 
 /* FUNCTIONS FROM HEADER FILE */
 

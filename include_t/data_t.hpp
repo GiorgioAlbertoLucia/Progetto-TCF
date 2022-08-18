@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include "file.hpp"
+#include "file_t.hpp"
 
 
 #include <iostream>
@@ -21,7 +21,7 @@ class Data
 
 public:
                                         Data(const char *, const int, const char * = "");   // file_path, file_column and data_name
-                                        Data(const Data&);                                  // copy constructor
+                                        Data(const Data<T>&);                                  // copy constructor
                                         ~Data();
 
     // setter / getter

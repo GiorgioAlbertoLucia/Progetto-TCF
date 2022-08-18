@@ -5,79 +5,77 @@
 #include <math.h>
 
 #include "../include_t/partder_t.hpp"
- 
+
+template <class T> 
 class Udouble
 {
-    friend  std::ostream&   operator<<(std::ostream&, const Udouble&);
+    friend  std::ostream&   operator<<(std::ostream&, const Udouble<T>&);
     
-    friend  Udouble         tan(const Udouble&);
-    friend  Udouble         sinh(const Udouble&);
-    friend  Udouble         cosh(const Udouble&);
-    friend  Udouble         tanh(const Udouble&);
-    friend  Udouble         asin(const Udouble&);
-    friend  Udouble         acos(const Udouble&);
-    friend  Udouble         atan(const Udouble&);
-    friend  Udouble         asinh(const Udouble&);
-    friend  Udouble         acosh(const Udouble&);
-    friend  Udouble         atanh(const Udouble&);
-    friend  Udouble         exp(const Udouble&);
-    friend  Udouble         pow(const Udouble&, const double);
-    friend  Udouble         pow(const Udouble&, const int);
-    friend  Udouble         pow(const Udouble&, const Udouble&);
-    friend  Udouble         log(const Udouble&);
-    friend  Udouble         log10(const Udouble&);
+    friend  Udouble<T>         tan(const Udouble<T>&);
+    friend  Udouble<T>         sinh(const Udouble<T>&);
+    friend  Udouble<T>         cosh(const Udouble<T>&);
+    friend  Udouble<T>         tanh(const Udouble<T>&);
+    friend  Udouble<T>         asin(const Udouble<T>&);
+    friend  Udouble<T>         acos(const Udouble<T>&);
+    friend  Udouble<T>         atan(const Udouble<T>&);
+    friend  Udouble<T>         asinh(const Udouble<T>&);
+    friend  Udouble<T>         acosh(const Udouble<T>&);
+    friend  Udouble<T>         atanh(const Udouble<T>&);
+    friend  Udouble<T>         exp(const Udouble<T>&);
+    friend  Udouble<T>         pow(const Udouble<T>&, const double);
+    friend  Udouble<T>         pow(const Udouble<T>&, const int);
+    friend  Udouble<T>         pow(const Udouble<T>&, const Udouble<T>&);
+    friend  Udouble<T>         log(const Udouble<T>&);
+    friend  Udouble<T>         log10(const Udouble<T>&);
 
 public:
                                                 Udouble();
-                                                Udouble(const double, const double, const bool = false);
-                                                Udouble(const PartDer&, const double, const bool = false);
-                                                Udouble(const Udouble&);
+                                                Udouble(const T&, const T&);
+                                                Udouble(const PartDer<T>&, const T&);
+                                                Udouble(const Udouble<T>&);
                                                 ~Udouble(){};
 
-                Udouble&                        set_value(const double);
-                Udouble&                        set_value(const PartDer& value)                         {Udouble::value = value; return *this;};
-                Udouble&                        set_error(const double error)                           {Udouble::error = error; return *this;};
-                Udouble&                        insert_errors(const std::string var, const double err)  {Udouble::errors.insert(std::make_pair(var, err)); return *this;};
-                Udouble&                        set_format(const bool format)                           {Udouble::format = format; return *this;};
-                Udouble&                        autoset_label();
+                Udouble<T>&                     set_value(const T&);
+                Udouble<T>&                     set_value(const PartDer<T>& value)                      {Udouble::value = value; return *this;};
+                Udouble<T>&                     set_error(const T& error)                               {Udouble::error = error; return *this;};
+                Udouble<T>&                     insert_errors(const std::string var, const T& err)      {Udouble::errors.insert(std::make_pair(var, err)); return *this;};
+                Udouble<T>&                     autoset_label();
 
-        const   double                          get_value()     const                                   {return Udouble::value.get_f();};
-        const   PartDer                         get_partder()   const                                   {return Udouble::value;};
-        const   double                          get_error()     const                                   {return Udouble::error;};
-        const   std::map<std::string, double>   get_errorsmap() const                                   {return Udouble::errors;};  
+        const   T&                              get_value()     const                                   {return Udouble::value.get_f();};
+        const   PartDer<T>                      get_partder()   const                                   {return Udouble::value;};
+        const   T&                              get_error()     const                                   {return Udouble::error;};
+        const   std::map<std::string, T&>       get_errorsmap() const                                   {return Udouble::errors;};  
         const   std::string                     get_label()     const                                   {return Udouble::label;};
-        const   bool                            get_format()    const                                   {return Udouble::format;};
         static  int                             get_count()                                             {return count;};
 
-                Udouble                         operator+(const Udouble&);
-                Udouble                         operator-(const Udouble&);
-                Udouble                         operator*(const Udouble&); 
-                Udouble                         operator/(const Udouble&);
-                Udouble                         operator^(const int n)                                  {return pow(*this, n);};
-                Udouble                         operator^(const double n)                               {return pow(*this, n);};
-                Udouble                         operator^(const Udouble& n)                             {return pow(*this, n);};
+                Udouble<T>                      operator+(const Udouble<T>&);
+                Udouble<T>                      operator-(const Udouble<T>&);
+                Udouble<T>                      operator*(const Udouble<T>&); 
+                Udouble<T>                      operator/(const Udouble<T>&);
+                Udouble<T>                      operator^(const int n)                                  {return pow(*this, n);};
+                Udouble<T>                      operator^(const double n)                               {return pow(*this, n);};
+                Udouble<T>                      operator^(const Udouble<T>& n)                          {return pow(*this, n);};
 
-                Udouble&                        operator=(const Udouble&) noexcept; 
+                Udouble<T>&                     operator=(const Udouble<T>&) noexcept; 
 
-        friend  Udouble                         sin(const Udouble&);
-        friend  Udouble                         cos(const Udouble&);
+        friend  Udouble<T>                      sin(const Udouble<T>&);
+        friend  Udouble<T>                      cos(const Udouble<T>&);
 
-        friend  Udouble                         operator*(const double, const Udouble&);                                 // multiply by a scalar
-        friend  Udouble                         operator/(const double, const Udouble&);
-        friend  Udouble                         operator/(const Udouble&, const double);
+        friend  Udouble<T>                      operator*(const double, const Udouble<T>&);                                 // multiply by a scalar
+        friend  Udouble<T>                      operator/(const double, const Udouble<T>&);
+        friend  Udouble<T>                      operator/(const Udouble<T>&, const double);
 
-                bool                            operator==(const Udouble&);
-                bool                            operator!=(const Udouble& other)                        {return !(*this == other);};
+                bool                            operator==(const Udouble<T>&);
+                bool                            operator!=(const Udouble<T>& other)                     {return !(*this == other);};
 
 private:
-    static int count;                               // how many Udouble are created (delete does not reset nor reduce count)
+        static int count;                       // how many Udouble are created (delete does not reset nor reduce count)
 
-            PartDer value;
-            double error;
-            std::map<std::string, double> errors;        // errors associated with variables in PartDer map
+        PartDer<T> value;
+        T error;
+        std::map<std::string, T> errors;        // errors associated with variables in PartDer map
 
-            std::string label;
-            bool format;
+        std::string label;
 };
 
 #endif

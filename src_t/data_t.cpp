@@ -1,6 +1,6 @@
 #include "../include_t/data_t.hpp"
 #include "../include_t/fileFactory_t.hpp"
-#include "../include_t/udouble_t.hpp"
+//#include "../include_t/udouble_t.hpp"
 
 #include <iostream>
 #include <vector>
@@ -15,7 +15,7 @@ const int width = 6;
 
 template <typename T> void print_element(T element, const char separator, const int width)
 {
-    cout << std::left << std::setw(width) << std::setfill(separator) << T;
+    std::cout << std::left << std::setw(width) << std::setfill(separator) << element;
 }
 
 
@@ -71,11 +71,11 @@ Data<T>&                Data<T>::set_data(const char * file_path, const int file
 
     if(Data::name == "" && factory->firstline_is_text(file_path))
     {
-        Data::data = factory->vector_column(file_path, file_col, 1);
+        Data::data = factory->vector_column<T>(file_path, file_col, 1);
         Data::name = factory->get_element(file_path, 0, file_col);
     }
-    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column(file_path, file_col, 1);
-    else                                            Data::data = factory->vector_column(file_path, file_col, 0); 
+    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<T>(file_path, file_col, 1);
+    else                                            Data::data = factory->vector_column<T>(file_path, file_col, 0); 
     
     delete factory;
     return *this;  
@@ -87,8 +87,10 @@ Data<T>&                Data<T>::set_data(const char * file_path, const int file
  * @param file_column 
  * @return Data& 
  */
+/*
 template <>
-Data<Udouble>&          Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
+template <typename T2>
+Data<Udouble<T2>>&       Data<Udouble<T2>>::set_data(const char * file_path, const int file_col, const int err_col)
 {
     FileFactory * factory = new FileFactory();
 
@@ -103,7 +105,7 @@ Data<Udouble>&          Data<Udouble>::set_data(const char * file_path, const in
     delete factory;
     return *this;  
 }
-
+*/
 
 
 
@@ -119,19 +121,19 @@ const void              Data<T>::describe() const
     print_element(Data::name, width, separator);
     std::cout << std::endl;
 
-    print_element('Mean:', width, separator);
+    print_element("Mean:", width, separator);
     print_element(Data::mean(), width, separator);
     std::cout << std::endl;
 
-    print_element('Std Dev:', width, separator);
+    print_element("Std Dev:", width, separator);
     print_element(Data::std(), width, separator);
     std::cout << std::endl;
 
-    print_element('Min:', width, separator);
+    print_element("Min:", width, separator);
     print_element(Data::min(), width, separator);
     std::cout << std::endl;
 
-    print_element('Max:', width, separator);
+    print_element("Max:", width, separator);
     print_element(Data::max(), width, separator);
     std::cout << std::endl;
 
@@ -228,7 +230,7 @@ template <class T>
 const T&                Data<T>::std()                                                          const
 {
     std::vector<T> num_terms;
-    for (std::vector<T>::const_iterator i = Data::data.begin(); i != Data::data.end(); i++)     num_terms.push_back(pow(*i - Data::mean(), 2));
+    for (typename std::vector<T>::const_iterator i = Data::data.begin(); i != Data::data.end(); i++)     num_terms.push_back(pow(*i - Data::mean(), 2));
     T num = std::accumulate(num_terms.begin(), num_terms.end(), 0.0);
     T std = sqrt(num / Data::size());
     
@@ -241,8 +243,8 @@ const T&                Data<T>::std()                                          
 template <class T>
 const T&                Data<T>::min()                                                        const
 {
-    T min = Data::data_vector.front();
-    for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
+    T min = Data::data.front();
+    for (typename std::vector<T>::const_iterator i = Data::data.begin(); i != Data::data.end(); i++)
     {
         if (min > *i)   min = *i;
     }
@@ -255,8 +257,8 @@ const T&                Data<T>::min()                                          
 template <class T>
 const T&                Data<T>::max()                                                      const
 {
-    T max = Data::data_vector.front();
-    for (std::vector<T>::const_iterator i = Data::data_vector.begin(); i != Data::data_vector.end(); i++)
+    T max = Data::data.front();
+    for (typename std::vector<T>::const_iterator i = Data::data.begin(); i != Data::data.end(); i++)
     {
         if (max < *i)   max = *i;
     }
@@ -274,7 +276,7 @@ std::ostream&       operator<<(std::ostream& out, const Data<T>& data)
     std::vector<double> storing_data = data.get_data();
 
     out << "Print: " << data.get_name() << std::endl;
-    for (std::vector<double>::const_iterator i = storing_data.begin(); i != storing_data.end(); i++)
+    for (typename std::vector<T>::const_iterator i = storing_data.begin(); i != storing_data.end(); i++)
     {
         out << *i << std::endl;
     }

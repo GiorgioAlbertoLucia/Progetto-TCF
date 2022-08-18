@@ -14,7 +14,7 @@ const int width = 6;
 
 template <typename T> void print_element(T element, const char separator, const int width)
 {
-    cout << std::left << std::setw(width) << std::setfill(separator) << T;
+    std::cout << std::left << std::setw(width) << std::setfill(separator) << element;
 }
 
 
@@ -24,6 +24,7 @@ template <typename T> void print_element(T element, const char separator, const 
  * @brief Construct a new Dataset:: Dataset object
  * @param file_path 
  * @param first_column 
+ * @param label dataset name (you can leave this blank)
  */
 template <class T>
                         Dataset<T>::Dataset(const char * file_path, const int first_column, const char * label)
@@ -34,6 +35,7 @@ template <class T>
  * @brief Construct a new Dataset:: Dataset object
  * @param file_path 
  * @param first_column 
+ * @param label dataset name (you can leave this blank
  */
 template <class T>
                         Dataset<T>::Dataset(std::string file_path, const int first_column, const char * label)
@@ -49,7 +51,7 @@ template <class T>
 template <class T>
                         Dataset<T>::Dataset(const Dataset<T>& dataset_object)
 {
-    Dataset::dataset = dataset_object.dataset;
+    Dataset::data = dataset_object.data;
     Dataset::columns = dataset_object.columns;
 }
 /**
@@ -75,23 +77,23 @@ const void              Dataset<T>::describe()                                  
 {
 
     print_element(' ', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator); 
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator); 
     std::cout << std::endl;
 
-    print_element('Mean:', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->mean(), width, separator);
+    print_element("Mean:", width, separator);
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->mean(), width, separator);
     std::cout << std::endl;
 
-    print_element('Std Dev:', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->std(), width, separator);
+    print_element("Std Dev:", width, separator);
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->std(), width, separator);
     std::cout << std::endl;
 
-    print_element('Min:', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->min(), width, separator);
+    print_element("Min:", width, separator);
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->min(), width, separator);
     std::cout << std::endl;
 
-    print_element('Max:', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->max(), width, separator);
+    print_element("Max:", width, separator);
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->max(), width, separator);
     std::cout << std::endl;
 
 }
@@ -105,13 +107,13 @@ template <class T>
 const void              Data<T>::head(const int n) const
 {
     print_element(' ', width, separator);
-    for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator);
+    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator);
     std::cout << std::endl;
 
     for(int j = 0; j < n; j++)  
     {
-        print_element(i, width, separator);
-        for(std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->data[j], width, separator);
+        print_element(j, width, separator);
+        for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->data[j], width, separator);
         std::cout << std::endl;
     }
 }
@@ -171,7 +173,7 @@ Dataset<T>&             Dataset<T>::add(const Data<T>& d)
 template <class T>
 Dataset<T>&             Dataset<T>::remove(const char * name)
 {
-    std::vector<Data<T>>::const_iterator it = std::find(Dataset<T>::columns.begin(), Dataset<T>::columns.end(), name);
+    typename std::vector<Data<T>>::const_iterator it = std::find(Dataset<T>::columns.begin(), Dataset<T>::columns.end(), name);
     if(it != Dataset<T>::columns.end())
     {
         const int index = std::distance(Dataset<T>::columns.begin(), it);

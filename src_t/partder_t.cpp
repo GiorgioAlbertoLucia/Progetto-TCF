@@ -4,8 +4,8 @@
 
 #include "../include_t/partder_t.hpp"
 
-// template <class T>
-// int PartDer<T>::count = 0;
+template <class T>
+int PartDer<T>::count = 0;
 
 
 template <class T>

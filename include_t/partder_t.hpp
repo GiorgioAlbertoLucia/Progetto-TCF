@@ -39,7 +39,7 @@ public:
             void                        set_label(const char * label)                   {PartDer::label = std::string(label);};
             void                        set_label(std::string label)                    {PartDer::label = label;};
 
-    const   double                      get_f()                     const               {return PartDer::f;};
+    const   T&                          get_f()                     const               {return PartDer::f;};
     const   std::map<std::string, T&>   get_df()                    const               {return PartDer::df;};
     const   std::string                 get_label()                 const               {return PartDer::label;};
 

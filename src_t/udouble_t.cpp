@@ -4,447 +4,486 @@
 #include "../include_t/udouble_t.hpp"
 #include "../include_t/partder_t.hpp"
 
-int Udouble::count = 0;
 
-std::ostream&    operator<<(std::ostream& out, const Udouble& udouble)
+template <class T>
+int Udouble<T>::count = 0;
+
+template <class T>
+std::ostream&    operator<<(std::ostream& out, const Udouble<T>& udouble)
 {
-    //if(udouble.get_format()){return out;}
+    //if(udouble<T>.get_format()){return out;}
     //else                            
     return out << udouble.get_label() << " = " << udouble.get_value() << " ± " << udouble.get_error();
 }
 
-Udouble        sin(const Udouble& udouble)
+template <class T>
+Udouble<T>        sin(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = sin(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        cos(const Udouble& udouble)
+template <class T>
+Udouble<T>        cos(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = cos(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
+    std::map<std::string, T> m = udouble.errors;
     for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        tan(const Udouble& udouble)
+template <class T>
+Udouble<T>        tan(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = tan(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        sinh(const Udouble& udouble)
+template <class T>
+Udouble<T>        sinh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = sinh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        cosh(const Udouble& udouble)
+template <class T>
+Udouble<T>        cosh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = cosh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        tanh(const Udouble& udouble)
+template <class T>
+Udouble<T>        tanh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = tanh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        asin(const Udouble& udouble)
+template <class T>
+Udouble<T>        asin(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = asin(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        acos(const Udouble& udouble)
+template <class T>
+Udouble<T>        acos(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = acos(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        atan(const Udouble& udouble)
+template <class T>
+Udouble<T>        atan(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = atan(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        asinh(const Udouble& udouble)
+template <class T>
+Udouble<T>        asinh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = asinh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        acosh(const Udouble& udouble)
+template <class T>
+Udouble<T>        acosh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = acosh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        atanh(const Udouble& udouble)
+template <class T>
+Udouble<T>        atanh(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = atanh(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        exp(const Udouble& udouble)
+template <class T>
+Udouble<T>        exp(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = exp(udouble.value);
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = exp(udouble<T>.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        pow(const Udouble& udouble, const double n)
+template <class T>
+Udouble<T>        pow(const Udouble<T>& udouble, const double n)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = pow(udouble.value, n);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        pow(const Udouble& udouble, const int n)
+template <class T>
+Udouble<T>        pow(const Udouble<T>& udouble, const int n)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = pow(udouble.value, n);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        pow(const Udouble& udouble, const Udouble& n)
+template <class T>
+Udouble<T>        pow(const Udouble<T>& udouble, const Udouble<T>& n)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = pow(udouble.value, n.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     m = n.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(n.label, n.error);
     
     return result;
 }
-Udouble        log(const Udouble& udouble)
+template <class T>
+Udouble<T>        log(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = log(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble        log10(const Udouble& udouble)
+template <class T>
+Udouble<T>        log10(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = log10(udouble.value);
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
 
 
-Udouble::Udouble()
+template <class T>
+Udouble<T>::Udouble()
 {
     count++;
-    Udouble::set_format(false);
+    Udouble<T>::set_format(false);
 }
-Udouble::Udouble(const double value, const double error, const bool format)
+template <class T>
+Udouble<T>::Udouble(const T& value, const T& error)
 {
     count++;
 
-    Udouble::set_value(value);
-    Udouble::set_error(error);
+    Udouble<T>::set_value(value);
+    Udouble<T>::set_error(error);
 
-    Udouble::label += Udouble::value.get_label();
-    Udouble::set_format(format);
+    Udouble<T>::label += Udouble<T>::value.get_label();
 }
-Udouble::Udouble(const PartDer& value, const double error, const bool format)
+template <class T>
+Udouble<T>::Udouble(const PartDer<T>& value, const T& error)
 {
     count++;
 
-    Udouble::set_value(value);
-    Udouble::set_error(error);
+    Udouble<T>::set_value(value);
+    Udouble<T>::set_error(error);
 
-    Udouble::label += value.get_label();
-    Udouble::set_format(format);
+    Udouble<T>::label += value.get_label();
 }
 /**
  * @brief Copy Constructor.
- * Construct a new Udouble:: Udouble object 
- * @param udouble 
+ * Construct a new Udouble<T>:: Udouble<T> object 
+ * @param udouble<T> 
  */
-Udouble::Udouble(const Udouble& udouble)
+template <class T>
+Udouble<T>::Udouble(const Udouble<T>& udouble)
 {
     count++;
-    Udouble::value = udouble.get_partder();
+    Udouble<T>::value = udouble.get_partder();
     
-    double err = 0;
+    T err = 0;
     std::cout << std::endl << std::endl << "Setting error..." << std::endl;
-    for (std::map<std::string, double>::const_iterator i = Udouble::errors.begin(); i != Udouble::errors.end(); i++)
+    for (std::map<std::string, T>::const_iterator i = Udouble<T>::errors.begin(); i != Udouble<T>::errors.end(); i++)
     {
         std::cout << "error: " << err << std::endl;
         std::cout << "error in map: " << i->second << std::endl;
-        std::map<std::string, double> m = udouble.value.get_df();
+        std::map<std::string, T> m = udouble.value.get_df();
         if(m.find(i->first) != m.end()) {    err += pow(i->second * m.at(i->first), 2);
         std::cout << "part der in map: " << m.at(i->first) << std::endl; }
     }
     std::cout << std::endl << std::endl;
-    Udouble::error = sqrt(err);
+    Udouble<T>::error = sqrt(err);
 
-    Udouble::label = std::string("");
-    for(int i = 0; i < count; i++)  Udouble::label += "u";
+    Udouble<T>::label = std::string("");
+    for(int i = 0; i < count; i++)  Udouble<T>::label += "u";
 
-    std::map<std::string, double> m {{Udouble::label, 1},};
-    Udouble::value.set_df(m);
+    std::map<std::string, T> m {{Udouble<T>::label, 1},};
+    Udouble<T>::value.set_df(m);
 
-    Udouble::format = udouble.get_format();
+    Udouble<T>::format = udouble.get_format();
 }
 
-Udouble&    Udouble::set_value(const double value)
+
+
+
+template <class T>
+Udouble<T>&    Udouble<T>::set_value(const T& value)
 {
-    PartDer partder(value); 
-    Udouble::value = partder; 
+    PartDer<T> partder(value); 
+    Udouble<T>::value = partder; 
     return *this;
 }
-Udouble&    Udouble::autoset_label()
+template <class T>
+Udouble<T>&    Udouble<T>::autoset_label()
 {
-    std::map<std::string, double> m = Udouble::value.get_df();
-    if(m.size() == 1)   for(std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++) Udouble::label = i->first;
+    std::map<std::string, T> m = Udouble<T>::value.get_df();
+    if(m.size() == 1)   for(std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++) Udouble<T>::label = i->first;
     return *this;
 }
+
+
+
 
 /**
  * @brief General functioning of overloaded operators (and math functions). Operation is performed on the PartDer object, so that the 
- * partial derivatives are correctly stored in the new Udouble. Propagation of errors is performed in copy constructor and overload of 
+ * partial derivatives are correctly stored in the new Udouble<T>. Propagation of errors is performed in copy constructor and overload of 
  * operator= only. To do that, errors associated with the variables must be stored in the errors std::map.
  * In the map errors of the "fundamental" variables are stored in the for loop, as well as error of the object performing the operation.
  * While this is crucial in the first step, it adds unwanted terms in the map. Those are ignored via a double-checking loop when 
  * errors are propagated.
  * 
- * @param udouble 
- * @return Udouble& 
+ * @param udouble<T> 
+ * @return Udouble<T>& 
  */
-Udouble     Udouble::operator+(const Udouble& udouble)
+template <class T>
+Udouble<T>     Udouble<T>::operator+(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = Udouble::value + udouble.value;
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = Udouble<T>::value + udouble.value;
 
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
-    m = Udouble::errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    m = Udouble<T>::errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
-    result.insert_errors(Udouble::label, Udouble::error);
+    result.insert_errors(Udouble<T>::label, Udouble<T>::error);
 
     return result;
 }
-Udouble     Udouble::operator-(const Udouble& udouble)
+template <class T>
+Udouble<T>     Udouble<T>::operator-(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = Udouble::value - udouble.value;
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = Udouble<T>::value - udouble.value;
 
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
-    m = Udouble::errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    m = Udouble<T>::errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
-    result.insert_errors(Udouble::label, Udouble::error);
+    result.insert_errors(Udouble<T>::label, Udouble<T>::error);
 
     return result;
 }
-Udouble     Udouble::operator*(const Udouble& udouble)
+template <class T>
+Udouble<T>     Udouble<T>::operator*(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = Udouble::value * udouble.value;
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = Udouble<T>::value * udouble.value;
 
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
-    m = Udouble::errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    m = Udouble<T>::errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
-    result.insert_errors(Udouble::label, Udouble::error);
+    result.insert_errors(Udouble<T>::label, Udouble<T>::error);
 
     return result;
 } 
-Udouble     Udouble::operator/(const Udouble& udouble)
+template <class T>
+Udouble<T>     Udouble<T>::operator/(const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = Udouble::value / udouble.value;
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = Udouble<T>::value / udouble.value;
 
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
-    m = Udouble::errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    m = Udouble<T>::errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
-    result.insert_errors(Udouble::label, Udouble::error);
+    result.insert_errors(Udouble<T>::label, Udouble<T>::error);
 
     return result;
 }
 
 
-Udouble     operator*(const double c, const Udouble& udouble)                                 // multiply by a scalar
+template <class T>
+Udouble<T>     operator*(const double c, const Udouble<T>& udouble)                                 // multiply by a scalar
 {
-    Udouble result;
-    Udouble::count--;
-    result.value = c * udouble.value;
+    Udouble<T> result;
+    Udouble<T>::count--;
+    result.value = c * udouble<T>.value;
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble     operator/(const double c, const Udouble& udouble)
+template <class T>
+Udouble<T>     operator/(const double c, const Udouble<T>& udouble)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = c / udouble.value;
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
-Udouble     operator/(const Udouble& udouble, const double c)
+template <class T>
+Udouble<T>     operator/(const Udouble<T>& udouble, const double c)
 {
-    Udouble result;
-    Udouble::count--;
+    Udouble<T> result;
+    Udouble<T>::count--;
     result.value = udouble.value / c;
     
-    std::map<std::string, double> m = udouble.errors;
-    for (std::map<std::string, double>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
+    std::map<std::string, T> m = udouble.errors;
+    for (std::map<std::string, T>::const_iterator i = m.begin(); i != m.end(); i++)    result.insert_errors(i->first, i->second);
     result.insert_errors(udouble.label, udouble.error);
     
     return result;
 }
 
-Udouble&    Udouble::operator=(const Udouble& udouble) noexcept
+template <class T>
+Udouble<T>&    Udouble<T>::operator=(const Udouble<T>& udouble) noexcept
 {
     if(this == &udouble)    return *this;
 
-    Udouble::value = udouble.get_partder();
+    Udouble<T>::value = udouble.get_partder();
     
-    double err = 0;
+    T err = 0;
     std::cout << std::endl << std::endl << "Setting error..." << std::endl;
-    for (std::map<std::string, double>::const_iterator i = udouble.errors.begin(); i != udouble.errors.end(); i++)
+    for (std::map<std::string, T>::const_iterator i = udouble.errors.begin(); i != udouble.errors.end(); i++)
     {
         std::cout << "error: " << err << std::endl;
         std::cout << "error in map: " << i->second << std::endl;
-        std::map<std::string, double> m = udouble.value.get_df();
+        std::map<std::string, T> m = udouble.value.get_df();
         if(m.find(i->first) != m.end())   {  err += pow(i->second * m.at(i->first), 2);
         std::cout << "part der in map: " << m.at(i->first) << std::endl; }
     }
-    Udouble::error = sqrt(err);
+    Udouble<T>::error = sqrt(err);
 
-    Udouble::label = std::string("");
-    for(int i = 0; i < count; i++)  Udouble::label += "u";
+    Udouble<T>::label = std::string("");
+    for(int i = 0; i < count; i++)  Udouble<T>::label += "u";
 
-    std::map<std::string, double> m {{Udouble::label, 1},};
-    Udouble::value.set_df(m);
+    std::map<std::string, T> m {{Udouble<T>::label, 1},};
+    Udouble<T>::value.set_df(m);
 
-    Udouble::format = udouble.get_format();
+    Udouble<T>::format = udouble.get_format();
 
     return *this;
 } 
-
-bool        Udouble::operator==(const Udouble& udouble)
+template <class T>
+bool        Udouble<T>::operator==(const Udouble<T>& udouble)
 {
-    if(Udouble::value.get_f() == udouble.get_value() && Udouble::error == udouble.get_error())  return true;
-    else                                                                                        return false;
+    if(Udouble<T>::value.get_f() == udouble.get_value() && Udouble<T>::error == udouble.get_error())    return true;
+    else                                                                                                return false;
 }

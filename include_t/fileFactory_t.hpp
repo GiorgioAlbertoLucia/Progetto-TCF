@@ -6,7 +6,8 @@
 
 #include "../include_t/txtFile_t.hpp"
 #include "../include_t/csvFile_t.hpp"
-#include "../include_t/udouble_t.hpp"
+
+//#include "../include_t/udouble_t.hpp"
 
 /**
  * @brief Class factory for classes derived from File. 
