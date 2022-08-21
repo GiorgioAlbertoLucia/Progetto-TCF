@@ -2,7 +2,7 @@
 #define TXTFILE_H
 
 #include "../include_t/file_t.hpp"
-#include "../include_t/udouble_t.hpp"
+#include "../include_t/udouble.hpp"
 #include <iostream>
 #include <string>
 #include <vector>

@@ -55,7 +55,6 @@ template <class T>
 
 }
 
-
 // setter and getter
 /**
  * @brief Stores data into the data vector from a column of the file. If the first line is a string, it will be automatically set
