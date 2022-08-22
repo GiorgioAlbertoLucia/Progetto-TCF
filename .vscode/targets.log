@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Sat Aug 20 19:38:18 2022
+# Make data base, printed on Mon Aug 22 21:31:13 2022
 
 # Variables
 
@@ -58,7 +58,7 @@ HOME = /Users/giogi
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/giogi/Library/Application Support/Code/CachedData/6d9b74a70ca9c7733b29f0456fd8195364076dda
+VSCODE_CODE_CACHE_PATH = /Users/giogi/Library/Application Support/Code/CachedData/e4503b30fc78200f846c62cf8091b76ff5547662
 # environment
 LOGNAME = giogi
 # environment
@@ -92,7 +92,7 @@ TMPDIR = /var/folders/rh/7f5q_hs51lg5q8b6kkpn_d2m0000gp/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/giogi/Library/Application Support/Code/1.70.1-main.sock
+VSCODE_IPC_HOOK = /Users/giogi/Library/Application Support/Code/1.70.2-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -102,7 +102,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.45674864.45674872
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.45817342.45817348
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -128,7 +128,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2041
+VSCODE_PID = 80278
 # variable set hash-table stats:
 # Load=59/1024=6%, Rehash=0, Collisions=1/80=1%
 
@@ -138,9 +138,9 @@ VSCODE_PID = 2041
 
 # Directories
 
-# . (device 16777225, inode 30770189): 17 files, no impossibilities.
+# . (device 16777225, inode 30770189): 18 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -212,7 +212,7 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Sat Aug 20 19:38:18 2022
+# Finished Make data base on Mon Aug 22 21:31:13 2022
 
  
 make: *** No rule to make target `all'.  Stop.

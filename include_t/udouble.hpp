@@ -10,22 +10,7 @@ class Udouble
 {
     friend  std::ostream&   operator<<(std::ostream&, const Udouble&);
     
-    friend  Udouble         tan(const Udouble&);
-    friend  Udouble         sinh(const Udouble&);
-    friend  Udouble         cosh(const Udouble&);
-    friend  Udouble         tanh(const Udouble&);
-    friend  Udouble         asin(const Udouble&);
-    friend  Udouble         acos(const Udouble&);
-    friend  Udouble         atan(const Udouble&);
-    friend  Udouble         asinh(const Udouble&);
-    friend  Udouble         acosh(const Udouble&);
-    friend  Udouble         atanh(const Udouble&);
-    friend  Udouble         exp(const Udouble&);
-    friend  Udouble         pow(const Udouble&, const double);
-    friend  Udouble         pow(const Udouble&, const int);
-    friend  Udouble         pow(const Udouble&, const Udouble&);
-    friend  Udouble         log(const Udouble&);
-    friend  Udouble         log10(const Udouble&);
+    
 
 public:
                                                 Udouble();
@@ -58,6 +43,22 @@ public:
 
         friend  Udouble                         sin(const Udouble&);
         friend  Udouble                         cos(const Udouble&);
+        friend  Udouble                         tan(const Udouble&);
+        friend  Udouble                         sinh(const Udouble&);
+        friend  Udouble                         cosh(const Udouble&);
+        friend  Udouble                         tanh(const Udouble&);
+        friend  Udouble                         asin(const Udouble&);
+        friend  Udouble                         acos(const Udouble&);
+        friend  Udouble                         atan(const Udouble&);
+        friend  Udouble                         asinh(const Udouble&);
+        friend  Udouble                         acosh(const Udouble&);
+        friend  Udouble                         atanh(const Udouble&);
+        friend  Udouble                         exp(const Udouble&);
+        friend  Udouble                         pow(const Udouble&, const double);
+        friend  Udouble                         pow(const Udouble&, const int);
+        friend  Udouble                         pow(const Udouble&, const Udouble&);
+        friend  Udouble                         log(const Udouble&);
+        friend  Udouble                         log10(const Udouble&);
 
         friend  Udouble                         operator*(const double, const Udouble&);                                 // multiply by a scalar
         friend  Udouble                         operator/(const double, const Udouble&);

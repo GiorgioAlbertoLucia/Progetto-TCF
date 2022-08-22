@@ -10,7 +10,7 @@
 #include "../include_t/txtFile_t.hpp"
 #include "../include_t/csvFile_t.hpp"
 
-//#include "../include_t/udouble.hpp"
+#include "../include_t/udouble.hpp"
 
 /**
  * @brief Class factory for classes derived from File. 
@@ -27,7 +27,6 @@ public:
 
     TxtFile *                                       create_txt(const char *)  const;
     CsvFile *                                       create_csv(const char *)  const;
-
     File *                                          create_file(const char *) const;
 
 };
@@ -129,11 +128,8 @@ std::vector<T>              FileFactory::vector_column(const char * file_path, c
  * @param beginning: line index of the first element that will be included. This will be used in building Data objects that will
  * want to fetch the name of the column
  */
-
-//UDOUBLE
-/*
 template <>
-std::vector<Udouble>&       FileFactory::vector_column(const char * file_path, const int val_col, const int beginning, const int err_col)    
+std::vector<Udouble>        FileFactory::vector_column(const char * file_path, const int val_col, const int beginning, const int err_col)    
 {
     std::vector<Udouble> vector;
     File * file = this->create_file(file_path);
@@ -178,10 +174,10 @@ std::vector<Udouble>&       FileFactory::vector_column(const char * file_path, c
     else    std::cout << "Error: unable to open file" << std::endl;
     return vector;
 }
-*/
+
 
 /**
- * @brief This function add a column of floats (with their description as top line) to an existing .txt file. The name of the column
+ * @brief This function adds a column of floats (with their description as top line) to an existing .txt file. The name of the column
  * is added only if the first line of the file (except comment) contains words 
  * @param col_name description of the column data
  * @param column data to add in the column
@@ -222,9 +218,15 @@ void                        FileFactory::append_column(const char * file_path, c
     f.close();
     delete file;
 }
-
-//UDOUBLE
-/*
+/**
+ * @brief Template specialization for Udouble.
+ * This function adds a column of floats (with their description as top line) to an existing .txt file. The name of the column
+ * is added only if the first line of the file (except comment) contains words 
+ * @tparam  
+ * @param file_path 
+ * @param column 
+ * @param name 
+ */
 template <>
 void                        FileFactory::append_column<Udouble>(const char * file_path, const std::vector<Udouble>& column, const char * name) const
 {
@@ -263,7 +265,10 @@ void                        FileFactory::append_column<Udouble>(const char * fil
     f.close();
     delete file;
 }
-*/
+
+
+
+
 
 /**
  * @brief Returns a element from a file (automatically skips all comment). The returned element is a string. Will be 
@@ -299,7 +304,6 @@ std::string                 FileFactory::get_element(const char * file_path, con
     std::vector<std::string> words = split_words(str);
     return words.at(col);
 }
-
 
 bool                        FileFactory::firstline_is_text(const char * file_path) const
 {
@@ -340,7 +344,6 @@ CsvFile *                   FileFactory::create_csv(const char * file_path)     
 {
     return new CsvFile(file_path);
 }
-
 /**
  * @brief Factory method that reads the extension of the chosen file and then creates the appropiate File object.
  * @param file_path data file path.

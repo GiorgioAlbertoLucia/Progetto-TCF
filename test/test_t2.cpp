@@ -11,7 +11,8 @@ int main()
     dataset.describe();
 
     Data<double> d1(path, 0), d2(path, 1);
-    Data<double> d3 = d1 + d2;              // Dovrebbe essere una normalissima somma. Sta facendo qualcosa di diverso. Ho sonno. Vedo domani
+    Data<double> d3;
+    d3 = d1 + d2;              // Dovrebbe essere una normalissima somma. Sta facendo qualcosa di diverso. Ho sonno. Vedo domani
 
     d1.head();
     d2.head();

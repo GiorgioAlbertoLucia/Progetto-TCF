@@ -9,6 +9,36 @@
 #include <vector>
 #include <string>
 #include <numeric>
+#include <functional>
+
+
+// template declaration
+template <class T>  class Data;      
+
+template <class T>  std::ostream&   operator<< (std::ostream&, const Data<T>&);  
+template <class T>  Data<T>         operator+  (const Data<T>&, const Data<T>&);
+template <class T>  Data<T>         operator-  (const Data<T>&, const Data<T>&);
+template <class T>  Data<T>         operator*  (const double, const Data<T>&);                                 // multiply by a scalar
+template <class T>  Data<T>         operator*  (const int, const Data<T>&); 
+
+template <class T>  Data<T>         sin(const Data<T>&);
+template <class T>  Data<T>         cos(const Data<T>&);
+template <class T>  Data<T>         tan(const Data<T>&);
+template <class T>  Data<T>         sinh(const Data<T>&);
+template <class T>  Data<T>         cosh(const Data<T>&);
+template <class T>  Data<T>         tanh(const Data<T>&);
+template <class T>  Data<T>         asin(const Data<T>&);
+template <class T>  Data<T>         acos(const Data<T>&);
+template <class T>  Data<T>         atan(const Data<T>&);
+template <class T>  Data<T>         asinh(const Data<T>&);
+template <class T>  Data<T>         acosh(const Data<T>&);
+template <class T>  Data<T>         atanh(const Data<T>&);
+template <class T>  Data<T>         exp(const Data<T>&);
+template <class T>  Data<T>         pow(const Data<T>&, const double);
+template <class T>  Data<T>         pow(const Data<T>&, const int);
+template <class T>  Data<T>         pow(const Data<T>&, const Data<T>&);
+template <class T>  Data<T>         log(const Data<T>&);
+template <class T>  Data<T>         log10(const Data<T>&);
 
 
 /**
@@ -19,9 +49,10 @@
 template <class T>
 class Data
 {
-        friend  std::ostream&           operator<<(std::ostream&, const Data&);  
+        
 
 public:
+                                        Data(){};
                                         Data(const char *, const int, const char * = "");   // file_path, file_column and data_name
                                         Data(const Data<T>&);                                  // copy constructor
                                         ~Data();
@@ -41,13 +72,38 @@ public:
                 Data&                   replace(const T& value, const int i)            {Data::data.at(i) = value; return *this;};
 
     // operators
-                Data&                   operator+   (const Data&);
-                Data&                   operator-   (const Data&);
-                Data&                   operator*   (const double);                                 // multiply by a scalar
-                Data&                   operator*   (const int); 
-                bool                    operator==  (const Data&);
-                bool                    operator!=  (const Data& itself)                {return !(*this == itself);};
-                T&                      operator[]  (int n)                             {return Data::at(n);};
+
+        friend  std::ostream&           operator<< <T>  (std::ostream&, const Data<T>&);  
+        friend  Data<T>                 operator+  <T>  (const Data<T>&, const Data<T>&);
+        friend  Data<T>                 operator-  <T>  (const Data<T>&, const Data<T>&);
+        friend  Data<T>                 operator*  <T>  (const double, const Data<T>&);                                 // multiply by a scalar
+        friend  Data<T>                 operator*  <T>  (const int, const Data<T>&); 
+
+        friend  Data<T>                 sin        <T>  (const Data<T>&);
+        friend  Data<T>                 cos        <T>  (const Data<T>&);
+        friend  Data<T>                 tan        <T>  (const Data<T>&);
+        friend  Data<T>                 sinh       <T>  (const Data<T>&);
+        friend  Data<T>                 cosh       <T>  (const Data<T>&);
+        friend  Data<T>                 tanh       <T>  (const Data<T>&);
+        friend  Data<T>                 asin       <T>  (const Data<T>&);
+        friend  Data<T>                 acos       <T>  (const Data<T>&);
+        friend  Data<T>                 atan       <T>  (const Data<T>&);
+        friend  Data<T>                 asinh      <T>  (const Data<T>&);
+        friend  Data<T>                 acosh      <T>  (const Data<T>&);
+        friend  Data<T>                 atanh      <T>  (const Data<T>&);
+        friend  Data<T>                 exp        <T>  (const Data<T>&);
+        friend  Data<T>                 pow        <T>  (const Data<T>&, const double);
+        friend  Data<T>                 pow        <T>  (const Data<T>&, const int);
+        friend  Data<T>                 pow        <T>  (const Data<T>&, const Data<T>&);
+        friend  Data<T>                 log        <T>  (const Data<T>&);
+        friend  Data<T>                 log10      <T>  (const Data<T>&);
+
+                bool                    operator==      (const Data&);
+                bool                    operator!=      (const Data& itself)                {return !(*this == itself);};
+                T&                      operator[]      (int n)                             {return Data::at(n);};
+                Data<T>                 operator^       (const int n)                       {return pow(*this, n);};
+                Data<T>                 operator^       (const double n)                    {return pow(*this, n);};
+                Data<T>                 operator^       (const Data<T>& n)                  {return pow(*this, n);};
 
     // statistical functions
 
@@ -238,35 +294,6 @@ const void              Data<T>::head(const int n) const
 // operators
 
 template <class T>
-Data<T>&                Data<T>::operator+(const Data<T>& data2)
-{
-    if (Data::data.size() != data2.data.size())   std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
-    else                                          std::transform(Data::data.begin(), Data::data.end(), data2.data.begin(), Data::data.begin(), std::plus<T>());
-    
-    return *this;
-}
-template <class T>
-Data<T>&                Data<T>::operator-(const Data<T>& data2)
-{
-    if (Data::data.size() != data2.data.size())   std::cerr << "Error: unable to do the operation. Size of the two vector is not the same." << std::endl;
-    else                                          std::transform(Data::data.begin(), Data::data.end(), data2.data.begin(), Data::data.begin(), std::minus<T>());
-    
-    return *this;
-}
-template <class T>
-Data<T>&                Data<T>::operator*(const double scalar)
-{
-    for (std::vector<double>::iterator i = Data::data.begin(); i != Data::data.end(); i++)    *i = *i * scalar;
-    return *this;
-}
-template <class T>
-Data<T>&                Data<T>::operator*(const int scalar)
-{
-    for (std::vector<double>::iterator i = Data::data.begin(); i != Data::data.end(); i++)    *i = *i * scalar;
-    return *this;
-}
-
-template <class T>
 bool                    Data<T>::operator==(const Data<T>& data2)
 {
     if (Data::size() != data2.size())
@@ -355,4 +382,257 @@ std::ostream&       operator<<(std::ostream& out, const Data<T>& data)
     }
 
     return out;
+}
+
+
+
+template <class T>
+Data<T>             operator+(const Data<T>& data1, const Data<T>& data2)
+{
+    assert(data1.data.size() == data2.data.size());
+
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+    
+    std::transform(data1.data.begin(), data1.data.end(), data2.data.begin(), std::back_inserter(data.data), std::plus<T>());
+    
+    return data;
+}
+template <class T>
+Data<T>             operator-(const Data<T>& data1, const Data<T>& data2)
+{
+    assert(data1.data.size() == data2.data.size());
+
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+    
+    std::transform(data1.data.begin(), data1.data.end(), data2.data.begin(), std::back_inserter(data.data), std::minus<T>());
+    
+    return data;
+}
+template <class T>
+Data<T>             operator*(const Data<T>& data1, const double scalar)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = data1[i] * scalar;
+    
+    return data;
+}
+template <class T>
+Data<T>             operator*(const Data<T>& data1, const int scalar)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = data1[i] * scalar;
+    
+    return data;
+}
+
+
+template <class T>
+Data<T>             sin(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = sin(data1[i]);
+    
+    return data; 
+}
+template <class T>
+Data<T>             cos(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = cos(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             tan(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = tan(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             sinh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = sinh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             cosh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = cosh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             tanh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = tanh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             asin(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = asin(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             acos(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = acsos(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             atan(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = atan(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             asinh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = asinh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             acosh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = acosh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             atanh(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = atanh(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             exp(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = exp(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             pow(const Data<T>& data1, const double n)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = pow(data1[i], n);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             pow(const Data<T>& data1, const int n)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = pow(data1[i], n);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             pow(const Data<T>& data1, const Data<T>& data2)
+{
+    assert(data1.data.size() == data2.data.size());
+
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = pow(data1[i], data2[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             log(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = log(data1[i]);
+    
+    return data; 
+}
+template <class T>  
+Data<T>             log10(const Data<T>& data1)
+{
+    Data<T> data;
+    data.name = data1.name;
+    data.data.reserve(data1.data.size());
+
+    for (int i = 0; i < data1.data.size(); i++)    data[i] = log10(data1[i]);
+    
+    return data; 
 }
