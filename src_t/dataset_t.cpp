@@ -10,7 +10,7 @@
 // USEFUL FUNCTIONS
 
 const char separator = ' ';
-const int width = 6; 
+const int width = 6;
 
 template <typename T> void print_element(T element, const char separator, const int width)
 {
@@ -77,7 +77,8 @@ const void              Dataset<T>::describe()                                  
 {
 
     print_element(' ', width, separator);
-    for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator); 
+	for (typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)
+		print_element(*i->name, width, separator);
     std::cout << std::endl;
 
     print_element("Mean:", width, separator);
@@ -110,13 +111,14 @@ const void              Data<T>::head(const int n) const
     for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->name, width, separator);
     std::cout << std::endl;
 
-    for(int j = 0; j < n; j++)  
-    {
-        print_element(j, width, separator);
-        for(typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)  print_element(*i->data[j], width, separator);
-        std::cout << std::endl;
-    }
+	for (int j = 0; j < n; j++) {
+		print_element(j, width, separator);
+		for (typename std::vector<T>::const_iterator i = data.begin(); i != data.end(); i++)
+			print_element(*i->data[j], width, separator);
+		std::cout << std::endl;
+	}
 }
+
 /**
  * @brief Creates a dataset containing Data object. Each object is a data vector filled with elements from a column of a file
  * and its name is directly imported from the file (this is done only if the first line of the file is a string). Sets the
@@ -125,18 +127,16 @@ const void              Data<T>::head(const int n) const
  * @param first_column column from which you want to import the file
  * @returns Dataset&
  */
-template <class T>
-Dataset<T>&             Dataset<T>::fill(const char * file_path, const int first_column)  
-{
-    FileFactory * factory = new FileFactory();
-    File * file = factory->create_file(file_path);
+template<class T>
+Dataset<T> &Dataset<T>::fill(const char *file_path, const int first_column) {
+	FileFactory *factory = new FileFactory();
+	File *file = factory->create_file(file_path);
 
-    for (int i = first_column; i < file->get_columns(); i++)
-    {
-        Data<T> d(file_path, i);
-        Dataset::data.push_back(d);
-    }
-        
+	for (int i = first_column; i < file->get_columns(); i++) {
+		Data<T> d(file_path, i);
+		Dataset::data.push_back(d);
+	}
+
     delete factory;
     delete file;
     return *this;
