@@ -14,6 +14,8 @@ int main()
     Data<double> d3;
     d3 = d1 + d2;              // Dovrebbe essere una normalissima somma. Sta facendo qualcosa di diverso. Ho sonno. Vedo domani
 
+    std::cout << d3[0] << std::endl << dataset[1][2] << std::endl;
+
     d1.head();
     d2.head();
     d3.head();

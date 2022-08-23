@@ -1,4 +1,4 @@
-#include "../include_t/udouble.hpp"
+#include "../include_t/polyfit.hpp"
 #include <iostream>
 
 int main()

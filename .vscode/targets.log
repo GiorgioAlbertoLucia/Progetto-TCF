@@ -6,8 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Mon Aug 22 21:31:13 2022
+
+# Make data base, printed on Tue Aug 23 21:55:21 2022
 
 # Variables
 
@@ -42,11 +45,11 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.alc6TvcO4F/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.4yzaUwa8Y1/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = /private/tmp/com.apple.launchd.tDXefOlMVw/org.macosforge.xquartz:0
+DISPLAY = /private/tmp/com.apple.launchd.2lnzVuXA8K/org.macosforge.xquartz:0
 # environment
 PWD = /Users/giogi/Documents/TCF/Progetto
 # environment
@@ -128,7 +131,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 80278
+VSCODE_PID = 20025
 # variable set hash-table stats:
 # Load=59/1024=6%, Rehash=0, Collisions=1/80=1%
 
@@ -138,9 +141,9 @@ VSCODE_PID = 80278
 
 # Directories
 
-# . (device 16777225, inode 30770189): 18 files, no impossibilities.
+# . (device 16777220, inode 30770189): 19 files, no impossibilities.
 
-# 18 files, no impossibilities in 1 directories.
+# 19 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -184,6 +187,7 @@ makefile:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
+ 
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -212,8 +216,6 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Mon Aug 22 21:31:13 2022
+# Finished Make data base on Tue Aug 23 21:55:21 2022
 
  
-make: *** No rule to make target `all'.  Stop.
-

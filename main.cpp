@@ -21,16 +21,13 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 using namespace std;
 
 Dataset<double> import_file();
-
 void menu(Dataset<double> *dataset);
-
 void inspect(Dataset<double> *dataset);
-
 void manipulate(Dataset<double> *dataset);
-
 void fit(Dataset<double> *dataset);
-
 void plot(Dataset<double> *dataset);
+
+
 
 int main() {
 	/*
@@ -122,7 +119,9 @@ void inspect(Dataset<double> *dataset) {
 			dataset->head(n);
 			break;
 		case 3:
-			dataset->print_columns();
+			cout << "[ ";
+			for(std::string c : dataset->get_columns())		cout << c << ", ";
+			cout << " ]" << endl;
 			break;
 		case 4:
 			dataset->describe();

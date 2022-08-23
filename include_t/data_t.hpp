@@ -67,7 +67,7 @@ public:
         const   void                    describe()                              const;
         const   void                    head(const int = 5)                     const;
         const   int                     size()                                  const   {return Data::data.size();};
-        const   T&                      at(const int i)                         const   {return Data::data.at(i);};
+                T&                      at(const int i)                                 {return Data::data.at(i);};
                 Data&                   add(const T& element)                           {Data::data.push_back(element); return *this;};
                 Data&                   replace(const T& value, const int i)            {Data::data.at(i) = value; return *this;};
 
@@ -134,7 +134,7 @@ private:
 
 const char separator = ' ';
 const int width = 6;
-const int lenght = 5; 
+const int lenght = 2; 
 
 template <typename T> void print_element(T element, const char separator, const int width, const int lenght)
 {
@@ -142,11 +142,11 @@ template <typename T> void print_element(T element, const char separator, const 
 }
 template <>           void print_element(double element, const char separator, const int width, const int lenght)
 {
-        std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << element << "\t";
+        std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed << element << "\t";
 }
 template <>           void print_element(float element, const char separator, const int width, const int lenght)
 {
-        std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << element << "\t";
+        std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed << element << "\t";
 }
 
 
