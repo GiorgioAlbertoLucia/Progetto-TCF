@@ -1,13 +1,28 @@
+#ifdef _WIN32
+#include <Windows.h>
+const char *cls = "CLS";
+#else
+
+#include <unistd.h>
+
+const char *cls = "clear";
+#endif
+
+
 #include "include_t/dataset_t.hpp"
 
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+
 
 using namespace std;
 
-void menu();
+Dataset<double> import_file();
 
-void file_submenu();
+void menu(Dataset<double> *dataset);
+
+void inspect(Dataset<double> *dataset);
 
 int main() {
 	/*
@@ -22,37 +37,91 @@ int main() {
 	*&tPtr -> quello che sta all'indirizzo di tPtr (ovvero l'indirizzo di t)
 	*/
 
-	menu();
+	system(cls);
 
+	Dataset<double> dataset = import_file();
+//	dataset.head();
+
+	menu(&dataset);
+
+//	system("read -n 1 -s -p \"Press any key to continue...\"");
+//	system(cls);
 	return 0;
 }
 
-void menu() {
-	int choice = 1;
-//	do {
-//		cout << "Enter the corresponding number:\n"
-//				"1. Import data from file\n";
-//		cin >> choice;
-//	} while (choice <= 0 && choice > 1);
+Dataset<double> import_file() {
+	string path = "data/test7.txt";
+//	cout << "Enter file path: ";
+//	cin >> path;
+
+	cout << "File imported correctly." << endl;
+	sleep(1);
+	system(cls);
+
+	return {path};
+}
+
+void menu(Dataset<double> *dataset) {
+	int choice;
+	bool exit_cond = false;
+	do {
+		cout << "1. Inspect data\n"
+				"2. Fit\n"
+				"3. Plot\n"
+				"4. Exit\n"
+				"Enter your choice: ";
+		cin >> choice;
+		system(cls);
+		switch (choice) {
+			case 1:
+				inspect(dataset);
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				exit_cond = true;
+				break;
+		}
+		system(cls);
+	} while (!exit_cond);
+}
+
+void inspect(Dataset<double> *dataset) {
+	int choice;
+	cout << "1. head()\n"
+			"2. head(n)\n"
+			"3. describe()\n"
+			"4. size()\n"
+			"Enter your choice: ";
+	cin >> choice;
+	cout << endl;
 
 	switch (choice) {
 		case 1:
-			string path;
-			cout << "Enter file path: ";
-			cin >> path;
-
-			Dataset<double> dataset(path);
-			dataset.head();
+			dataset->head();
+			system("read -n 1 -s -p \"Press any key to continue...\"");
+			break;
+		case 2:
+			int n;
+			cout << "Enter the number of rows: ";
+			cin >> n;
+			dataset->head(n);
+			system("read -n 1 -s -p \"Press any key to continue...\"");
+			break;
+		case 3:
+			dataset->describe();
+			system("read -n 1 -s -p \"Press any key to continue...\"");
+			break;
+		case 4:
+			cout << dataset->size() << endl;
+			system("read -n 1 -s -p \"Press any key to continue...\"");
+			break;
+		default:
+			cout << "Wrong input" << endl;
+			system("read -n 1 -s -p \"Press any key to continue...\"");
+			system(cls);
+			inspect(dataset);
 	}
 }
-
-//void file_submenu() {
-//	string path;
-//	cout << "Open file" << endl;
-//	cout << "Enter file path" << endl;
-//	cin >> path;
-//
-//	FileFactory ff;
-//	File *file = ff.create_file(path);
-//
-//}
