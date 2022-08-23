@@ -11,34 +11,41 @@
  * @brief Concrete class to read .txt files
  * 
  */
-class TxtFile: public File
-{
+class TxtFile : public File {
 
-        friend  std::ostream&               operator<<(std::ostream&, const TxtFile&);
+	friend std::ostream &operator<<(std::ostream &, const TxtFile &);
 
-    public:
-                                            TxtFile();
-                                            TxtFile(const char *);
-                                            TxtFile(std::string);
-                                            TxtFile(const TxtFile&);
-                                            ~TxtFile();
-        
-        virtual void                        set_path(const char * file_path);                            
+public:
+	TxtFile();
 
-        virtual std::string                 get_path()                                      const   {return TxtFile::file_path;};
-        virtual int                         get_rows()                                      const   {return TxtFile::rows;};
-        virtual int                         get_columns()                                   const   {return TxtFile::columns;};
+	TxtFile(const char *);
 
-        virtual int                         n_rows()                                        const;
-        virtual int                         n_columns()                                     const;
+	TxtFile(std::string);
 
-        virtual void                        clear();
-        virtual int                         comment_lines()                                 const;
+	TxtFile(const TxtFile &);
 
-    private:
-                std::string                 file_path;
-                int                         rows;                                      
-                int                         columns;
+	~TxtFile();
+
+	virtual void set_path(const char *file_path);
+
+	virtual std::string get_path() const { return TxtFile::file_path; };
+
+	virtual int get_rows() const { return TxtFile::rows; };
+
+	virtual int get_columns() const { return TxtFile::columns; };
+
+	virtual int n_rows() const;
+
+	virtual int n_columns() const;
+
+	virtual void clear();
+
+	virtual int comment_lines() const;
+
+private:
+	std::string file_path;
+	int rows;
+	int columns;
 };
 
 

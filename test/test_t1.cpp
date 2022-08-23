@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 // Da eseguire sul terminale con 
 // clang++ -std=c++11 test/test_t1.cpp src_t/txtFile_t.cpp src_t/csvFile_t.cpp src_t/partder.cpp src_t/udouble.cpp -o exe/test_t1
 
@@ -19,29 +21,30 @@
 
 // Nell'esempio ti mostro cosa succede inizializzando uno udouble somma nei due modi elencati e osservando i risultati a confronto
 
-int main()
-{
-    Udouble x(1., 1., "x"), y(1., 2., "y");
-    
-    // Metodo corretto
-    Udouble z;
-    z = x + y;
-    
-    // Metodo sbagliato
-    Udouble w = x + y;
-
-    std::cout << x << std::endl << y << std::endl << "z = " << z << std::endl << "w = " << w << std::endl;
-    // NOTA: agli udouble derivati vengono assegnati nomi automatici, arricchisco il printout per renderli leggibili
+int main() {
+	Udouble x(1., 1., "x"), y(1., 2., "y");
 
 
 
-    // NOTA: pur dandogli un nome, questo viene sovrascritto. Non è importante il nome, in realtà. È importante che ne abbiano uno diverso
-    // perché la diversificazione degli errori si basa su un sistema di mappe i cui indici sono i nomi delle grandezze (a grandezze 
-    // diverse, errori diversi).
-    Udouble zeta(0., 0., "z");
-    zeta = x + y;
-    std::cout << zeta << std::endl;
+	// Metodo corretto
+	Udouble z;
+	z = x + y;
 
-    return 0;
+//    // Metodo sbagliato
+//    Udouble w = x + y;
+//
+//    cout << x << endl << y << endl << "z = " << z << endl << "w = " << w << endl;
+//    // NOTA: agli udouble derivati vengono assegnati nomi automatici, arricchisco il printout per renderli leggibili
+//
+//
+//
+//    // NOTA: pur dandogli un nome, questo viene sovrascritto. Non è importante il nome, in realtà. È importante che ne abbiano uno diverso
+//    // perché la diversificazione degli errori si basa su un sistema di mappe i cui indici sono i nomi delle grandezze (a grandezze
+//    // diverse, errori diversi).
+//    Udouble zeta(0., 0., "z");
+//    zeta = x + y;
+//    cout << zeta << endl;
+
+	return 0;
 }
 
