@@ -182,9 +182,9 @@ private:
 
     s_python_function_show = PyObject_GetAttrString(pymod, "show");
     s_python_function_close = PyObject_GetAttrString(pymod, "close");
-    s_python_function_draw = PyObject_GetAttrString(pymod, "draw");
-    s_python_function_pause = PyObject_GetAttrString(pymod, "pause");
-    s_python_function_figure = PyObject_GetAttrString(pymod, "figure");
+	  s_python_function_draw = PyObject_GetAttrString(pymod, "draw");
+	  s_python_function_pause = PyObject_GetAttrString(pymod, "PAUSE");
+	  s_python_function_figure = PyObject_GetAttrString(pymod, "figure");
     s_python_function_fignum_exists =
         PyObject_GetAttrString(pymod, "fignum_exists");
     s_python_function_plot = PyObject_GetAttrString(pymod, "plot");
@@ -1843,7 +1843,7 @@ template <typename Numeric> inline void pause(Numeric interval) {
   PyObject *res = PyObject_CallObject(
       detail::_interpreter::get().s_python_function_pause, args);
   if (!res)
-    throw std::runtime_error("Call to pause() failed.");
+	  throw std::runtime_error("Call to PAUSE() failed.");
 
   Py_DECREF(args);
   Py_DECREF(res);

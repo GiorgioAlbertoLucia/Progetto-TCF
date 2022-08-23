@@ -35,6 +35,8 @@ public:
 
 	const void head(const int = 5) const;
 
+	const void print_columns() const;
+
 	int size() const { return data.size(); };
 
 	Dataset<T> &fill(const char *, const int = 0);
@@ -155,6 +157,20 @@ const void Dataset<T>::head(const int n) const {
 	for (int j = 0; j < n; j++) {
 		print_element(j, width, separator, lenght);
 		for (Data<T> d: data) print_element(d.at(j), width, separator, lenght);
+		std::cout << std::endl;
+	}
+}
+
+/**
+ * @brief Prints column names and indexes
+ *
+ * @tparam T
+ */
+template<class T>
+const void Dataset<T>::print_columns() const {
+	for (int i = 0; i < data.size(); i++) {
+		std::cout << i << " ";
+		print_element(data[i].get_name(), width, separator, lenght);
 		std::cout << std::endl;
 	}
 }

@@ -1,11 +1,13 @@
 #ifdef _WIN32
 #include <Windows.h>
-const char *cls = "CLS";
+const char *CLS = "CLS";
+const char *PAUSE = "PAUSE";
 #else
 
 #include <unistd.h>
 
-const char *cls = "clear";
+const char *CLS = "clear";
+const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 #endif
 
 
@@ -24,6 +26,12 @@ void menu(Dataset<double> *dataset);
 
 void inspect(Dataset<double> *dataset);
 
+void manipulate(Dataset<double> *dataset);
+
+void fit(Dataset<double> *dataset);
+
+void plot(Dataset<double> *dataset);
+
 int main() {
 	/*
 	int t = 5;
@@ -37,15 +45,13 @@ int main() {
 	*&tPtr -> quello che sta all'indirizzo di tPtr (ovvero l'indirizzo di t)
 	*/
 
-	system(cls);
+	system(CLS);
 
 	Dataset<double> dataset = import_file();
-//	dataset.head();
-
 	menu(&dataset);
 
-//	system("read -n 1 -s -p \"Press any key to continue...\"");
-//	system(cls);
+//	system(PAUSE);
+//	system(CLS);
 	return 0;
 }
 
@@ -56,7 +62,7 @@ Dataset<double> import_file() {
 
 	cout << "File imported correctly." << endl;
 	sleep(1);
-	system(cls);
+	system(CLS);
 
 	return {path};
 }
@@ -66,12 +72,13 @@ void menu(Dataset<double> *dataset) {
 	bool exit_cond = false;
 	do {
 		cout << "1. Inspect data\n"
-				"2. Fit\n"
-				"3. Plot\n"
-				"4. Exit\n"
+				"2. Manipulate data\n"
+				"3. Fit\n"
+				"4. Plot\n"
+				"5. Exit\n"
 				"Enter your choice: ";
 		cin >> choice;
-		system(cls);
+		system(CLS);
 		switch (choice) {
 			case 1:
 				inspect(dataset);
@@ -81,10 +88,15 @@ void menu(Dataset<double> *dataset) {
 			case 3:
 				break;
 			case 4:
+				break;
+			case 5:
 				exit_cond = true;
 				break;
+			default:
+				cout << "Wrong input";
+				system(PAUSE);
 		}
-		system(cls);
+		system(CLS);
 	} while (!exit_cond);
 }
 
@@ -92,8 +104,9 @@ void inspect(Dataset<double> *dataset) {
 	int choice;
 	cout << "1. head()\n"
 			"2. head(n)\n"
-			"3. describe()\n"
-			"4. size()\n"
+			"3. columns()\n"
+			"4. describe()\n"
+			"5. size()\n"
 			"Enter your choice: ";
 	cin >> choice;
 	cout << endl;
@@ -101,27 +114,31 @@ void inspect(Dataset<double> *dataset) {
 	switch (choice) {
 		case 1:
 			dataset->head();
-			system("read -n 1 -s -p \"Press any key to continue...\"");
 			break;
 		case 2:
 			int n;
 			cout << "Enter the number of rows: ";
 			cin >> n;
 			dataset->head(n);
-			system("read -n 1 -s -p \"Press any key to continue...\"");
 			break;
 		case 3:
-			dataset->describe();
-			system("read -n 1 -s -p \"Press any key to continue...\"");
+			dataset->print_columns();
 			break;
 		case 4:
+			dataset->describe();
+			break;
+		case 5:
 			cout << dataset->size() << endl;
-			system("read -n 1 -s -p \"Press any key to continue...\"");
 			break;
 		default:
 			cout << "Wrong input" << endl;
-			system("read -n 1 -s -p \"Press any key to continue...\"");
-			system(cls);
-			inspect(dataset);
 	}
+	cout << endl;
+	system(PAUSE);
+}
+
+void fit(Dataset<double> *dataset) {
+	int deg;
+	cout << "Enter polynomial degree: ";
+	cin >> deg;
 }
