@@ -7,6 +7,8 @@
 #include "../include_t/polyfit.hpp"
 #include "../include_t/udouble.hpp"
 
+/* USEFUL FUNCTUIONS */
+
 /**
  * @brief Incomplete gamma function. Will be used to evaluate the chi-squared pvalue of a fit.
  * Reference at https://www.codeproject.com/Articles/432194/How-to-Calculate-the-Chi-Squared-P-Value.
@@ -38,7 +40,8 @@ static double igf(double S, double Z) {
 }
 
 
-PolyFit::PolyFit(const std::vector<Udouble> x, const std::vector<Udouble> y, const int polygrade) {
+PolyFit::PolyFit(const std::vector<Udouble> x, const std::vector<Udouble> y, const int polygrade) 
+{
 	assert(x.size() != y.size());
 
 	PolyFit::n = x.size();
@@ -59,9 +62,8 @@ PolyFit::PolyFit(const std::vector<Udouble> x, const std::vector<Udouble> y, con
 
 	PolyFit::polygrade = polygrade;
 }
-
-PolyFit::PolyFit(const std::vector<double> x, const std::vector<double> y, const std::vector<double> sy,
-				 const int polygrade) {
+PolyFit::PolyFit(const std::vector<double> x, const std::vector<double> y, const std::vector<double> sy, const int polygrade) 
+{
 	assert(x.size() != y.size());
 	assert(x.size() != sy.size());
 
@@ -82,8 +84,8 @@ PolyFit::PolyFit(const std::vector<double> x, const std::vector<double> y, const
 
 	PolyFit::polygrade = polygrade;
 }
-
-PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade) {
+PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade) 
+{
 	assert(x.size() != y.size());
 
 	PolyFit::n = x.size();
@@ -104,8 +106,8 @@ PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade) {
 
 	PolyFit::polygrade = polygrade;
 }
-
-PolyFit::PolyFit(Data<double> &x, Data<double> &y, Data<double> &sy, const int polygrade) {
+PolyFit::PolyFit(Data<double> &x, Data<double> &y, Data<double> &sy, const int polygrade) 
+{
 	assert(x.size() != y.size());
 	assert(x.size() != sy.size());
 
@@ -126,7 +128,6 @@ PolyFit::PolyFit(Data<double> &x, Data<double> &y, Data<double> &sy, const int p
 
 	PolyFit::polygrade = polygrade;
 }
-
 PolyFit::~PolyFit() {}
 
 

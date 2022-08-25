@@ -37,7 +37,7 @@ CsvFile::CsvFile(std::string str_file_path) {
 	file.open(file_path, std::ios::app);
 	file.close();
 
-	set_path(file_path);
+	CsvFile::set_path(file_path);
 }
 
 /**
@@ -45,7 +45,8 @@ CsvFile::CsvFile(std::string str_file_path) {
  * Construct a new Csv File:: Csv File object.
  * @param csv_file 
  */
-CsvFile::CsvFile(const CsvFile &csv) {
+CsvFile::CsvFile(const CsvFile &csv) 
+{
 	CsvFile::file_path = csv.file_path;
 	CsvFile::rows = csv.rows;
 	CsvFile::columns = csv.columns;
@@ -113,7 +114,7 @@ int CsvFile::n_columns() const {
 			std::string row, item;
 			getline(file, row);
 			std::istringstream iss(row);
-			while (iss >> item) if (item.length()) columns++;
+			while (getline(iss, item, ',')) 	if (item.length()) 		columns++;
 
 			if (j > 0 && columns != save_columns) {
 				std::cerr << "Error: not all the lines have the same amount of columns. First " << j << " lines have "

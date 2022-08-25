@@ -19,21 +19,18 @@
 class FileFactory {
 public:
 
-	std::string get_element(const char *, const int, const int) const;
+							std::string 	get_element(const char *, const int, const int) const;
 
-	template<typename T>
-	std::vector<T> vector_column(const char *, const int, const int = 0, const int = 0);
+	template<typename T>	
+	inline 					std::vector<T>	vector_column(const char *, const int, const int = 0, const int = 0);
+	template<typename T>	
+	inline					void 			append_column(const char *, const std::vector<T> &, const char * = "") const;
 
-	template<typename T>
-	void append_column(const char *, const std::vector<T> &, const char * = "") const;
+	inline					bool 			firstline_is_text(const char *) const;
 
-	bool firstline_is_text(const char *) const;
-
-	TxtFile *create_txt(const char *) const;
-
-	CsvFile *create_csv(const char *) const;
-
-	File *create_file(const char *) const;
+	inline					TxtFile*		create_txt(const char *) const;
+	inline					CsvFile*		create_csv(const char *) const;
+	inline					File*			create_file(const char *) const;
 
 };
 
@@ -50,7 +47,7 @@ public:
  * @param input string you want to extraxt words from.
  * @return vector containing single words.
  */
-std::vector<std::string> split_words(const std::string input) {
+extern inline std::vector<std::string> split_words(const std::string input) {
 	std::istringstream ss(input);
 	std::string word;
 	std::vector<std::string> vector;
@@ -67,7 +64,7 @@ std::vector<std::string> split_words(const std::string input) {
  * @return true if no number is present in each element of the first line.
  * @return false if a number is found in the first line.
  */
-bool check_words(const std::string line) {
+extern inline bool check_words(const std::string line) {
 	std::vector<std::string> words = split_words(line);
 	for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++) {
 		std::string word = *i;
@@ -88,7 +85,7 @@ bool check_words(const std::string line) {
  */
 template<typename T>
 std::vector<T>
-FileFactory::vector_column(const char *file_path, const int column, const int beginning, const int err_col) {
+inline FileFactory::vector_column(const char *file_path, const int column, const int beginning, const int err_col) {
 	std::vector<T> vector;
 	File *file = this->create_file(file_path);
 	std::ifstream f(file->get_path());
@@ -131,7 +128,7 @@ FileFactory::vector_column(const char *file_path, const int column, const int be
  */
 template<>
 std::vector<Udouble>
-FileFactory::vector_column(const char *file_path, const int val_col, const int beginning, const int err_col) {
+inline FileFactory::vector_column(const char *file_path, const int val_col, const int beginning, const int err_col) {
 	std::vector<Udouble> vector;
 	File *file = this->create_file(file_path);
 	std::ifstream f(file->get_path());
@@ -178,7 +175,7 @@ FileFactory::vector_column(const char *file_path, const int val_col, const int b
  * @param column data to add in the column
  */
 template<typename T>
-void FileFactory::append_column(const char *file_path, const std::vector<T> &column, const char *name) const {
+inline void FileFactory::append_column(const char *file_path, const std::vector<T> &column, const char *name) const {
 	File *file = this->create_file(file_path);
 	std::fstream f(file->get_path(), std::ios::in);
 
@@ -218,8 +215,7 @@ void FileFactory::append_column(const char *file_path, const std::vector<T> &col
  * @param name 
  */
 template<>
-void
-FileFactory::append_column<Udouble>(const char *file_path, const std::vector<Udouble> &column, const char *name) const {
+inline void FileFactory::append_column<Udouble>(const char *file_path, const std::vector<Udouble> &column, const char *name) const {
 	File *file = this->create_file(file_path);
 	std::fstream f(file->get_path(), std::ios::in);
 
@@ -262,7 +258,7 @@ FileFactory::append_column<Udouble>(const char *file_path, const std::vector<Udo
  * @param row 
  * @return std::string 
  */
-std::string FileFactory::get_element(const char *file_path, const int row, const int col) const {
+inline std::string FileFactory::get_element(const char *file_path, const int row, const int col) const {
 	File *file = this->create_file(file_path);
 	std::fstream f(file->get_path(), std::ios::in);
 	std::string str;
@@ -286,7 +282,7 @@ std::string FileFactory::get_element(const char *file_path, const int row, const
 	return words.at(col);
 }
 
-bool FileFactory::firstline_is_text(const char *file_path) const {
+inline bool FileFactory::firstline_is_text(const char *file_path) const {
 	File *file = this->create_file(file_path);
 	std::fstream f(file->get_path(), std::ios::in);
 

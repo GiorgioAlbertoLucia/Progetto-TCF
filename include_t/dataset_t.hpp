@@ -29,9 +29,9 @@ public:
 
 	std::vector<std::string> get_columns() const { return columns; };
 
-	Data<T> get_data(const int i) const { return data.at(i); };
+	Data<T>& get_data(const int i) { return data.at(i); };
 
-	Data<T> get_data(const char *column) const { return data[find(columns.begin(), columns.end(), column)]; };
+	Data<T>& get_data(const char *column) { return data[find(columns.begin(), columns.end(), column)]; };
 
 	const void describe() const;
 
