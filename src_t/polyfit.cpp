@@ -42,7 +42,7 @@ static double igf(double S, double Z) {
 
 PolyFit::PolyFit(const std::vector<Udouble> x, const std::vector<Udouble> y, const int polygrade) 
 {
-	assert(x.size() != y.size());
+	assert(x.size() == y.size());
 
 	PolyFit::n = x.size();
 
@@ -64,8 +64,8 @@ PolyFit::PolyFit(const std::vector<Udouble> x, const std::vector<Udouble> y, con
 }
 PolyFit::PolyFit(const std::vector<double> x, const std::vector<double> y, const std::vector<double> sy, const int polygrade) 
 {
-	assert(x.size() != y.size());
-	assert(x.size() != sy.size());
+	assert(x.size() == y.size());
+	assert(x.size() == sy.size());
 
 	PolyFit::n = x.size();
 
@@ -86,7 +86,7 @@ PolyFit::PolyFit(const std::vector<double> x, const std::vector<double> y, const
 }
 PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade) 
 {
-	assert(x.size() != y.size());
+	assert(x.size() == y.size());
 
 	PolyFit::n = x.size();
 
@@ -108,8 +108,8 @@ PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade)
 }
 PolyFit::PolyFit(Data<double> &x, Data<double> &y, Data<double> &sy, const int polygrade) 
 {
-	assert(x.size() != y.size());
-	assert(x.size() != sy.size());
+	assert(x.size() == y.size());
+	assert(x.size() == sy.size());
 
 	PolyFit::n = x.size();
 
@@ -180,16 +180,25 @@ void PolyFit::fit(const int polygrade) {
 		double num = y_vec(k) - yfit_vec(k);
 		sum_elem.push_back(pow(num, 2) / pow(sy_vec(k), 2));
 	}
-	std::cout << "check sum elem for chi" << std::endl;
-	for (int i = 0; i < n; i++) std::cout << sum_elem.at(i) << std::endl;
-	std::cout << std::endl;
+//	std::cout << "check sum elem for chi" << std::endl;
+//	for (int i = 0; i < n; i++) std::cout << sum_elem.at(i) << std::endl;
+//	std::cout << std::endl;
 	PolyFit::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0);
 
 	// print fit results
 	std::cout << std::endl << "//////////////////////////////////////////////////////" << std::endl;
-	std::cout << "                   Fit results:" << std::endl;
+	std::cout <<              "                     Fit results:                     " << std::endl;
 	std::cout << "//////////////////////////////////////////////////////" << std::endl;
-	std::cout << "       Grade of the polynomial = " << polygrade << std::endl;
+	std::cout << "             Degree of the polynomial = " << polygrade << std::endl;
+	std::cout << "y = ";
+	for (int i = 0; i < coeff.size(); i++) {
+		std::cout << "p" << i << "*x^" << i;
+		if (i != coeff.size() - 1) {
+			std:: cout << " + ";
+		} else {
+			std::cout << std::endl;
+		}
+	}
 	for (int i = 0; i < coeff.size(); i++) {
 		printf("p%d", i);
 		std::cout << " = (" << get_parameter(i) << " ± " << get_parerror(i) << ") " << std::endl;

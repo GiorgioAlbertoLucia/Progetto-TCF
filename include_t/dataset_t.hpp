@@ -35,7 +35,7 @@ public:
 
 	const void describe() const;
 
-	const void head(const int = 5) const;
+	const void head(int = 5) const;
 
 	const void print_columns() const;
 
@@ -148,7 +148,10 @@ const void Dataset<T>::describe() const {
  * @param n 
  */
 template<class T>
-const void Dataset<T>::head(const int n) const {
+const void Dataset<T>::head(int n) const {
+	if (data.at(0).size() < n) {
+		n = data.at(0).size();
+	}
 	print_element(' ', width, separator, lenght);
 	for (Data<T> d: data) print_element(d.get_name(), width, separator, lenght);
 	std::cout << std::endl;
