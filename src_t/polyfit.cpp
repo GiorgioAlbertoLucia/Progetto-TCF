@@ -189,9 +189,18 @@ void PolyFit::fit(const int polygrade) {
 
 	// print fit results
 	std::cout << std::endl << "//////////////////////////////////////////////////////" << std::endl;
-	std::cout << "                   Fit results:" << std::endl;
+	std::cout <<              "                     Fit results:                     " << std::endl;
 	std::cout << "//////////////////////////////////////////////////////" << std::endl;
-	std::cout << "       Degree of the polynomial = " << polygrade << std::endl;
+	std::cout << "             Degree of the polynomial = " << polygrade << std::endl;
+	std::cout << "y = ";
+	for (int i = 0; i < coeff.size(); i++) {
+		std::cout << "p" << i << "*x^" << i;
+		if (i != coeff.size() - 1) {
+			std:: cout << " + ";
+		} else {
+			std::cout << std::endl;
+		}
+	}
 	for (int i = 0; i < coeff.size(); i++) {
 		printf("p%d", i);
 		std::cout << " = (" << get_parameter(i) << " ± " << get_parerror(i) << ") " << std::endl;
