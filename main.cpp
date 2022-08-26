@@ -15,12 +15,14 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 #include "include_t/polyfit.hpp"
 #include "include_t/dataset_t.hpp"
+#include "matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 
 using namespace std;
+namespace plt = matplotlibcpp;
 
 Dataset<double> import_file();
 
@@ -101,6 +103,9 @@ void menu(Dataset<double> *dataset) {
 				fit(dataset);
 				break;
 			case 4:
+				// For the time being I will only plot data
+				// The ability to plot a fitted function will come later
+				plot(dataset);
 				break;
 			case 5:
 				exit_cond = true;
@@ -177,4 +182,18 @@ void fit(Dataset<double> *dataset) {
 	polyfit.fit(deg);
 
 	system(PAUSE);
+}
+
+void plot(Dataset<double> *dataset) {
+//	int col_x, col_y, col_sy;
+//	dataset->head();
+//	cout << "Enter column index for x-values: ";
+//	cin >> col_x;
+//	cout << "Enter column index for y-values: ";
+//	cin >> col_y;
+//	cout << "Enter column index for y-errors: ";
+//	cin >> col_sy;
+
+	vector<double> y = {1, 3, 2, 4};
+	plt::plot(y);
 }
