@@ -179,10 +179,13 @@ void PolyFit::fit(const int polygrade) {
 		double num = y_vec(k) - yfit_vec(k);
 		sum_elem.push_back(pow(num, 2) / pow(sy_vec(k), 2));
 	}
-	std::cout << "check sum elem for chi" << std::endl;
-	for (int i = 0; i < n; i++) std::cout << sum_elem.at(i) << std::endl;
-	std::cout << std::endl;
+	//std::cout << "check sum elem for chi" << std::endl;
+	//for (int i = 0; i < n; i++) std::cout << sum_elem.at(i) << std::endl;
+	//std::cout << std::endl;
+	
 	PolyFit::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0);
+
+	PolyFit::set_pvalue();
 
 	// print fit results
 	std::cout << std::endl << "//////////////////////////////////////////////////////" << std::endl;
@@ -224,4 +227,6 @@ void PolyFit::set_pvalue() {
 	}
 
 	PValue /= std::tgamma(K);
+
+	PolyFit::p_value = (1.0 - PValue);
 }

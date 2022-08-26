@@ -12,7 +12,7 @@ int main()
     dataset.describe();
 
     vector<double> errvec;
-    for(int i = 0; i < dataset[0].size(); i++)     errvec.push_back(0.);
+    for(int i = 0; i < dataset[0].size(); i++)     errvec.push_back(dataset[1].std());
     Data<double> err(errvec, "err");    
 
     dataset.add(err);
