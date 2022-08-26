@@ -119,23 +119,27 @@ Dataset<T>::~Dataset() {
 template<class T>
 const void Dataset<T>::describe() const {
 
-	print_element(' ', width, separator, lenght);
+	print_element(" \t", width, separator, lenght);
 	for (Data<T> d: data) print_element(d.get_name(), width, separator, lenght);
 	std::cout << std::endl;
 
-	print_element("Mean:", width, separator, lenght);
+	print_element("Entries:", width, separator, lenght);
+	for (Data<T> d: data) print_element(d.size(), width, separator, lenght);
+	std::cout << std::endl;
+
+	print_element("Mean:\t", width, separator, lenght);
 	for (Data<T> d: data) print_element(d.mean(), width, separator, lenght);
 	std::cout << std::endl;
 
-	print_element("Std:", width, separator, lenght);
+	print_element("Std:\t", width, separator, lenght);
 	for (Data<T> d: data) print_element(d.std(), width, separator, lenght);
 	std::cout << std::endl;
 
-	print_element("Min:", width, separator, lenght);
+	print_element("Min:\t", width, separator, lenght);
 	for (Data<T> d: data) print_element(d.min(), width, separator, lenght);
 	std::cout << std::endl;
 
-	print_element("Max:", width, separator, lenght);
+	print_element("Max:\t", width, separator, lenght);
 	for (Data<T> d: data) print_element(d.max(), width, separator, lenght);
 	std::cout << std::endl;
 
@@ -158,9 +162,6 @@ const void Dataset<T>::head(const int n) const {
 		for (Data<T> d: data) print_element(d.at(j), width, separator, lenght);
 		std::cout << std::endl;
 	}
-//	for (std::string c : columns) {
-//		std::cout << c << std::endl;
-//	}
 }
 
 /**

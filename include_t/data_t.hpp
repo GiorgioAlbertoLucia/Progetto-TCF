@@ -121,7 +121,7 @@ private:
 
 };
 
-#endif
+
 
 
 
@@ -637,3 +637,5 @@ Data<T> log10(const Data<T> &data1) {
 
 	return data;
 }
+
+#endif

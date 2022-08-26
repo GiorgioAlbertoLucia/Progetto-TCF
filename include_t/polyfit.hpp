@@ -6,7 +6,7 @@
 
 #include "../Eigen/Dense"
 #include "../include_t/udouble.hpp"
-#include "../include_t/dataset_t.hpp"
+#include "../include_t/data_t.hpp"
 
 class PolyFit {
 public:

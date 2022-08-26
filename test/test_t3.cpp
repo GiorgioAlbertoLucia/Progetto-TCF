@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include_t/polyfit.hpp"
+#include "../include_t/dataset_t.hpp"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ int main()
     dataset.describe();
 
     vector<double> errvec;
-    for(int i = 0; i < dataset.size(); i++)     errvec.push_back(0.);
+    for(int i = 0; i < dataset[0].size(); i++)     errvec.push_back(0.);
     Data<double> err(errvec, "err");    
 
     dataset.add(err);
