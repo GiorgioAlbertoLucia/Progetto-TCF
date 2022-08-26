@@ -18,7 +18,7 @@ template<class T>
 class Dataset {
 
 public:
-	Dataset(){};
+	Dataset() {};
 	Dataset(const char *, const int = 0, const char * = "");     // file_path, first_column
 	Dataset(std::string, const int = 0, const char * = "");
 

@@ -51,8 +51,21 @@ int main(int argc, char *argv[]) {
 
 	system(CLS);
 
-	Dataset<double> dataset(argv[1]);// = import_file();
+	Dataset<double> dataset;
+	if (argc == 1) {
+		dataset = import_file();
+	} else if (argc == 2) {
+		dataset.fill(argv[1]);
+	} else {
+		cout << "Usage:\n"
+			 << argv[0] << " [path]" << endl;
+		system(PAUSE);
+		system(CLS);
+		return 1;
+	}
+
 	cout << "File imported correctly." << endl;
+//	Dataset<double> dataset(argv[1]);// = import_file();
 	usleep(750000);	// µseconds
 	system(CLS);
 
@@ -64,9 +77,9 @@ int main(int argc, char *argv[]) {
 }
 
 Dataset<double> import_file() {
-	string path = "data/testFit1.txt";
-//	cout << "Enter file path: ";
-//	cin >> path;
+	string path;
+	cout << "Enter file path: ";
+	cin >> path;
 
 	return {path};
 }
