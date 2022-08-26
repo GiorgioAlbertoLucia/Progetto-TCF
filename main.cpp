@@ -15,6 +15,7 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 
 #include "include_t/polyfit.hpp"
+#include "include_t/dataset_t.hpp"
 
 #include <iostream>
 #include <string>

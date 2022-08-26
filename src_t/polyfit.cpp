@@ -188,7 +188,7 @@ void PolyFit::fit(const int polygrade) {
 	std::cout << std::endl << "//////////////////////////////////////////////////////" << std::endl;
 	std::cout << "                   Fit results:" << std::endl;
 	std::cout << "//////////////////////////////////////////////////////" << std::endl;
-	std::cout << "       Grade of the polynomial = " << polygrade << std::endl;
+	std::cout << "       Degree of the polynomial = " << polygrade << std::endl;
 	for (int i = 0; i < coeff.size(); i++) {
 		printf("p%d", i);
 		std::cout << " = (" << get_parameter(i) << " ± " << get_parerror(i) << ") " << std::endl;
