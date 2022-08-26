@@ -185,11 +185,10 @@ void PolyFit::fit(const int polygrade) {
 	PolyFit::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0);
 
 	// print fit results
-	std::cout << std::endl << 	"//////////////////////////////////////////////////////" << std::endl;
-	std::cout << 				"                   Fit results:" << std::endl;
-	std::cout << 				"//////////////////////////////////////////////////////" << std::endl;
-	std::cout << 				"       	Grade of the polynomial = " << polygrade << std::endl;
-	std::cout << 				"Coefficients: " << std::endl;
+	std::cout << std::endl << "//////////////////////////////////////////////////////" << std::endl;
+	std::cout << "                   Fit results:" << std::endl;
+	std::cout << "//////////////////////////////////////////////////////" << std::endl;
+	std::cout << "       Grade of the polynomial = " << polygrade << std::endl;
 	for (int i = 0; i < coeff.size(); i++) {
 		printf("p%d", i);
 		std::cout << " = (" << get_parameter(i) << " ± " << get_parerror(i) << ") " << std::endl;

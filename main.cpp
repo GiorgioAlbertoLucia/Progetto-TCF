@@ -1,5 +1,5 @@
-//clang++ -std=c++14 main.cpp src_t/csvFile_t.cpp src_t/txtFile_t.cpp src_t/udouble.cpp src_t/partder.cpp -o main
-
+//clang++ -std=c++14 main.cpp src_t/csvFile_t.cpp src_t/txtFile_t.cpp src_t/udouble.cpp src_t/partder.cpp src_t/polyfit.cpp -o main
+//./main data/testFit1.txt
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -35,7 +35,7 @@ void fit(Dataset<double> *dataset);
 
 void plot(Dataset<double> *dataset);
 
-int main() {
+int main(int argc, char *argv[]) {
 	/*
 	int t = 5;
 	int *tPtr = &t;
@@ -50,7 +50,11 @@ int main() {
 
 	system(CLS);
 
-	Dataset<double> dataset = import_file();
+	Dataset<double> dataset(argv[1]);// = import_file();
+	cout << "File imported correctly." << endl;
+	usleep(750000);	// µseconds
+	system(CLS);
+
 	menu(&dataset);
 
 //	system(PAUSE);
@@ -62,10 +66,6 @@ Dataset<double> import_file() {
 	string path = "data/testFit1.txt";
 //	cout << "Enter file path: ";
 //	cin >> path;
-
-	cout << "File imported correctly." << endl;
-	usleep(750000);
-	system(CLS);
 
 	return {path};
 }
@@ -111,6 +111,7 @@ void inspect(Dataset<double> *dataset) {
 			"3. columns()\n"
 			"4. describe()\n"
 			"5. size()\n"
+			"6. Exit\n"
 			"Enter your choice: ";
 	cin >> choice;
 
@@ -140,6 +141,8 @@ void inspect(Dataset<double> *dataset) {
 			cout << endl;
 			cout << dataset->size() << endl;
 			break;
+		case 6:
+			break;
 		default:
 			cout << endl;
 			cout << "Wrong input" << endl;
@@ -155,16 +158,14 @@ void fit(Dataset<double> *dataset) {
 	cin >> col_x;
 	cout << "Enter column index for y-values: ";
 	cin >> col_y;
-	cout << "Enter column index for y-errors (-1 if no errors): ";
+	cout << "Enter column index for y-errors: ";
 	cin >> col_sy;
-	const int deg = 1;
-//	cout << "Enter polynomial degree: ";
-//	cin >> deg;
+	int deg;
+	cout << "Enter polynomial degree: ";
+	cin >> deg;
 
-//	if (col_sy != -1) {
 	PolyFit polyfit(dataset->get_data(col_x), dataset->get_data(col_y), dataset->get_data(col_sy), deg);
-//	} else {
-//		PolyFit polyfit(dataset->get_data(col_x), dataset->get_data(col_y), deg);
-//	}
+	polyfit.fit(deg);
 
+	system(PAUSE);
 }

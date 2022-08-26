@@ -13,32 +13,76 @@
 
 
 // template declaration
-template <class T> class Data;
+template<class T>
+class Data;
 
-template <class T> std::ostream &operator<<(std::ostream &, const Data<T> &);
-template <class T> Data<T> operator+(const Data<T> &, const Data<T> &);
-template <class T> Data<T> operator-(const Data<T> &, const Data<T> &);
-template <class T> Data<T> operator*(const double, const Data<T> &);                                 // multiply by a scalar
-template <class T> Data<T> operator*(const int, const Data<T> &);
+template<class T>
+std::ostream &operator<<(std::ostream &, const Data<T> &);
 
-template <class T> Data<T> sin(const Data<T> &);
-template <class T> Data<T> cos(const Data<T> &);
-template <class T> Data<T> tan(const Data<T> &);
-template <class T> Data<T> sinh(const Data<T> &);
-template <class T> Data<T> cosh(const Data<T> &);
-template <class T> Data<T> tanh(const Data<T> &);
-template <class T> Data<T> asin(const Data<T> &);
-template <class T> Data<T> acos(const Data<T> &);
-template <class T> Data<T> atan(const Data<T> &);
-template <class T> Data<T> asinh(const Data<T> &);
-template <class T> Data<T> acosh(const Data<T> &);
-template <class T> Data<T> atanh(const Data<T> &);
-template <class T> Data<T> exp(const Data<T> &);
-template <class T> Data<T> pow(const Data<T> &, const double);
-template <class T> Data<T> pow(const Data<T> &, const int);
-template <class T> Data<T> pow(const Data<T> &, const Data<T> &);
-template <class T> Data<T> log(const Data<T> &);
-template <class T> Data<T> log10(const Data<T> &);
+template<class T>
+Data<T> operator+(const Data<T> &, const Data<T> &);
+
+template<class T>
+Data<T> operator-(const Data<T> &, const Data<T> &);
+
+template<class T>
+Data<T> operator*(const double, const Data<T> &);                                 // multiply by a scalar
+template<class T>
+Data<T> operator*(const int, const Data<T> &);
+
+template<class T>
+Data<T> sin(const Data<T> &);
+
+template<class T>
+Data<T> cos(const Data<T> &);
+
+template<class T>
+Data<T> tan(const Data<T> &);
+
+template<class T>
+Data<T> sinh(const Data<T> &);
+
+template<class T>
+Data<T> cosh(const Data<T> &);
+
+template<class T>
+Data<T> tanh(const Data<T> &);
+
+template<class T>
+Data<T> asin(const Data<T> &);
+
+template<class T>
+Data<T> acos(const Data<T> &);
+
+template<class T>
+Data<T> atan(const Data<T> &);
+
+template<class T>
+Data<T> asinh(const Data<T> &);
+
+template<class T>
+Data<T> acosh(const Data<T> &);
+
+template<class T>
+Data<T> atanh(const Data<T> &);
+
+template<class T>
+Data<T> exp(const Data<T> &);
+
+template<class T>
+Data<T> pow(const Data<T> &, const double);
+
+template<class T>
+Data<T> pow(const Data<T> &, const int);
+
+template<class T>
+Data<T> pow(const Data<T> &, const Data<T> &);
+
+template<class T>
+Data<T> log(const Data<T> &);
+
+template<class T>
+Data<T> log10(const Data<T> &);
 
 
 /**
@@ -51,69 +95,112 @@ class Data {
 
 
 public:
-							Data() {};
-							Data(const std::vector<T>, const char * = "");
-							Data(const char *, const int, const char * = "");   // file_path, file_column and data_name
-							Data(const Data<T> &);                                  // copy constructor
-							~Data();
+	Data() {};
+
+	Data(const std::vector<T>, const char * = "");
+
+	Data(const char *, const int, const char * = "");   // file_path, file_column and data_name
+	Data(const Data<T> &);                                  // copy constructor
+	~Data();
 
 	// setter / getter	
-	inline	Data<T>& 		set_data(const char *, const int, const int = 0);
-	inline	Data<T>& 		set_name(const char *name = "") {	Data::name = std::string(name);	return *this; };
+	inline Data<T> &set_data(const char *, const int, const int = 0);
 
-	inline 	std::vector<T> 	get_data() const { return Data::data; };
-	inline	std::string 	get_name() const { return Data::name; };
+	inline Data<T> &set_name(const char *name = "") {
+		Data::name = std::string(name);
+		return *this;
+	};
 
-	inline	void 			describe() const;
-	inline	void 			head(const int = 5) const;
-	inline	int 			size() const { return Data::data.size(); };
-	inline 	T& 				at(const int i) { return Data::data.at(i); };
+	inline std::vector<T> get_data() const { return Data::data; };
 
-	inline 	Data<T>& 		add(const T &element) { Data::data.push_back(element); return *this; };
-	inline 	Data<T>& 		replace(const T &value, const int i) { Data::data.at(i) = value; return *this; };
+	inline std::string get_name() const { return Data::name; };
+
+	inline void describe() const;
+
+	inline void head(const int = 5) const;
+
+	inline int size() const { return Data::data.size(); };
+
+	inline T &at(const int i) { return Data::data.at(i); };
+
+	inline Data<T> &add(const T &element) {
+		Data::data.push_back(element);
+		return *this;
+	};
+
+	inline Data<T> &replace(const T &value, const int i) {
+		Data::data.at(i) = value;
+		return *this;
+	};
 
 	// operators
 
-	friend 	std::ostream&	operator<< <T>(std::ostream &, const Data<T> &);
+	friend std::ostream &operator<<<T>(std::ostream &, const Data<T> &);
 
-	friend 	Data<T>			operator+<T>(const Data<T> &, const Data<T> &);
-	friend 	Data<T> 		operator-<T>(const Data<T> &, const Data<T> &);
-	friend 	Data<T> 		operator*<T>(const double, const Data<T> &);                                 // multiply by a scalar
-	friend 	Data<T> 		operator*<T>(const int, const Data<T> &);
+	friend Data<T> operator+<T>(const Data<T> &, const Data<T> &);
 
-	friend 	Data<T> 		sin<T>(const Data<T> &);
-	friend 	Data<T> 		cos<T>(const Data<T> &);
-	friend 	Data<T> 		tan<T>(const Data<T> &);
-	friend 	Data<T> 		sinh<T>(const Data<T> &);
-	friend 	Data<T> 		cosh<T>(const Data<T> &);
-	friend 	Data<T> 		tanh<T>(const Data<T> &);
-	friend 	Data<T> 		asin<T>(const Data<T> &);
-	friend 	Data<T> 		acos<T>(const Data<T> &);
-	friend 	Data<T> 		atan<T>(const Data<T> &);
-	friend 	Data<T> 		asinh<T>(const Data<T> &);
-	friend 	Data<T> 		acosh<T>(const Data<T> &);
-	friend 	Data<T> 		atanh<T>(const Data<T> &);
-	friend 	Data<T> 		exp<T>(const Data<T> &);
-	friend 	Data<T> 		pow<T>(const Data<T> &, const double);
-	friend 	Data<T> 		pow<T>(const Data<T> &, const int);
-	friend 	Data<T> 		pow<T>(const Data<T> &, const Data<T> &);
-	friend 	Data<T> 		log<T>(const Data<T> &);
-	friend 	Data<T> 		log10<T>(const Data<T> &);
+	friend Data<T> operator-<T>(const Data<T> &, const Data<T> &);
 
-			bool 			operator==(const Data &);
-			bool 			operator!=(const Data &itself) { return !(*this == itself); };
-			T&				operator[](int n) { return Data::at(n); };
+	friend Data<T> operator*<T>(const double, const Data<T> &);                                 // multiply by a scalar
+	friend Data<T> operator*<T>(const int, const Data<T> &);
 
-			Data<T> 		operator^(const int n) { return pow(*this, n); };
-			Data<T> 		operator^(const double n) { return pow(*this, n); };
-			Data<T> 		operator^(const Data<T> &n) { return pow(*this, n); };
+	friend Data<T> sin<T>(const Data<T> &);
+
+	friend Data<T> cos<T>(const Data<T> &);
+
+	friend Data<T> tan<T>(const Data<T> &);
+
+	friend Data<T> sinh<T>(const Data<T> &);
+
+	friend Data<T> cosh<T>(const Data<T> &);
+
+	friend Data<T> tanh<T>(const Data<T> &);
+
+	friend Data<T> asin<T>(const Data<T> &);
+
+	friend Data<T> acos<T>(const Data<T> &);
+
+	friend Data<T> atan<T>(const Data<T> &);
+
+	friend Data<T> asinh<T>(const Data<T> &);
+
+	friend Data<T> acosh<T>(const Data<T> &);
+
+	friend Data<T> atanh<T>(const Data<T> &);
+
+	friend Data<T> exp<T>(const Data<T> &);
+
+	friend Data<T> pow<T>(const Data<T> &, const double);
+
+	friend Data<T> pow<T>(const Data<T> &, const int);
+
+	friend Data<T> pow<T>(const Data<T> &, const Data<T> &);
+
+	friend Data<T> log<T>(const Data<T> &);
+
+	friend Data<T> log10<T>(const Data<T> &);
+
+	bool operator==(const Data &);
+
+	bool operator!=(const Data &itself) { return !(*this == itself); };
+
+	T &operator[](int n) { return Data::at(n); };
+
+	Data<T> operator^(const int n) { return pow(*this, n); };
+
+	Data<T> operator^(const double n) { return pow(*this, n); };
+
+	Data<T> operator^(const Data<T> &n) { return pow(*this, n); };
 
 	// statistical functions
 
-	const 	T 				mean() const;
-	const 	T 				std() const;
-	const 	T 				min() const;
-	const 	T 				max() const;
+	const T mean() const;
+
+	const T std() const;
+
+	const T min() const;
+
+	const T max() const;
 
 private:
 	std::vector<T> data;
@@ -143,11 +230,13 @@ template<typename T>
 extern inline void print_element(T element, const char separator, const int width, const int lenght) {
 	std::cout << std::left << std::setw(width) << std::setfill(separator) << element << "\t";
 }
+
 template<>
 inline void print_element(double element, const char separator, const int width, const int lenght) {
 	std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed
 			  << element << "\t";
 }
+
 template<>
 inline void print_element(float element, const char separator, const int width, const int lenght) {
 	std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed
@@ -169,6 +258,7 @@ Data<T>::Data(const std::vector<T> data, const char *name) {
 	set_name(name);
 	Data::data = data;
 }
+
 /**
  * @brief Construct a new Data:: Data object.
  * @param file_path path of the file the data will be imported from. 
