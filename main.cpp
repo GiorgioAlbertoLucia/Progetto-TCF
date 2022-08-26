@@ -1,5 +1,4 @@
 //clang++ -std=c++14 main.cpp src_t/csvFile_t.cpp src_t/txtFile_t.cpp src_t/udouble.cpp src_t/partder.cpp src_t/polyfit.cpp -o main
-//./main data/testFit1.txt
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -20,7 +19,6 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-
 
 using namespace std;
 
@@ -65,14 +63,11 @@ int main(int argc, char *argv[]) {
 	}
 
 	cout << "File imported correctly." << endl;
-//	Dataset<double> dataset(argv[1]);// = import_file();
 	usleep(750000);	// µseconds
 	system(CLS);
 
 	menu(&dataset);
 
-//	system(PAUSE);
-//	system(CLS);
 	return 0;
 }
 
