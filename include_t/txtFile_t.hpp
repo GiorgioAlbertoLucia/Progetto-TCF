@@ -29,17 +29,14 @@ public:
 	virtual void set_path(const char *file_path);
 
 	virtual std::string get_path() const { return TxtFile::file_path; };
-
 	virtual int get_rows() const { return TxtFile::rows; };
-
 	virtual int get_columns() const { return TxtFile::columns; };
-
+	
 	virtual int n_rows() const;
-
 	virtual int n_columns() const;
 
+	virtual char separator() { return ' '; };
 	virtual void clear();
-
 	virtual int comment_lines() const;
 
 private:

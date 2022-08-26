@@ -5,7 +5,7 @@
 
 int main()
 {
-    const char * path = "/Users/giogi/Documents/TCF/Progetto/data/example.txt";
+    const char * path = "/Users/giogi/Documents/TCF/Progetto/data/test7.csv";
 
     Dataset<double> dataset(path);
     dataset.describe();

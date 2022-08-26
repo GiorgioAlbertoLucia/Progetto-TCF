@@ -20,10 +20,10 @@ public:
 
 	void fit(const int = 1);
 
+	void set_chi();
 	void set_pvalue();
 	const double get_parameter(int i) const { return coeff.at(i); };
 	const double get_parerror(int i) const { return sqrt(matrix.at(i).at(i)); };
-	const std::vector<double> get_yfit() const { return yfit; };
 
 	const double get_chisquared() const { return chi_squared; };
 	const double get_pvalue() const { return p_value; };
@@ -31,7 +31,7 @@ public:
 
 
 private:
-	int n;                                          // number of d
+	int n;                                          	// size of the input vectors
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> sy;                              // errors on the y
@@ -39,7 +39,6 @@ private:
 	std::vector<double> coeff;                           // coefficients vector
 	std::vector<std::vector<double>> matrix;             // coefficient matrix (U in documentation - wolfram)
 
-	std::vector<double> yfit;                            // values from fit
 	int DoF;
 	double chi_squared;
 	double p_value;

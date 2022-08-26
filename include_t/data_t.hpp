@@ -12,7 +12,8 @@
 #include <functional>
 
 
-// template declaration
+/* TEMPLATE DECLARATION */
+
 template<class T>
 class Data;
 
@@ -85,6 +86,8 @@ template<class T>
 Data<T> log10(const Data<T> &);
 
 
+
+
 /**
  * @brief Data object. Stores a vector of values and can do basic operations with it. You can load the vector directly from a data file.
  * 
@@ -92,8 +95,6 @@ Data<T> log10(const Data<T> &);
  */
 template<class T>
 class Data {
-
-
 public:
 	Data() {};
 

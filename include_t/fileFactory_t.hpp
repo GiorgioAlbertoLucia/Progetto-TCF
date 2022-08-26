@@ -105,12 +105,25 @@ inline FileFactory::vector_column(const char *file_path, const int column, const
 		std::string row;
 		for (int i = 0; i < beginning; i++) getline(f, row);
 
-		while (getline(f, row)) {
-			std::istringstream iss(row);
-			double column_element;
-			for (int i = 0; i <= column; i++) iss >> column_element;
-			vector.push_back(column_element);
+		while(!f.eof())
+		{
+			for(int i = 0; i < file->get_columns(); i++)
+			{
+				double column_element;
+				f >> column_element;
+				if(i == column)	vector.push_back(column_element);
+			}
 		}
+
+		//while (getline(f, row)) {
+		//	std::istringstream iss(row);
+		//	//std::string column_element;
+		//	//for(int i = 0; i <= column; i++)	getline(iss, column_element, file->separator());
+		//	//vector.push_back(std::stod(column_element));
+		//	double column_element;
+		//	for(int i = 0; i <= column; i++)	iss >> column_element;
+		//	vector.push_back(column_element);
+		//}
 		f.close();
 	} else std::cout << "Error: unable to open file" << std::endl;
 
