@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include_t/polyfit.hpp"
-#include "../include_t/dataset_t.hpp"
+#include "../include/polyfit.hpp"
+#include "../include/dataset.hpp"
 
 using namespace std;
 
