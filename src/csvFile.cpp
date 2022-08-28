@@ -125,6 +125,7 @@ int CsvFile::n_columns() const {
 			save_columns = columns;
 			columns = 0;
 		}
+		file.close();
 	}
 	return save_columns;
 }

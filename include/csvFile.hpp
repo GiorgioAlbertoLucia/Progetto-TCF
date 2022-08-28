@@ -16,13 +16,9 @@ class CsvFile : public File {
 
 public:
 	CsvFile();
-
 	CsvFile(const char *);
-
 	CsvFile(std::string);
-
 	CsvFile(const CsvFile &);
-
 	~CsvFile();
 
 	virtual void set_path(const char *);
@@ -45,7 +41,6 @@ private:
 	std::string file_path;
 	int rows;
 	int columns;
-
 
 };
 

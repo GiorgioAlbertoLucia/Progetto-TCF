@@ -68,10 +68,11 @@ extern inline bool check_words(const std::string line) {
 	std::vector<std::string> words = split_words(line);
 	for (std::vector<std::string>::const_iterator i = words.begin(); i != words.end(); i++) {
 		std::string word = *i;
-		if (word.find_first_not_of("0123456789.,") == std::string::npos) return false;
+		if (word.find_first_not_of("0123456789.,+-") == std::string::npos) return false;
 	}
 	return true;
 }
+
 
 /* MEMBER FUNCTIONS */
 
@@ -103,27 +104,33 @@ inline FileFactory::vector_column(const char *file_path, const int column, const
 
 		// skip lines
 		std::string row;
+		char comma;
+		
 		for (int i = 0; i < beginning; i++) getline(f, row);
+		std::cout << "columns: " << file->get_columns() << std::endl;
 
-		while(!f.eof())
+		while(getline(f, row))
 		{
-			for(int i = 0; i < file->get_columns(); i++)
+			std::stringstream iss(row);
+
+			for(int i = 0; i < file->get_columns() - beginning; i++)
 			{
-				double column_element;
-				f >> column_element;
+				T column_element;
+				if(file->separator() == ',')	
+				{
+					std::string temp;
+					getline(iss, temp, ',');
+					std::stringstream convert(temp);
+					convert >> column_element;
+				}
+				else							iss >> column_element;
 				if(i == column)	vector.push_back(column_element);
 			}
 		}
+		std::cout << "vector " << std::endl;
+		for(T item: vector)		std::cout << item << std::endl;
+		std::cout << " " << std::endl;
 
-		//while (getline(f, row)) {
-		//	std::istringstream iss(row);
-		//	//std::string column_element;
-		//	//for(int i = 0; i <= column; i++)	getline(iss, column_element, file->separator());
-		//	//vector.push_back(std::stod(column_element));
-		//	double column_element;
-		//	for(int i = 0; i <= column; i++)	iss >> column_element;
-		//	vector.push_back(column_element);
-		//}
 		f.close();
 	} else std::cout << "Error: unable to open file" << std::endl;
 

@@ -43,6 +43,7 @@ private:
 	std::string file_path;
 	int rows;
 	int columns;
+
 };
 
 

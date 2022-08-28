@@ -306,8 +306,11 @@ Data<T> &Data<T>::set_data(const char *file_path, const int file_col, const int 
 	if (Data::name == "" && factory->firstline_is_text(file_path)) {
 		Data::data = factory->vector_column<T>(file_path, file_col, 1);
 		Data::name = factory->get_element(file_path, 0, file_col);
-	} else if (factory->firstline_is_text(file_path)) Data::data = factory->vector_column<T>(file_path, file_col, 1);
+	} 
+	else if (factory->firstline_is_text(file_path)) Data::data = factory->vector_column<T>(file_path, file_col, 1);
 	else Data::data = factory->vector_column<T>(file_path, file_col, 0);
+
+	std::cout << *this << std::endl;
 
 	delete factory;
 	return *this;
@@ -418,6 +421,10 @@ const T Data<T>::mean() const {
 	T mean = sum / Data::size();
 	return mean;
 }
+template<>
+inline const std::string Data<std::string>::mean() const{
+	return std::string(" ");
+}
 
 /**
  * @brief Returns the standard deviation of stored distribution.
@@ -433,6 +440,10 @@ const T Data<T>::std() const {
 
 	return std;
 }
+template<>
+inline const std::string Data<std::string>::std() const{
+	return std::string(" ");
+}
 
 /**
  * @brief Returns the minimum value of stored distribution.
@@ -446,6 +457,10 @@ const T Data<T>::min() const {
 	}
 	return min;
 }
+template<>
+inline const std::string Data<std::string>::min() const{
+	return std::string(" ");
+}
 
 /**
  * @brief Returns the maximum value of stored distribution.
@@ -458,6 +473,10 @@ const T Data<T>::max() const {
 		if (max < *i) max = *i;
 	}
 	return max;
+}
+template<>
+inline const std::string Data<std::string>::max() const{
+	return std::string(" ");
 }
 
 
