@@ -6,7 +6,7 @@
 // clang++ -std=c++14 test/testMPL.cpp -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy/core/include/ -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -lpthread -o exe/testMPL
 
 
-#include "../matplotlib-cpp-master/matplotlibcpp.h"
+//#include "../matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>
 #include <vector>
@@ -14,8 +14,28 @@
 using namespace std;
 //namespace plt = matplotlibcpp;
 
+class Prova {
+public:
+	explicit Prova(int n) : n(n) {};
+
+	void print() {
+		cout << "prova" << n << ".print()" << endl;
+	}
+private:
+	int n;
+};
+
+void f(Prova *p1, Prova &p2) {
+	p1->print();
+	p2.print();
+}
+
 int main() {
 	cout << "Hello World!" << endl;
+
+	Prova prova1(1), prova2(2);
+
+	f(&prova1, prova2);
 
 	return 0;
 }

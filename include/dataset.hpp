@@ -19,6 +19,7 @@ class Dataset {
 
 public:
 	Dataset() {};
+
 	Dataset(const char *, const int = 0, const char * = "");     // file_path, first_column
 	Dataset(std::string, const int = 0, const char * = "");
 
@@ -30,9 +31,9 @@ public:
 
 	std::vector<std::string> get_columns() const { return columns; };
 
-	Data<T>& get_data(const int i) { return data.at(i); };
+	Data<T> &get_data(const int i) { return data.at(i); };
 
-	Data<T>& get_data(const char *column) { return data[find(columns.begin(), columns.end(), column)]; };
+	Data<T> &get_data(const char *column) { return data[find(columns.begin(), columns.end(), column)]; };
 
 	const void describe() const;
 
