@@ -1,5 +1,5 @@
 //clang++ -std=c++14 main.cpp src_t/csvFile_t.cpp src_t/txtFile_t.cpp src_t/udouble.cpp src_t/partder.cpp src_t/polyfit.cpp -o main
-
+// clang++ -std=c++14 main.cpp -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy/core/include/ -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 src/*.cpp -o exe/main
 #ifdef _WIN32
 #include <Windows.h>
 const char *CLS = "CLS";
@@ -15,7 +15,7 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 #include "include/polyfit.hpp"
 #include "include/dataset.hpp"
-//#include "matplotlib-cpp-master/matplotlibcpp.h"
+#include "matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>
 #include <string>
@@ -24,7 +24,7 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 
 using namespace std;
-//namespace plt = matplotlibcpp;
+namespace plt = matplotlibcpp;
 
 Dataset<double> import_file();
 
@@ -208,33 +208,33 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 
 	if (fit_exists) {
 		int n_points = 100;	// might need some way to compute this, something like (x_max - x_min) * 100 or something
-		vector<double> xdense[n_points], ydense[n_points];	// può diventare un array (meglio per le performance)?
+		vector<double> xdense, ydense;	// può diventare un array (meglio per le performance)?
 		double x_min = *min_element(dataset.get_data(col_x).get_data().begin(), dataset.get_data(col_x).get_data().end());
 		double x_max = *max_element(dataset.get_data(col_x).get_data().begin(), dataset.get_data(col_x).get_data().end());
 		for (int i = 0; i < n_points; i++) {
-			xdense[i] = x_min + i * (x_max - x_min) / 100;	// equivalent to np.linspace(x_min, x_max, n_points)
-			ydense[i] = 0;
+			xdense.push_back(x_min + i * (x_max - x_min) / 100);	// equivalent to np.linspace(x_min, x_max, n_points)
+			ydense.push_back(0.);
 			for (int j = 0; j < pars.size(); j++) {
-				ydense += pars[j] * pow(xdense[i], j);
+				ydense[i] += pars[j] * pow(xdense[i], j);
 			}
 		}
 		// blocco commentato perché matplotlib ha la mamma
-		/* plt::errorbar();
-		 * plt::plot(xdense, ydense);
-		 *
-		 * plot formatting shenanigans
-		 *
-		 * plt::show();
-		 * plt::savefig();
-		 */
+		//plt::errorbar(); --------- dice che la dichiarazione non va bene, sono da rivedere gli argomenti
+		plt::plot(xdense, ydense);
+	
+		//plot formatting shenanigans
+	
+		plt::show();
+		//plt::savefig();   ------- specificare nome del file
+		
 	} else {
-		/* plt::errorbar();
-		 *
-		 * plot formatting shenanigans
-		 *
-		 * plt::show();
-		 * plt::savefig();
-		 */
+		//plt::errorbar();
+	
+		//plot formatting shenanigans
+	
+		plt::show();
+		//plt::savefig();
+		
 	}
 
 }
