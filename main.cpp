@@ -15,14 +15,14 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 #include "include/polyfit.hpp"
 #include "include/dataset.hpp"
-#include "matplotlib-cpp-master/matplotlibcpp.h"
+//#include "matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 
 using namespace std;
-namespace plt = matplotlibcpp;
+//namespace plt = matplotlibcpp;
 
 Dataset<double> import_file();
 
@@ -48,6 +48,10 @@ int main(int argc, char *argv[]) {
 	&*tPtr -> prendi quello che sta all'indirizzo di t (ovvero t) e dammi il suo indirizzo (ovvero l'indirizzo di t)
 	*&tPtr -> quello che sta all'indirizzo di tPtr (ovvero l'indirizzo di t)
 	*/
+
+	// Variable to detect if there is a successful fit in order to handle fit plotting
+	bool fit_exists = false;
+	vector<double> fit_params = {};
 
 	system(CLS);
 
@@ -185,15 +189,14 @@ void fit(Dataset<double> *dataset) {
 }
 
 void plot(Dataset<double> *dataset) {
-//	int col_x, col_y, col_sy;
-//	dataset->head();
-//	cout << "Enter column index for x-values: ";
-//	cin >> col_x;
-//	cout << "Enter column index for y-values: ";
-//	cin >> col_y;
-//	cout << "Enter column index for y-errors: ";
-//	cin >> col_sy;
+	int col_x, col_y, col_sy;
+	dataset->head();
+	cout << "Enter column index for x-values: ";
+	cin >> col_x;
+	cout << "Enter column index for y-values: ";
+	cin >> col_y;
+	cout << "Enter column index for y-errors: ";
+	cin >> col_sy;
 
-	vector<double> y = {1, 3, 2, 4};
-	plt::plot(y);
+//	plt::errorbar(dataset->get_data(col_x), dataset->get_data(col_y), dataset->get_data(col_sy));
 }
