@@ -124,11 +124,11 @@ void menu(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 
 void inspect(Dataset<double> &dataset) {
 	int choice;
-	cout << "1. head()\n"
-			"2. head(n)\n"
-			"3. columns()\n"
-			"4. describe()\n"
-			"5. size()\n"
+	cout << "1. First 5 rows\n"
+			"2. First n rows\n"
+			"3. Column names\n"
+			"4. Column description\n"
+			"5. size()\n"   // ------------- secondo me questo non serve molto
 			"6. Exit\n"
 			"Enter your choice: ";
 	cin >> choice;
