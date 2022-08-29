@@ -310,8 +310,6 @@ Data<T> &Data<T>::set_data(const char *file_path, const int file_col, const int 
 	else if (factory->firstline_is_text(file_path)) Data::data = factory->vector_column<T>(file_path, file_col, 1);
 	else Data::data = factory->vector_column<T>(file_path, file_col, 0);
 
-	std::cout << *this << std::endl;
-
 	delete factory;
 	return *this;
 }

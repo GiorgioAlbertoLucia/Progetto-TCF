@@ -76,6 +76,28 @@ void                        TxtFile::set_path(const char * file_path)
     TxtFile::columns = TxtFile::n_columns();
 }
 
+/**
+ * @brief Get an element from a given string. The function is specialized to extract element from lines of specific files,
+ * taking into account the delimiters used in that format.
+ * 
+ * @param line: line to extract the element from
+ * @param n: element location
+ * @return std::string element
+ */
+std::string TxtFile::get_line_elem(std::string line, const int n) const {
+	std::string str;
+	std::string temp;
+	std::stringstream iss(line);
+	int i = 0;
+	while(iss >> temp)
+	{
+		if(i == n)	str = temp;
+		i++;
+	}
+	return str;
+};
+
+
 
 int                         TxtFile::n_rows()                           const
 {

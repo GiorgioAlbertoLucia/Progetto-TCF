@@ -7,16 +7,16 @@ int main()
 {
     const char * path = "/Users/giogi/Documents/TCF/Progetto/data/test7.csv";
 
-    // Dataset<double> dataset(path);
-    // dataset.describe();
+    Dataset<double> dataset(path, 0);
+    dataset.describe();
 
-    Data<double> d1(path, 0); // d2(path, 1);
-    //Data<double> d3;
-    //d3 = d1 + d2;              // Dovrebbe essere una normalissima somma. Sta facendo qualcosa di diverso. Ho sonno. Vedo domani
-
-    //std::cout << d3[0] << std::endl << dataset[1][2] << std::endl;
+    Data<double> d1(path, 0), d2(path, 1);
+    Data<double> d3;
+    d3 = d1 + d2;              
+    
+    std::cout << d3[0] << std::endl << dataset[1][2] << std::endl;
 
     d1.head();
-    // d2.head();
-    //d3.head();
+    d2.head();
+    d3.head();
 }
