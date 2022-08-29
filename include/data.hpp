@@ -86,8 +86,6 @@ template<class T>
 Data<T> log10(const Data<T> &);
 
 
-
-
 /**
  * @brief Data object. Stores a vector of values and can do basic operations with it. You can load the vector directly from a data file.
  * 
@@ -136,7 +134,8 @@ public:
 
 	// operators
 
-	friend std::ostream &operator<<<T>(std::ostream &, const Data<T> &);
+	friend std::ostream &operator
+	<<<T>(std::ostream &, const Data<T> &);
 
 	friend Data<T> operator+<T>(const Data<T> &, const Data<T> &);
 
@@ -306,8 +305,7 @@ Data<T> &Data<T>::set_data(const char *file_path, const int file_col, const int 
 	if (Data::name == "" && factory->firstline_is_text(file_path)) {
 		Data::data = factory->vector_column<T>(file_path, file_col, 1);
 		Data::name = factory->get_element(file_path, 0, file_col);
-	} 
-	else if (factory->firstline_is_text(file_path)) Data::data = factory->vector_column<T>(file_path, file_col, 1);
+	} else if (factory->firstline_is_text(file_path)) Data::data = factory->vector_column<T>(file_path, file_col, 1);
 	else Data::data = factory->vector_column<T>(file_path, file_col, 0);
 
 	std::cout << *this << std::endl;
@@ -421,8 +419,9 @@ const T Data<T>::mean() const {
 	T mean = sum / Data::size();
 	return mean;
 }
+
 template<>
-inline const std::string Data<std::string>::mean() const{
+inline const std::string Data<std::string>::mean() const {
 	return std::string(" ");
 }
 
@@ -440,8 +439,9 @@ const T Data<T>::std() const {
 
 	return std;
 }
+
 template<>
-inline const std::string Data<std::string>::std() const{
+inline const std::string Data<std::string>::std() const {
 	return std::string(" ");
 }
 
@@ -457,8 +457,9 @@ const T Data<T>::min() const {
 	}
 	return min;
 }
+
 template<>
-inline const std::string Data<std::string>::min() const{
+inline const std::string Data<std::string>::min() const {
 	return std::string(" ");
 }
 
@@ -474,8 +475,9 @@ const T Data<T>::max() const {
 	}
 	return max;
 }
+
 template<>
-inline const std::string Data<std::string>::max() const{
+inline const std::string Data<std::string>::max() const {
 	return std::string(" ");
 }
 
