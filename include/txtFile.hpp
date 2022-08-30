@@ -31,6 +31,7 @@ public:
 	virtual std::string get_path() const { return TxtFile::file_path; };
 	virtual int get_rows() const { return TxtFile::rows; };
 	virtual int get_columns() const { return TxtFile::columns; };
+	virtual std::string get_line_elem(std::string, const int) const;
 	
 	virtual int n_rows() const;
 	virtual int n_columns() const;

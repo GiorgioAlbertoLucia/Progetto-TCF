@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    const char * path = "/Users/giogi/Documents/TCF/Progetto/data/testFit1.txt";
+    const char * path = "/Users/giogi/Documents/TCF/Progetto/data/testFit1.csv";
 
     Dataset<double> dataset;
     dataset.fill(path);

@@ -47,12 +47,13 @@ public:
  * @param input string you want to extraxt words from.
  * @return vector containing single words.
  */
-extern inline std::vector<std::string> split_words(const std::string input) {
+extern inline std::vector<std::string> split_words(const std::string input, char separator = ' ') {
 	std::istringstream ss(input);
 	std::string word;
 	std::vector<std::string> vector;
 
-	while (ss >> word) vector.push_back(word);
+	if(separator == ' ')	while (ss >> word) 						vector.push_back(word);
+	else					while (getline(ss, word, separator)) 	vector.push_back(word);
 
 	return vector;
 }
@@ -107,29 +108,14 @@ inline FileFactory::vector_column(const char *file_path, const int column, const
 		char comma;
 		
 		for (int i = 0; i < beginning; i++) getline(f, row);
-		std::cout << "columns: " << file->get_columns() << std::endl;
 
 		while(getline(f, row))
 		{
-			std::stringstream iss(row);
-
-			for(int i = 0; i < file->get_columns() - beginning; i++)
-			{
-				T column_element;
-				if(file->separator() == ',')	
-				{
-					std::string temp;
-					getline(iss, temp, ',');
-					std::stringstream convert(temp);
-					convert >> column_element;
-				}
-				else							iss >> column_element;
-				if(i == column)	vector.push_back(column_element);
-			}
+			T column_element;
+			std::stringstream convert(file->get_line_elem(row, column));
+			convert >> column_element;
+			vector.push_back(column_element);
 		}
-		std::cout << "vector " << std::endl;
-		for(T item: vector)		std::cout << item << std::endl;
-		std::cout << " " << std::endl;
 
 		f.close();
 	} else std::cout << "Error: unable to open file" << std::endl;
@@ -298,8 +284,10 @@ inline std::string FileFactory::get_element(const char *file_path, const int row
 		f.close();
 	} else std::cerr << "Error: unable to open file" << std::endl;
 
-	std::vector<std::string> words = split_words(str);
-	return words.at(col);
+	std::string word = file->get_line_elem(str, col);
+
+	delete file;
+	return word;
 }
 
 inline bool FileFactory::firstline_is_text(const char *file_path) const {

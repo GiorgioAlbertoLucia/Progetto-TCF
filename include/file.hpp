@@ -17,7 +17,8 @@ public:
 	virtual std::string get_path() const = 0;
 	virtual int get_rows() const = 0;
 	virtual int get_columns() const = 0;
-	
+	virtual std::string get_line_elem(std::string, const int) const = 0;
+
 	virtual int n_rows() const = 0;
 	virtual int n_columns() const = 0;
 

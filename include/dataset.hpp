@@ -183,9 +183,11 @@ Dataset<T> &Dataset<T>::fill(const char *file_path, const int first_column) {
 	File *file = factory->create_file(file_path);
 
 	for (int i = first_column; i < file->get_columns(); i++) {
-		Data<T> d(file_path, i);
-		Dataset::data.push_back(d);
-		Dataset::columns.push_back(d.get_name());
+		
+		Data<T> * d = new Data<T>(file_path, i);
+		Dataset::data.push_back(*d);
+		Dataset::columns.push_back(d->get_name());
+		delete d;
 	}
 
 	delete factory;
