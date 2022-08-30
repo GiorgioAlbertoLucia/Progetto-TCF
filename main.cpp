@@ -1,5 +1,6 @@
 //clang++ -std=c++14 main.cpp src_t/csvFile_t.cpp src_t/txtFile_t.cpp src_t/udouble.cpp src_t/partder.cpp src_t/polyfit.cpp -o main
-// clang++ -std=c++14 main.cpp -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy/core/include/ -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 src/*.cpp -o exe/main
+//clang++ -std=c++14 main.cpp -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy/core/include/ -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 src/*.cpp -o exe/main
+//clang++ -std=c++14 -I /Users/francescomarchisotti/.pyenv/versions/3.10.6/include/python3.10/ -I /Users/francescomarchisotti/.pyenv/versions/3.10.6/lib/python3.10/site-packages/numpy/core/include -L /Users/francescomarchisotti/.pyenv/versions/3.10.6/lib/ -lpython3.10 src/*.cpp main.cpp -o main
 #ifdef _WIN32
 #include <Windows.h>
 const char *CLS = "CLS";
@@ -128,7 +129,7 @@ void inspect(Dataset<double> &dataset) {
 			"2. First n rows\n"
 			"3. Column names\n"
 			"4. Column description\n"
-			"5. size()\n"   // ------------- secondo me questo non serve molto
+			"5. size()\n"   // ------------- secondo me questo non serve molto - sono d'accordo
 			"6. Exit\n"
 			"Enter your choice: ";
 	cin >> choice;
@@ -206,11 +207,15 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 	cout << "Enter column index for y-errors: ";
 	cin >> col_sy;
 
+	vector<double> x = dataset.get_data(col_x).get_data();
+	vector<double> y = dataset.get_data(col_y).get_data();
+	vector<double> sy = dataset.get_data(col_sy).get_data();
+
 	if (fit_exists) {
 		int n_points = 100;	// might need some way to compute this, something like (x_max - x_min) * 100 or something
 		vector<double> xdense, ydense;	// può diventare un array (meglio per le performance)?
-		double x_min = *min_element(dataset.get_data(col_x).get_data().begin(), dataset.get_data(col_x).get_data().end());
-		double x_max = *max_element(dataset.get_data(col_x).get_data().begin(), dataset.get_data(col_x).get_data().end());
+		double x_min = *min_element(x.begin(), x.end());
+		double x_max = *max_element(x.begin(), x.end());
 		for (int i = 0; i < n_points; i++) {
 			xdense.push_back(x_min + i * (x_max - x_min) / 100);	// equivalent to np.linspace(x_min, x_max, n_points)
 			ydense.push_back(0.);
@@ -219,7 +224,7 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 			}
 		}
 		// blocco commentato perché matplotlib ha la mamma
-		//plt::errorbar(); --------- dice che la dichiarazione non va bene, sono da rivedere gli argomenti
+		plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
 		plt::plot(xdense, ydense);
 	
 		//plot formatting shenanigans
@@ -228,7 +233,7 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 		//plt::savefig();   ------- specificare nome del file
 		
 	} else {
-		//plt::errorbar();
+		plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
 	
 		//plot formatting shenanigans
 	
