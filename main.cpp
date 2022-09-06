@@ -16,27 +16,33 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 #include "include/polyfit.hpp"
 #include "include/dataset.hpp"
-#include "matplotlib-cpp-master/matplotlibcpp.h"
+//#include "matplotlib-cpp-master/matplotlibcpp.h"
+
+/*
+#include <TF1.h>
+#include <TGraphErrors.h>
+#include <TCanvas.h>
+#include <TFormula.h>
+*/
+
+
 
 #include <iostream>
 #include <string>
 #include <math.h>
 #include <stdlib.h>
+#include <format>
 
 
 using namespace std;
-namespace plt = matplotlibcpp;
+//namespace plt = matplotlibcpp;
 
 Dataset<double> import_file();
 
 void menu(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
-
 void inspect(Dataset<double> &dataset);
-
 void manipulate(Dataset<double> &dataset);
-
 void fit(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
-
 void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
 
 int main(int argc, char *argv[]) {
@@ -212,6 +218,10 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 	vector<double> y = dataset.get_data(col_y).get_data();
 	vector<double> sy = dataset.get_data(col_sy).get_data();
 
+	// TGraphErrors requires a vector of errors on x
+	vector<double> sx;
+	for(double d: x)	sx.push_back(0.);
+
 	if (fit_exists) {
 		int n_points = 100;	// might need some way to compute this, something like (x_max - x_min) * 100 or something
 		vector<double> xdense, ydense;	// può diventare un array (meglio per le performance)?
@@ -224,22 +234,53 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 				ydense[i] += pars[j] * pow(xdense[i], j);
 			}
 		}
+
+
+		// ROOT
+		/*
+		TCanvas * c = new TCanvas("c", "c", 600, 400);
+		TGraphErrors * g = new TGraphErrors(x.size(), &x[0], &y[0], &sx[0], &sy[0]);
+
+		string formula("");
+		for(int i = 0; i < pars.size(); i++)	
+		{
+			formula += to_string(pars[i]) + " * x^" + to_string(i);
+			if (i != (pars.size() - 1))	formula += " + ";
+		}
+		TF1 * f = new TF1("f", formula.c_str(), x_min, x_max);
+		
+
+		c->cd();
+		g->Draw("ap");
+		f->Draw();
+		c->SaveAs("graphs/output_test.png");
+
+		delete c;
+		delete g;
+		delete f;
+		*/
+
+
+
+
 		// blocco commentato perché matplotlib ha la mamma
-		plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
-		plt::plot(xdense, ydense);
+		//plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
+		//plt::plot(xdense, ydense);
 	
 		//plot formatting shenanigans
 	
-		plt::show();
-		plt::savefig("graphs/output_test.png");  // ------- specificare nome del file
+		//plt::show();
+		//plt::savefig("graphs/output_test.png");  // ------- specificare nome del file
+
+
 		
 	} else {
-		plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
-	
-		//plot formatting shenanigans
-	
-		plt::show();
-		plt::savefig("graphs/output_test.png");
+		//plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
+	//
+		////plot formatting shenanigans
+	//
+		//plt::show();
+		//plt::savefig("graphs/output_test.png");
 		
 	}
 

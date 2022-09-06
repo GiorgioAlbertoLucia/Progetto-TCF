@@ -158,7 +158,7 @@ private:
 };
 
 
-template <> class Data<Udouble>;
+//template <> class Data<Udouble>;
 
 
 
@@ -228,11 +228,11 @@ Data<T>::Data(const char *file_path, const int file_column, const int err_column
  * @param err_column 
  * @param name 
  */
-template<>
-Data<Udouble>::Data(const char *file_path, const int file_column, const int err_column, const char *name)	{
-	set_name(name);
-	set_data(file_path, file_column, err_column);
-}
+//template<>
+//Data<Udouble>::Data(const char *file_path, const int file_column, const int err_column, const char *name)	{
+//	set_name(name);
+//	set_data(file_path, file_column, err_column);
+//}
 /**
  * @brief Copy Constructor. 
  * Construct a new Data:: Data object.
@@ -281,22 +281,22 @@ Data<T> &Data<T>::set_data(const char *file_path, const int file_col, const int 
  * @param file_column 
  * @return Data& 
  */
-template <>
-Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
-{
-    FileFactory * factory = new FileFactory();
-
-    if(Data::name == "" && factory->firstline_is_text(file_path))
-    {
-        Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
-        Data::name = factory->get_element(file_path, 0, file_col);
-    }
-    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
-    else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
-    
-    delete factory;
-    return *this;  
-}
+//template <>
+//Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
+//{
+//    FileFactory * factory = new FileFactory();
+//
+//    if(Data::name == "" && factory->firstline_is_text(file_path))
+//    {
+//        Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+//        Data::name = factory->get_element(file_path, 0, file_col);
+//    }
+//    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+//    else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
+//    
+//    delete factory;
+//    return *this;  
+//}
 
 
 
