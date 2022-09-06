@@ -71,6 +71,9 @@ private:
 
 /**
  * @brief Construct a new Dataset:: Dataset object
+ * IMPORTANT: If the template type is Udouble, a dataset created this way must use files in which each column of errors is placed 
+ * next to the column of values it refers to.
+ * 
  * @param file_path 
  * @param first_column 
  * @param label dataset name (you can leave this blank)
@@ -79,9 +82,11 @@ template<class T>
 Dataset<T>::Dataset(const char *file_path, const int first_column, const char *label) {
 	Dataset::fill(file_path, first_column);
 }
-
 /**
  * @brief Construct a new Dataset:: Dataset object
+ * IMPORTANT: If the template type is Udouble, a dataset created this way must use files in which each column of errors is placed 
+ * next to the column of values it refers to.
+ * 
  * @param file_path 
  * @param first_column 
  * @param label dataset name (you can leave this blank
@@ -91,7 +96,6 @@ Dataset<T>::Dataset(std::string file_path, const int first_column, const char *l
 	const char *char_path = file_path.c_str();
 	Dataset::fill(char_path, first_column);
 }
-
 /**
  * @brief (Copy constructor) Construct a new Dataset:: Dataset object
  * 
@@ -102,7 +106,6 @@ Dataset<T>::Dataset(const Dataset<T> &dataset_object) {
 	Dataset::data = dataset_object.data;
 	Dataset::columns = dataset_object.columns;
 }
-
 /**
  * @brief Destroy the Dataset:: Dataset object
  * 
@@ -146,7 +149,6 @@ const void Dataset<T>::describe() const {
 	std::cout << std::endl;
 
 }
-
 /**
  * @brief Prints first n entries of each data column
  * 
@@ -169,6 +171,8 @@ const void Dataset<T>::head(int n) const {
 	}
 }
 
+
+
 /**
  * @brief Creates a dataset containing Data object. Each object is a data vector filled with elements from a column of a file
  * and its name is directly imported from the file (this is done only if the first line of the file is a string). Sets the
@@ -185,6 +189,35 @@ Dataset<T> &Dataset<T>::fill(const char *file_path, const int first_column) {
 	for (int i = first_column; i < file->get_columns(); i++) {
 		
 		Data<T> * d = new Data<T>(file_path, i);
+		Dataset::data.push_back(*d);
+		Dataset::columns.push_back(d->get_name());
+		delete d;
+	}
+
+	delete factory;
+	delete file;
+	return *this;
+}
+/**
+ * @brief IMPORTANT: Dataset filled this way must use files in which each column of errors is placed next to the column of values it
+ * refers to.
+ * Creates a dataset containing Data object. Each object is a data vector filled with elements from two columns of a file
+ * (values and errors) and its name is directly imported from the file (this is done only if the first line of the file is a string). 
+ * Sets the number of entries in the file.
+ * 
+ * @tparam  
+ * @param file_path 
+ * @param first_column 
+ * @return Dataset<Udouble>& 
+ */
+template <>
+Dataset<Udouble> &Dataset<Udouble>::fill(const char *file_path, const int first_column) {
+	FileFactory *factory = new FileFactory();
+	File *file = factory->create_file(file_path);
+
+	for (int i = first_column; i < file->get_columns()/2; i++) {
+		
+		Data<Udouble> * d = new Data<Udouble>(file_path, 2*i, 2*i+1);
 		Dataset::data.push_back(*d);
 		Dataset::columns.push_back(d->get_name());
 		delete d;

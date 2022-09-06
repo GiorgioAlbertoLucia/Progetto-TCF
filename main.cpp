@@ -191,7 +191,8 @@ void fit(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 	fit_exists = false;	// if unsuccessful fit then there is no available fit
 
 	PolyFit polyfit(dataset.get_data(col_x), dataset.get_data(col_y), dataset.get_data(col_sy), deg);
-	polyfit.fit(pars, deg);
+	polyfit.fit(deg);
+	pars = polyfit.get_parameters();
 	fit_exists = true;
 
 	system(PAUSE);
@@ -230,7 +231,7 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 		//plot formatting shenanigans
 	
 		plt::show();
-		//plt::savefig();   ------- specificare nome del file
+		plt::savefig("graphs/output_test.png");  // ------- specificare nome del file
 		
 	} else {
 		plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
@@ -238,7 +239,7 @@ void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 		//plot formatting shenanigans
 	
 		plt::show();
-		//plt::savefig();
+		plt::savefig("graphs/output_test.png");
 		
 	}
 

@@ -6,14 +6,15 @@
 // clang++ -std=c++14 test/testMPL.cpp -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy/core/include/ -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -lpthread -o exe/testMPL
 
 
-//#include "../matplotlib-cpp-master/matplotlibcpp.h"
+#include "../matplotlib-cpp-master/matplotlibcpp.h"
 
 #include <iostream>
 #include <vector>
 
 using namespace std;
-//namespace plt = matplotlibcpp;
+namespace plt = matplotlibcpp;
 
+/*
 class Prova {
 public:
 	explicit Prova(int n) : n(n) {};
@@ -38,4 +39,36 @@ int main() {
 	f(&prova1, prova2);
 
 	return 0;
+}
+
+*/
+
+
+int main()
+{
+
+	int n = 5000; // 5000 data points
+  	std::vector<double> x(n), y(n), z(n), w(n, 2);
+  	for (int i = 0; i < n; ++i) {
+  	  x.at(i) = i * i;
+  	  y.at(i) = sin(2 * M_PI * i / 360.0);
+  	  z.at(i) = log(i);
+  	}
+
+  	matplotlibcpp::figure(); // declare a new figure (optional if only one is used)
+
+  	//plt::plot(x, y); // automatic coloring: tab:blue
+  	//plt::show(false);
+  	//plt::plot(x, w, "r--");                 // red dashed line
+  	//plt::plot(x, z, {{"label", "log(x)"}}); // legend label "log(x)"
+//
+  	//plt::xlim(0, 1000 * 1000);    // x-axis interval: [0, 1e6]
+  	//plt::title("Standard usage"); // set a title
+  	//plt::legend();                // enable the legend
+//
+  	//plt::savefig("graphs/standard.pdf"); // save the figure
+  	//plt::show();
+
+
+	
 }

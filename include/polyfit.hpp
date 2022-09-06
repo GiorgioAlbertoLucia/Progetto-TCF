@@ -11,33 +11,23 @@
 class PolyFit {
 public:
 	PolyFit() {};
-
 	PolyFit(const std::vector<Udouble>, const std::vector<Udouble>, const int = 1);
-
 	PolyFit(const std::vector<double>, const std::vector<double>, const std::vector<double>, const int = 1);
-
 	PolyFit(Data<double> &, Data<double> &, Data<double> &, const int = 1);
-
 	PolyFit(Data<Udouble> &, Data<Udouble> &, const int = 1);
-
 	PolyFit(const PolyFit &);
-
 	~PolyFit();
 
-	void fit(std::vector<double>, const int = 1);
-
+	void fit(const int = 1);
 	void set_chi();
-
 	void set_pvalue();
 
+	const std::vector<double> get_parameters() const { return coeff; };
 	const double get_parameter(int i) const { return coeff.at(i); };
-
 	const double get_parerror(int i) const { return sqrt(matrix.at(i).at(i)); };
 
 	const double get_chisquared() const { return chi_squared; };
-
 	const double get_pvalue() const { return p_value; };
-
 	const double get_DoF() const { return DoF; };
 
 

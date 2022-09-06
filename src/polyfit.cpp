@@ -140,7 +140,7 @@ PolyFit::~PolyFit() {}
  * 
  * @param polygrade: grade of the polynomial
  */
-void PolyFit::fit(std::vector<double> pars, const int polygrade) {
+void PolyFit::fit(const int polygrade) {
 	
 	PolyFit::polygrade = polygrade;
 	Eigen::VectorXd v;                                  // vector v in documentation
@@ -207,7 +207,6 @@ void PolyFit::fit(std::vector<double> pars, const int polygrade) {
 	for (int i = 0; i < coeff.size(); i++) {
 		printf("p%d", i);
 		std::cout << " = (" << get_parameter(i) << " ± " << get_parerror(i) << ") " << std::endl;
-		pars.push_back(i);
 	}
 	std::cout << "//////////////////////////////////////////////////////" << std::endl << std::endl;
 	std::cout << "chi = " << PolyFit::chi_squared << std::endl;
