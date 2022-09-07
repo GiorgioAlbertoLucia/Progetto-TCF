@@ -144,32 +144,37 @@ inline FileFactory::vector_column(const char *file_path, const int val_col, cons
 		int first_line = file->comment_lines();
 		for (int i = 0; i < first_line; i++) f.ignore(10000, '\n');
 
-		if (val_col >= file->n_columns() || err_col >= file->n_columns()) {
+		if (val_col >= file->get_columns() || err_col >= file->get_columns()) {
 			std::cerr << "Error: column " << std::max(val_col, err_col) << " does not exist. The file has ";
-			std::cout << file->n_columns() << " columns." << std::endl;
+			std::cerr << file->n_columns() << " columns." << std::endl;
 			return vector;
 		}
 
 		// skip lines
 		std::string row;
+		char comma;
+		
 		for (int i = 0; i < beginning; i++) getline(f, row);
 
-		while (getline(f, row)) {
-			std::istringstream iss(row);
-			double column_value, column_error;
-			if (val_col < err_col) {
-				for (int i = 0; i <= val_col; i++) iss >> column_value;
-				for (int i = val_col; i <= err_col; i++) iss >> column_error;
-			}
-			if (err_col < val_col) {
-				for (int i = 0; i <= err_col; i++) iss >> column_error;
-				for (int i = err_col; i <= val_col; i++) iss >> column_value;
-			}
-			Udouble u(column_value, column_error);
+		while(getline(f, row))
+		{
+			double value_element, error_element;
+			std::stringstream convert_value(file->get_line_elem(row, val_col));
+			std::stringstream convert_error(file->get_line_elem(row, err_col));
+
+			convert_value >> value_element;
+			convert_error >> error_element; 
+
+			Udouble u(value_element, error_element);
+			std::cout << "pushback" << std::endl;
 			vector.push_back(u);
 		}
+		
+
 		f.close();
 	} else std::cout << "Error: unable to open file" << std::endl;
+
+	delete file;
 	return vector;
 }
 

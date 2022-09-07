@@ -158,8 +158,37 @@ private:
 };
 
 
-//template <> class Data<Udouble>;
 
+
+
+//////////////////////////////////////////////////
+//          TEMPLATE SPECIALIZATION             //
+//////////////////////////////////////////////////
+
+
+template <>
+inline Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col);
+
+
+template<>
+inline const double Data<std::string>::mean() const;
+template<>
+inline const double Data<Udouble>::mean() const;
+
+template<>
+inline const double Data<std::string>::std() const;
+template<>
+inline const double Data<Udouble>::std() const;
+
+template<>
+inline const double Data<std::string>::min() const;
+template<>
+inline const double Data<Udouble>::min() const;
+
+template<>
+inline const double Data<std::string>::max() const;
+template<>
+inline const double Data<Udouble>::max() const;
 
 
 
@@ -194,7 +223,7 @@ inline void print_element(float element, const char separator, const int width, 
 
 
 
-/*  FUNCTIONS FROM HEADER FILE  */
+/*  MEMBER FUNCTIONS  */
 
 /**
  * @brief Construct a new Data:: Data object.
@@ -218,8 +247,7 @@ Data<T>::Data(const char *file_path, const int file_column, const char *name) {
 	set_name(name);
 	set_data(file_path, file_column);
 }
-template<class T>
-Data<T>::Data(const char *file_path, const int file_column, const int err_column, const char *name){};
+
 /**
  * @brief Specific constructor for Udouble templates
  * 
@@ -228,11 +256,11 @@ Data<T>::Data(const char *file_path, const int file_column, const int err_column
  * @param err_column 
  * @param name 
  */
-//template<>
-//Data<Udouble>::Data(const char *file_path, const int file_column, const int err_column, const char *name)	{
-//	set_name(name);
-//	set_data(file_path, file_column, err_column);
-//}
+template<>
+inline Data<Udouble>::Data(const char *file_path, const int file_column, const int err_column, const char *name)	{
+	set_name(name);
+	set_data(file_path, file_column, err_column);
+}
 /**
  * @brief Copy Constructor. 
  * Construct a new Data:: Data object.
@@ -281,22 +309,24 @@ Data<T> &Data<T>::set_data(const char *file_path, const int file_col, const int 
  * @param file_column 
  * @return Data& 
  */
-//template <>
-//Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
-//{
-//    FileFactory * factory = new FileFactory();
-//
-//    if(Data::name == "" && factory->firstline_is_text(file_path))
-//    {
-//        Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
-//        Data::name = factory->get_element(file_path, 0, file_col);
-//    }
-//    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
-//    else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
-//    
-//    delete factory;
-//    return *this;  
-//}
+template <>
+inline Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col)
+{
+    FileFactory * factory = new FileFactory();
+
+    if(Data::name == "" && factory->firstline_is_text(file_path))
+    {
+        Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+        Data::name = factory->get_element(file_path, 0, file_col);
+    }
+    else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
+    else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
+    
+	std::cout << "v_col: " << file_col << "e_col: " << err_col << std::endl;
+
+    delete factory;
+    return *this;  
+}
 
 
 
@@ -382,7 +412,7 @@ inline const double Data<std::string>::mean() const {
 	return 0.;
 }
 template<>
-const double Data<Udouble>::mean() const {
+inline const double Data<Udouble>::mean() const {
 	std::vector<double> temp;
 	for(Udouble i: Data::data)	temp.push_back(i.get_value());
 	double sum = std::accumulate(temp.begin(), temp.end(), 0.0);
@@ -431,7 +461,7 @@ inline const double Data<std::string>::min() const {
 	return 0.;
 }
 template<>
-const double Data<Udouble>::min() const {
+inline const double Data<Udouble>::min() const {
 	double min = Data::data.front().get_value();
 	for (Udouble i: Data::data) if (min > i.get_value())	min = i.get_value();
 	return double(min);
@@ -452,7 +482,7 @@ inline const double Data<std::string>::max() const {
 	return 0.;
 }
 template<>
-const double Data<Udouble>::max() const {
+inline const double Data<Udouble>::max() const {
 	double max = Data::data.front().get_value();
 	for (Udouble i: Data::data) if (max < i.get_value())	max = i.get_value();
 	return max;
@@ -705,5 +735,10 @@ Data<T> log10(const Data<T> &data1) {
 
 	return data;
 }
+
+
+
+
+
 
 #endif

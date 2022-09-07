@@ -12,6 +12,7 @@ int main()
     Dataset<Udouble> dataset;
     dataset.fill(path);
     dataset.describe();
+    dataset.head();
 
     PolyFit polyfit(dataset[0], dataset[1]);
     polyfit.fit();

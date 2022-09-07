@@ -9,7 +9,7 @@ int Udouble::count = 0;
 std::ostream &operator<<(std::ostream &out, const Udouble &udouble) {
 	//if(udouble.get_format()){return out;}
 	//else
-	return out << udouble.get_label() << " = " << udouble.get_value() << " ± " << udouble.get_error();
+	return out << udouble.get_value() << " ± " << udouble.get_error();
 }
 
 Udouble sin(const Udouble &udouble) {
@@ -24,7 +24,6 @@ Udouble sin(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble cos(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -37,7 +36,6 @@ Udouble cos(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble tan(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -50,7 +48,6 @@ Udouble tan(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble sinh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -63,7 +60,6 @@ Udouble sinh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble cosh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -76,7 +72,6 @@ Udouble cosh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble tanh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -89,7 +84,6 @@ Udouble tanh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble asin(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -102,7 +96,6 @@ Udouble asin(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble acos(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -115,7 +108,6 @@ Udouble acos(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble atan(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -128,7 +120,6 @@ Udouble atan(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble asinh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -141,7 +132,6 @@ Udouble asinh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble acosh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -154,7 +144,6 @@ Udouble acosh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble atanh(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -167,7 +156,6 @@ Udouble atanh(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble exp(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -180,7 +168,6 @@ Udouble exp(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble pow(const Udouble &udouble, const double n) {
 	Udouble result;
 	Udouble::count--;
@@ -193,7 +180,6 @@ Udouble pow(const Udouble &udouble, const double n) {
 
 	return result;
 }
-
 Udouble pow(const Udouble &udouble, const int n) {
 	Udouble result;
 	Udouble::count--;
@@ -206,7 +192,6 @@ Udouble pow(const Udouble &udouble, const int n) {
 
 	return result;
 }
-
 Udouble pow(const Udouble &udouble, const Udouble &n) {
 	Udouble result;
 	Udouble::count--;
@@ -223,7 +208,6 @@ Udouble pow(const Udouble &udouble, const Udouble &n) {
 
 	return result;
 }
-
 Udouble log(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -236,7 +220,6 @@ Udouble log(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble log10(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -251,10 +234,12 @@ Udouble log10(const Udouble &udouble) {
 }
 
 
+
+
+
 Udouble::Udouble() {
 	count++;
 }
-
 Udouble::Udouble(const double value, const double error, const char *label) {
 	count++;
 	PartDer p(value, label);
@@ -263,7 +248,6 @@ Udouble::Udouble(const double value, const double error, const char *label) {
 
 	Udouble::label += Udouble::value.get_label();
 }
-
 Udouble::Udouble(const PartDer &value, const double error) {
 	count++;
 
@@ -272,37 +256,25 @@ Udouble::Udouble(const PartDer &value, const double error) {
 
 	Udouble::label += value.get_label();
 }
-
 /**
  * @brief Copy Constructor.
  * Construct a new Udouble:: Udouble object 
  * @param udouble 
  */
 Udouble::Udouble(const Udouble &udouble) {
-	std::cout << "yuppi " << std::endl;
+	
 	count++;
-	Udouble::value = udouble.get_partder();
-
-	double err = 0;
-	std::cout << std::endl << std::endl << "Setting error..." << std::endl;
-	for (std::map<std::string, double>::const_iterator i = Udouble::errors.begin(); i != Udouble::errors.end(); i++) {
-		std::cout << "error: " << err << std::endl;
-		std::cout << "error in map: " << i->second << std::endl;
-		std::map<std::string, double> m = udouble.value.get_df();
-		if (m.find(i->first) != m.end()) {
-			err += pow(i->second * m.at(i->first), 2);
-			std::cout << "part der in map: " << m.at(i->first) << std::endl;
-		}
-	}
-	std::cout << std::endl << std::endl;
-	Udouble::error = sqrt(err);
-
-	Udouble::label = std::string("");
-	for (int i = 0; i < count; i++) Udouble::label += "u";
-
-	std::map<std::string, double> m{{Udouble::label, 1},};
-	Udouble::value.set_df(m);
+	std::cout << "e: " << udouble.error << std::endl;
+	Udouble::value = udouble.value;
+	Udouble::error = udouble.error;
+	Udouble::errors = udouble.errors;
+	Udouble::label = udouble.label;
 }
+
+
+
+
+
 
 Udouble &Udouble::autoset_label() {
 	std::map<std::string, double> m = Udouble::value.get_df();
@@ -311,6 +283,9 @@ Udouble &Udouble::autoset_label() {
 			Udouble::label = i->first;
 	return *this;
 }
+
+
+
 
 /**
  * @brief General functioning of overloaded operators (and math functions). Operation is performed on the PartDer object, so that the 
@@ -339,7 +314,6 @@ Udouble Udouble::operator+(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble Udouble::operator-(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -356,7 +330,6 @@ Udouble Udouble::operator-(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble Udouble::operator*(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -373,7 +346,6 @@ Udouble Udouble::operator*(const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble Udouble::operator/(const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -405,7 +377,6 @@ Udouble operator*(const double c, const Udouble &udouble)                       
 
 	return result;
 }
-
 Udouble operator/(const double c, const Udouble &udouble) {
 	Udouble result;
 	Udouble::count--;
@@ -418,7 +389,6 @@ Udouble operator/(const double c, const Udouble &udouble) {
 
 	return result;
 }
-
 Udouble operator/(const Udouble &udouble, const double c) {
 	Udouble result;
 	Udouble::count--;
@@ -432,22 +402,17 @@ Udouble operator/(const Udouble &udouble, const double c) {
 	return result;
 }
 
+
+
 Udouble &Udouble::operator=(const Udouble &udouble) noexcept {
 	if (this == &udouble) return *this;
-	std::cout << "yay" << std::endl;
 
 	Udouble::value = udouble.get_partder();
 
 	double err = 0;
-	std::cout << std::endl << std::endl << "Setting error..." << std::endl;
 	for (std::map<std::string, double>::const_iterator i = udouble.errors.begin(); i != udouble.errors.end(); i++) {
-		std::cout << "error: " << err << std::endl;
-		std::cout << "error in map: " << i->second << std::endl;
 		std::map<std::string, double> m = udouble.value.get_df();
-		if (m.find(i->first) != m.end()) {
-			err += pow(i->second * m.at(i->first), 2);
-			std::cout << "part der in map: " << m.at(i->first) << std::endl;
-		}
+		if (m.find(i->first) != m.end())	err += pow(i->second * m.at(i->first), 2);
 	}
 	Udouble::error = sqrt(err);
 
@@ -459,7 +424,6 @@ Udouble &Udouble::operator=(const Udouble &udouble) noexcept {
 
 	return *this;
 }
-
 bool Udouble::operator==(const Udouble &udouble) {
 	if (Udouble::value.get_f() == udouble.get_value() && Udouble::error == udouble.get_error()) return true;
 	else return false;
