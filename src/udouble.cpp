@@ -264,7 +264,6 @@ Udouble::Udouble(const PartDer &value, const double error) {
 Udouble::Udouble(const Udouble &udouble) {
 	
 	count++;
-	std::cout << "e: " << udouble.error << std::endl;
 	Udouble::value = udouble.value;
 	Udouble::error = udouble.error;
 	Udouble::errors = udouble.errors;

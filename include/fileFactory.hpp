@@ -166,7 +166,6 @@ inline FileFactory::vector_column(const char *file_path, const int val_col, cons
 			convert_error >> error_element; 
 
 			Udouble u(value_element, error_element);
-			std::cout << "pushback" << std::endl;
 			vector.push_back(u);
 		}
 		

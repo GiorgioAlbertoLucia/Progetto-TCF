@@ -9,15 +9,39 @@ int main()
 {
     const char * path = "/Users/giogi/Documents/TCF/Progetto/data/testFit1.txt";
 
-    Dataset<Udouble> dataset;
-    dataset.fill(path);
-    dataset.describe();
-    dataset.head();
+    std::string option("udouble");
 
-    PolyFit polyfit(dataset[0], dataset[1]);
-    polyfit.fit();
+    if (option == std::string("udouble"))
+    {
+        
+        Dataset<Udouble> dataset;
+        dataset.fill(path);
+        dataset.head();
+
+        Data<Udouble> data;
+        data = dataset[0] + dataset[1];
+        data.head();
+        
+        //PolyFit polyfit(dataset[0], dataset[1]);
+        //polyfit.fit();
+    }
+
+    if (option == std::string("double"))
+    {
+        Dataset<double> dataset;
+        dataset.fill(path);
+        dataset.describe();
+        dataset.head();
+
+        Data<double> data;
+        data = dataset[0] + dataset[2];
+        data.head();
+
+        //PolyFit polyfit(dataset[0], dataset[2], dataset[3]);
+        //polyfit.fit();
+
+    }
+
     
-
-
     return 0;
 }

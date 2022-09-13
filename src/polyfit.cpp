@@ -92,9 +92,9 @@ PolyFit::PolyFit(Data <Udouble> &x, Data <Udouble> &y, const int polygrade)
 
 	PolyFit::n = x.size();
 
-	for (int i = 0; i < x.size(); i++) PolyFit::x.push_back(x.at(i).get_value());
-	for (int i = 0; i < y.size(); i++) PolyFit::y.push_back(y.at(i).get_value());
-	for (int i = 0; i < y.size(); i++) PolyFit::sy.push_back(y.at(i).get_error());
+	for (int i = 0; i < x.size(); i++) 	PolyFit::x.push_back(x.at(i).get_value());
+	for (int i = 0; i < y.size(); i++)	PolyFit::y.push_back(y.at(i).get_value());
+	for (int i = 0; i < y.size(); i++)	PolyFit::sy.push_back(y.at(i).get_error());
 
 	// avoid division by zero
 	double min = sy.at(0);
@@ -231,15 +231,11 @@ void PolyFit::set_chi()
 	std::vector<double> sum_elem, yfit;
 	for (int k = 0; k < n; k++) 
 	{
+		yfit_vec(k) = 0;
 		for (int i = 0; i < polygrade + 1; i++) yfit_vec(k) += PolyFit::coeff.at(i) * pow(x_vec(k), i);
-		yfit.push_back(yfit_vec(k));
 		double num = y_vec(k) - yfit_vec(k);
 		sum_elem.push_back(pow(num, 2) / pow(sy_vec(k), 2));
 	}
-	
-	//std::cout << "check sum elem for chi" << std::endl;
-	//for (int i = 0; i < n; i++) std::cout << sum_elem.at(i) << std::endl;
-	//std::cout << std::endl;
 
 	PolyFit::chi_squared = std::accumulate(sum_elem.begin(), sum_elem.end(), 0.);	
 }

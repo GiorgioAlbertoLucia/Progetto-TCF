@@ -10,58 +10,77 @@
 #include <string>
 #include <numeric>
 #include <functional>
+#include <random>
 
 
 /* TEMPLATE DECLARATION */
 
 template<class T>
 class Data;
+
 template<class T>
 std::ostream &operator<<(std::ostream &, const Data<T> &);
 template<class T>
-Data<T> operator+(const Data<T> &, const Data<T> &);
+Data<T> operator+(Data<T> , Data<T> );
 template<class T>
-Data<T> operator-(const Data<T> &, const Data<T> &);
+Data<T> operator-(Data<T> , Data<T> );
 template<class T>
-Data<T> operator*(const double, const Data<T> &);                                 // multiply by a scalar
+Data<T> operator*(Data<T> , Data<T> );
 template<class T>
-Data<T> operator*(const int, const Data<T> &);
+Data<T> operator*(double, Data<T> );                                 // multiply by a scalar
 template<class T>
-Data<T> sin(const Data<T> &);
+Data<T> operator*(int, Data<T> );
 template<class T>
-Data<T> cos(const Data<T> &);
+Data<T> operator*(Data<T> , const int);                                 // multiply by a scalar
 template<class T>
-Data<T> tan(const Data<T> &);
+Data<T> operator*(const int, Data<T>);   
 template<class T>
-Data<T> sinh(const Data<T> &);
+Data<T> operator*(Data<T> , const double);
 template<class T>
-Data<T> cosh(const Data<T> &);
+Data<T> operator*(const double, Data<T>);
 template<class T>
-Data<T> tanh(const Data<T> &);
+Data<T> operator/(Data<T> , Data<T> );
 template<class T>
-Data<T> asin(const Data<T> &);
+Data<T> operator/(Data<T> , const int);
 template<class T>
-Data<T> acos(const Data<T> &);
+Data<T> operator/(Data<T> , const double);
+
 template<class T>
-Data<T> atan(const Data<T> &);
+Data<T> sin(Data<T> );
 template<class T>
-Data<T> asinh(const Data<T> &);
+Data<T> cos(Data<T> );
 template<class T>
-Data<T> acosh(const Data<T> &);
+Data<T> tan(Data<T> );
 template<class T>
-Data<T> atanh(const Data<T> &);
+Data<T> sinh(Data<T> );
 template<class T>
-Data<T> exp(const Data<T> &);
+Data<T> cosh(Data<T> );
 template<class T>
-Data<T> pow(const Data<T> &, const double);
+Data<T> tanh(Data<T> );
 template<class T>
-Data<T> pow(const Data<T> &, const int);
+Data<T> asin(Data<T> );
 template<class T>
-Data<T> pow(const Data<T> &, const Data<T> &);
+Data<T> acos(Data<T> );
 template<class T>
-Data<T> log(const Data<T> &);
+Data<T> atan(Data<T> );
 template<class T>
-Data<T> log10(const Data<T> &);
+Data<T> asinh(Data<T> );
+template<class T>
+Data<T> acosh(Data<T> );
+template<class T>
+Data<T> atanh(Data<T> );
+template<class T>
+Data<T> exp(Data<T> );
+template<class T>
+Data<T> pow(Data<T> , const double);
+template<class T>
+Data<T> pow(Data<T> , const int);
+template<class T>
+Data<T> pow(Data<T> , Data<T> );
+template<class T>
+Data<T> log(Data<T> );
+template<class T>
+Data<T> log10(Data<T> );
 
 
 /**
@@ -82,7 +101,10 @@ public:
 
 	// setter / getter	
 	inline Data<T> &set_data(const char *, const int, const int = 0);
-	//inline Data<Udouble> &set_data(const char *, const int, const int = 0);
+	inline Data<T> &set_data(const std::vector<T> data) {
+		Data::data = data;
+		return *this;
+	};
 	inline Data<T> &set_name(const char *name = "") {
 		Data::name = std::string(name);
 		return *this;
@@ -96,6 +118,9 @@ public:
 
 	inline int size() const { return Data::data.size(); };
 	inline T &at(const int i) { return Data::data.at(i); };
+
+	inline std::vector<double> values();
+	inline std::vector<double> errors();
 
 	inline Data<T> &add(const T &element) {
 		Data::data.push_back(element);
@@ -111,30 +136,36 @@ public:
 	friend std::ostream &operator
 	<<<T>(std::ostream &, const Data<T> &);
 
-	friend Data<T> operator+<T>(const Data<T> &, const Data<T> &);
-	friend Data<T> operator-<T>(const Data<T> &, const Data<T> &);
+	friend Data<T> operator+<T>(Data<T> , Data<T> );
+	friend Data<T> operator-<T>(Data<T> , Data<T> );
 
-	friend Data<T> operator*<T>(const double, const Data<T> &);                                 // multiply by a scalar
-	friend Data<T> operator*<T>(const int, const Data<T> &);
+	friend Data<T> operator*<T>(Data<T> , Data<T> );
+	friend Data<T> operator*<T>(Data<T> , const int);   
+	friend Data<T> operator*<T>(const int n, Data<T> data)		{ return data * n; };                             
+	friend Data<T> operator*<T>(Data<T> , const double);
+	friend Data<T> operator*<T>(const double n, Data<T> data) 	{ return data * n; };
+	friend Data<T> operator/<T>(Data<T> , Data<T> );
+	friend Data<T> operator/<T>(Data<T> , const int);
+	friend Data<T> operator/<T>(Data<T> , const double);
 
-	friend Data<T> sin<T>(const Data<T> &);
-	friend Data<T> cos<T>(const Data<T> &);
-	friend Data<T> tan<T>(const Data<T> &);
-	friend Data<T> sinh<T>(const Data<T> &);
-	friend Data<T> cosh<T>(const Data<T> &);
-	friend Data<T> tanh<T>(const Data<T> &);
-	friend Data<T> asin<T>(const Data<T> &);
-	friend Data<T> acos<T>(const Data<T> &);
-	friend Data<T> atan<T>(const Data<T> &);
-	friend Data<T> asinh<T>(const Data<T> &);
-	friend Data<T> acosh<T>(const Data<T> &);
-	friend Data<T> atanh<T>(const Data<T> &);
-	friend Data<T> exp<T>(const Data<T> &);
-	friend Data<T> pow<T>(const Data<T> &, const double);
-	friend Data<T> pow<T>(const Data<T> &, const int);
-	friend Data<T> pow<T>(const Data<T> &, const Data<T> &);
-	friend Data<T> log<T>(const Data<T> &);
-	friend Data<T> log10<T>(const Data<T> &);
+	friend Data<T> sin<T>(Data<T> );
+	friend Data<T> cos<T>(Data<T> );
+	friend Data<T> tan<T>(Data<T> );
+	friend Data<T> sinh<T>(Data<T> );
+	friend Data<T> cosh<T>(Data<T> );
+	friend Data<T> tanh<T>(Data<T> );
+	friend Data<T> asin<T>(Data<T> );
+	friend Data<T> acos<T>(Data<T> );
+	friend Data<T> atan<T>(Data<T> );
+	friend Data<T> asinh<T>(Data<T> );
+	friend Data<T> acosh<T>(Data<T> );
+	friend Data<T> atanh<T>(Data<T> );
+	friend Data<T> exp<T>(Data<T> );
+	friend Data<T> pow<T>(Data<T> , const double);
+	friend Data<T> pow<T>(Data<T> , const int);
+	friend Data<T> pow<T>(Data<T> , Data<T> );
+	friend Data<T> log<T>(Data<T> );
+	friend Data<T> log10<T>(Data<T> );
 
 	bool operator==(const Data &);
 	bool operator!=(const Data &itself) { return !(*this == itself); };
@@ -143,6 +174,8 @@ public:
 	Data<T> operator^(const int n) { return pow(*this, n); };
 	Data<T> operator^(const double n) { return pow(*this, n); };
 	Data<T> operator^(const Data<T> &n) { return pow(*this, n); };
+
+	inline Data<T>& add_noise(const double, const double);
 
 	// statistical functions
 
@@ -169,6 +202,15 @@ private:
 template <>
 inline Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int file_col, const int err_col);
 
+template <> 
+inline Udouble& Data<Udouble>::at(const int);
+
+
+
+template <> 
+inline Udouble& Data<Udouble>::operator[](int n);
+
+
 
 template<>
 inline const double Data<std::string>::mean() const;
@@ -189,6 +231,9 @@ template<>
 inline const double Data<std::string>::max() const;
 template<>
 inline const double Data<Udouble>::max() const;
+
+
+
 
 
 
@@ -217,6 +262,12 @@ inline void print_element(double element, const char separator, const int width,
 
 template<>
 inline void print_element(float element, const char separator, const int width, const int lenght) {
+	std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed
+			  << element << "\t";
+}
+
+template<>
+inline void print_element(Udouble element, const char separator, const int width, const int lenght) {
 	std::cout << std::left << std::setw(width) << std::setfill(separator) << std::setprecision(lenght) << std::fixed
 			  << element << "\t";
 }
@@ -322,7 +373,6 @@ inline Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int 
     else if(factory->firstline_is_text(file_path))  Data::data = factory->vector_column<Udouble>(file_path, file_col, 1, err_col);
     else                                            Data::data = factory->vector_column<Udouble>(file_path, file_col, 0, err_col); 
     
-	std::cout << "v_col: " << file_col << "e_col: " << err_col << std::endl;
 
     delete factory;
     return *this;  
@@ -378,8 +428,24 @@ void Data<T>::head(const int n) const {
 	}
 }
 
+template <>
+inline Udouble& Data<Udouble>::at(const int n) {
+	return Data::data.at(n);
+}
 
+template <>
+inline std::vector<double> Data<Udouble>::values() {
+	std::vector<double> vector;
+	for (Udouble u: Data::data)	vector.push_back(u.get_value());
+	return vector;
+}
 
+template <>
+inline std::vector<double> Data<Udouble>::errors() {
+	std::vector<double> vector;
+	for (Udouble u: Data::data)	vector.push_back(u.get_error());
+	return vector;
+}
 
 // operators
 
@@ -394,6 +460,10 @@ bool Data<T>::operator==(const Data<T> &data2) {
 	}
 }
 
+template <>
+inline Udouble& Data<Udouble>::operator[](const int n) {
+	return Data::at(n);
+}
 
 // statistical functions
 
@@ -489,6 +559,35 @@ inline const double Data<Udouble>::max() const {
 }
 
 
+/**
+ * @brief Add gaussian noise to the data vector
+ * 
+ * @tparam T 
+ * @return Data<T> 
+ */
+template <class T>
+inline Data<T>& Data<T>::add_noise(const double mean, const double stddev) {
+	std::default_random_engine generator;
+	std::normal_distribution<T> dist(mean, stddev);
+	
+	for (int i = 0; i < Data::size(); i++) 	Data::data[i] = Data::data[i] + dist(generator);
+	return *this;
+}
+template <>
+inline Data<Udouble>& Data<Udouble>::add_noise(const double mean, const double stddev) {
+	std::default_random_engine generator;
+	std::normal_distribution<double> dist(mean, stddev);
+
+	for (int i = 0; i < Data::size(); i++)
+	{
+		Udouble u;
+		Udouble w(dist(generator), 0.);
+		Data::data[i] = Data::data[i] + w;
+	}
+	return *this;
+}
+
+
 
 // friend functions
 
@@ -506,233 +605,388 @@ std::ostream &operator<<(std::ostream &out, const Data<T> &data) {
 
 
 template<class T>
-Data<T> operator+(const Data<T> &data1, const Data<T> &data2) {
-	assert(data1.data.size() == data2.data.size());
+Data<T> operator+(Data<T> data1, Data<T> data2) {
+	assert(data1.size() == data2.size());
 
 	Data<T> data;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	std::transform(data1.data.begin(), data1.data.end(), data2.data.begin(), std::back_inserter(data.data),
-				   std::plus<T>());
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] + data2[i];
+		data.data.push_back(t);
+	}
 	return data;
 }
 template<class T>
-Data<T> operator-(const Data<T> &data1, const Data<T> &data2) {
-	assert(data1.data.size() == data2.data.size());
+Data<T> operator-(Data<T> data1, Data<T> data2) {
+	assert(data1.size() == data2.size());
 
 	Data<T> data;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	std::transform(data1.data.begin(), data1.data.end(), data2.data.begin(), std::back_inserter(data.data),
-				   std::minus<T>());
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] - data2[i];
+		data.data.push_back(t);
+	}
 	return data;
 }
 template<class T>
-Data<T> operator*(const Data<T> &data1, const double scalar) {
+Data<T> operator*(Data<T> data1, Data<T> data2) {
+	assert(data1.size() == data2.size());
 	Data<T> data;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
 
-	for (int i = 0; i < data1.data.size(); i++) data[i] = data1[i] * scalar;
-
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] * data2[i];
+		data.data.push_back(t);
+	}
 	return data;
 }
 template<class T>
-Data<T> operator*(const Data<T> &data1, const int scalar) {
+Data<T> operator*(Data<T> data1, const double scalar) {
 	Data<T> data;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
 
-	for (int i = 0; i < data1.data.size(); i++) data[i] = data1[i] * scalar;
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] * scalar;
+		data.data.push_back(t);
+	}
+	return data;
+}
+template<class T>
+Data<T> operator*(Data<T> data1, const int scalar) {
+	Data<T> data;
+	data.name = data1.name;
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = scalar * data1[i];
+		std::cout << t << " " << data1[i] << std::endl;
+		data.data.push_back(t);
+	}
+	return data;
+}
+template<class T>
+Data<T> operator/(Data<T> data1, Data<T> data2) {
+	assert(data1.size() == data2.size());
+	Data<T> data;
+	data.name = data1.name;
 
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] / data2[i];
+		data.data.push_back(t);
+	}
+	return data;
+}
+template<class T>
+Data<T> operator/(Data<T> data1, const double scalar) {
+	Data<T> data;
+	data.name = data1.name;
+
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] / scalar;
+		data.data.push_back(t);
+	}
+	return data;
+}
+template<class T>
+Data<T> operator/(Data<T> data1, const int scalar) {
+	Data<T> data;
+	data.name = data1.name;
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = data1[i] / scalar;
+		data.data.push_back(t);
+	}
 	return data;
 }
 
 
+
 template<class T>
-Data<T> sin(const Data<T> &data1) {
+Data<T> sin(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = sin(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = sin(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> cos(const Data<T> &data1) {
+Data<T> cos(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = cos(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = cos(data1[i]);
+		data.data.push_back(t);
+	}
 	return data;
 }
 template<class T>
-Data<T> tan(const Data<T> &data1) {
+Data<T> tan(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = tan(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = tan(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> sinh(const Data<T> &data1) {
+Data<T> sinh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = sinh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = sinh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> cosh(const Data<T> &data1) {
+Data<T> cosh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = cosh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = cosh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> tanh(const Data<T> &data1) {
+Data<T> tanh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = tanh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = tanh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> asin(const Data<T> &data1) {
+Data<T> asin(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = asin(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = asin(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> acos(const Data<T> &data1) {
+Data<T> acos(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = acsos(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = acos(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> atan(const Data<T> &data1) {
+Data<T> atan(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = atan(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = atan(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> asinh(const Data<T> &data1) {
+Data<T> asinh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = asinh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = asinh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> acosh(const Data<T> &data1) {
+Data<T> acosh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = acosh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = acosh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> atanh(const Data<T> &data1) {
+Data<T> atanh(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = atanh(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = atanh(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> exp(const Data<T> &data1) {
+Data<T> exp(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = exp(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = exp(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> pow(const Data<T> &data1, const double n) {
+Data<T> pow(Data<T> data1, const double n) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = pow(data1[i], n);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = pow(data1[i], n);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> pow(const Data<T> &data1, const int n) {
+Data<T> pow(Data<T> data1, const int n) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = pow(data1[i], n);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = pow(data1[i], n);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> pow(const Data<T> &data1, const Data<T> &data2) {
-	assert(data1.data.size() == data2.data.size());
+Data<T> pow(const Data<T> data1, Data<T> data2) {
+	assert(data1.size() == data2.size());
 
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = pow(data1[i], data2[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = pow(data1[i], data2[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> log(const Data<T> &data1) {
+Data<T> log(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = log(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = log(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 template<class T>
-Data<T> log10(const Data<T> &data1) {
+Data<T> log10(Data<T> data1) {
 	Data<T> data;
+	std::vector<T> vector;
 	data.name = data1.name;
-	data.data.reserve(data1.data.size());
-
-	for (int i = 0; i < data1.data.size(); i++) data[i] = log10(data1[i]);
-
+	
+	for(int i = 0; i < data1.size(); i++) 
+	{
+		T t;
+		t = log10(data1[i]);
+		vector.push_back(t);
+	}
+	data.data = vector;
 	return data;
 }
 

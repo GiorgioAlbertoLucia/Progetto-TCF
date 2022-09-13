@@ -28,7 +28,8 @@ int main() {
 
 	// Metodo corretto
 	Udouble z;
-	z = x + y;
+	z = 5 * y;
+	cout << x << " " << y << " " << z << endl;
 
 //    // Metodo sbagliato
 //    Udouble w = x + y;

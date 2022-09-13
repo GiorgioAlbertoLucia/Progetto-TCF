@@ -11,7 +11,6 @@ PartDer::PartDer() {
 	PartDer::label = std::string("");
 	for (int i = 0; i < count; i++) PartDer::label += "p";
 }
-
 PartDer::PartDer(const double x, const char *label) {
 	count++;
 	PartDer::f = x;
@@ -19,7 +18,6 @@ PartDer::PartDer(const double x, const char *label) {
 	if (PartDer::label == "") for (int i = 0; i < count; i++) PartDer::label += "p";
 	PartDer::df = {{PartDer::label, 1.},};
 }
-
 PartDer::PartDer(const double x, const std::map<std::string, double> df, const char *label) {
 	count++;
 	PartDer::f = x;
@@ -32,7 +30,6 @@ PartDer::PartDer(const double x, const std::map<std::string, double> df, const c
 	else PartDer::label = std::string(label);
 	if (PartDer::label == "") for (int i = 0; i < count; i++) PartDer::label += "p";
 }
-
 PartDer::PartDer(const PartDer &derivative) {
 	count++;
 	PartDer::f = derivative.f;
@@ -43,6 +40,8 @@ PartDer::PartDer(const PartDer &derivative) {
 	set_label(label);
 
 }
+
+
 
 PartDer PartDer::operator+(const PartDer &g) {
 	PartDer h;
@@ -67,7 +66,6 @@ PartDer PartDer::operator+(const PartDer &g) {
 
 	return h;
 }
-
 PartDer PartDer::operator-(const PartDer &g) {
 	PartDer h;
 	h.f = PartDer::f - g.f;
@@ -88,7 +86,6 @@ PartDer PartDer::operator-(const PartDer &g) {
 
 	return h;
 }
-
 PartDer PartDer::operator*(const PartDer &g) {
 	PartDer h;
 	h.f = PartDer::f * g.f;
@@ -111,7 +108,6 @@ PartDer PartDer::operator*(const PartDer &g) {
 
 	return h;
 }
-
 PartDer PartDer::operator/(const PartDer &g) {
 	PartDer h;
 	h.f = PartDer::f / g.f;
@@ -135,6 +131,8 @@ PartDer PartDer::operator/(const PartDer &g) {
 	return h;
 }
 
+
+
 PartDer sin(const PartDer &g) {
 	PartDer h;
 	h.f = std::sin(g.f);
@@ -146,7 +144,6 @@ PartDer sin(const PartDer &g) {
 
 	return h;
 }
-
 PartDer cos(const PartDer &g) {
 	PartDer h;
 	h.f = std::cos(g.f);
@@ -158,7 +155,6 @@ PartDer cos(const PartDer &g) {
 
 	return h;
 }
-
 PartDer tan(const PartDer &g) {
 	PartDer h;
 	h.f = std::tan(g.f);
@@ -170,7 +166,6 @@ PartDer tan(const PartDer &g) {
 
 	return h;
 }
-
 PartDer sinh(const PartDer &g) {
 	PartDer h;
 	h.f = std::sinh(g.f);
@@ -182,7 +177,6 @@ PartDer sinh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer cosh(const PartDer &g) {
 	PartDer h;
 	h.f = std::cosh(g.f);
@@ -194,7 +188,6 @@ PartDer cosh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer tanh(const PartDer &g) {
 	PartDer h;
 	h.f = std::tanh(g.f);
@@ -206,7 +199,6 @@ PartDer tanh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer asin(const PartDer &g) {
 	PartDer h;
 	h.f = std::asin(g.f);
@@ -218,7 +210,6 @@ PartDer asin(const PartDer &g) {
 
 	return h;
 }
-
 PartDer acos(const PartDer &g) {
 	PartDer h;
 	h.f = std::acos(g.f);
@@ -230,7 +221,6 @@ PartDer acos(const PartDer &g) {
 
 	return h;
 }
-
 PartDer atan(const PartDer &g) {
 	PartDer h;
 	h.f = std::atan(g.f);
@@ -242,7 +232,6 @@ PartDer atan(const PartDer &g) {
 
 	return h;
 }
-
 PartDer asinh(const PartDer &g) {
 	PartDer h;
 	h.f = std::asinh(g.f);
@@ -254,7 +243,6 @@ PartDer asinh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer acosh(const PartDer &g) {
 	PartDer h;
 	h.f = std::acosh(g.f);
@@ -266,7 +254,6 @@ PartDer acosh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer atanh(const PartDer &g) {
 	PartDer h;
 	h.f = std::atanh(g.f);
@@ -278,7 +265,6 @@ PartDer atanh(const PartDer &g) {
 
 	return h;
 }
-
 PartDer exp(const PartDer &g) {
 	PartDer h;
 	h.f = exp(g.f);
@@ -290,7 +276,6 @@ PartDer exp(const PartDer &g) {
 
 	return h;
 }
-
 PartDer pow(const PartDer &g, const double n) {
 	PartDer h;
 	h.f = pow(g.f, n);
@@ -302,7 +287,6 @@ PartDer pow(const PartDer &g, const double n) {
 
 	return h;
 }
-
 PartDer pow(const PartDer &g, const int n) {
 	PartDer h;
 	h.f = pow(g.f, n);
@@ -314,7 +298,6 @@ PartDer pow(const PartDer &g, const int n) {
 
 	return h;
 }
-
 PartDer pow(const PartDer &g, const PartDer &n) {
 	PartDer h;
 	h.f = pow(g.f, n.f);
@@ -330,7 +313,6 @@ PartDer pow(const PartDer &g, const PartDer &n) {
 
 	return h;
 }
-
 PartDer log(const PartDer &g) {
 	PartDer h;
 	h.f = log(g.f);
@@ -342,7 +324,6 @@ PartDer log(const PartDer &g) {
 
 	return h;
 }
-
 PartDer log10(const PartDer &g) {
 	PartDer h;
 	h.f = log10(g.f);
@@ -355,6 +336,8 @@ PartDer log10(const PartDer &g) {
 	return h;
 }
 
+
+
 PartDer operator+(const double c, const PartDer &g) {
 	PartDer h;
 	h.f = c + g.f;
@@ -365,7 +348,6 @@ PartDer operator+(const double c, const PartDer &g) {
 
 	return h;
 }
-
 PartDer operator-(const double c, const PartDer &g) {
 	PartDer h;
 	h.f = c - g.f;
@@ -376,18 +358,16 @@ PartDer operator-(const double c, const PartDer &g) {
 
 	return h;
 }
-
 PartDer operator*(const double c, const PartDer &g) {
 	PartDer h;
 	h.f = c * g.f;
 
 	for (std::map<std::string, double>::const_iterator i = g.df.begin(); i != g.df.end(); i++) {
-		h.df.insert(std::make_pair(i->first, i->second));
+		h.df.insert(std::make_pair(i->first, c * i->second));
 	}
 
 	return h;
 }
-
 PartDer operator/(const double c, const PartDer &g) {
 	PartDer h;
 	h.f = c / g.f;
@@ -399,7 +379,6 @@ PartDer operator/(const double c, const PartDer &g) {
 
 	return h;
 }
-
 PartDer operator/(const PartDer &g, const double c) {
 	PartDer h;
 	h.f = g.f / c;
