@@ -16,16 +16,9 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 #include "include/polyfit.hpp"
 #include "include/dataset.hpp"
-//#include "matplotlib-cpp-master/matplotlibcpp.h"
 
-/*
-#include <TF1.h>
-#include <TGraphErrors.h>
-#include <TCanvas.h>
-#include <TFormula.h>
-*/
-
-
+#include "pbPlots/pbPlots.hpp"
+#include "pbPlots/supportLib.hpp"
 
 #include <iostream>
 #include <string>
@@ -35,15 +28,14 @@ const char *PAUSE = "read -n 1 -s -p \"Press any key to continue...\"";
 
 
 using namespace std;
-//namespace plt = matplotlibcpp;
 
 Dataset<double> import_file();
 
-void menu(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
+void menu(Dataset<double> &dataset);
 void inspect(Dataset<double> &dataset);
 void manipulate(Dataset<double> &dataset);
-void fit(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
-void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars);
+vector<double> fit(Dataset<double> &dataset);
+void plot(Dataset<double> &dataset, vector<double> &pars);
 
 int main(int argc, char *argv[]) {
 	/*
@@ -58,18 +50,18 @@ int main(int argc, char *argv[]) {
 	*&tPtr -> quello che sta all'indirizzo di tPtr (ovvero l'indirizzo di t)
 	*/
 
-	// Variable to detect if there is a successful fit in order to handle fit plotting
-	bool fit_exists = false;
-	vector<double> fit_params = {};
+	
 
 	system(CLS);
 
 	Dataset<double> dataset;
 	if (argc == 1) {
 		dataset = import_file();
-	} else if (argc == 2) {
+	} 
+	else if (argc == 2) {
 		dataset.fill(argv[1]);
-	} else {
+	} 
+	else {
 		cout << "Usage:\n"
 			 << argv[0] << " [path]" << endl;
 		system(PAUSE);
@@ -81,7 +73,7 @@ int main(int argc, char *argv[]) {
 	usleep(750000);    // µseconds
 	system(CLS);
 
-	menu(dataset, fit_exists, fit_params);
+	menu(dataset);
 
 	return 0;
 }
@@ -94,7 +86,11 @@ Dataset<double> import_file() {
 	return {path};
 }
 
-void menu(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
+void menu(Dataset<double> &dataset) {
+	
+	// to store fit parameters
+	vector<double> pars;
+
 	int choice;
 	bool exit_cond = false;
 	do {
@@ -113,10 +109,10 @@ void menu(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 			case 2:
 				break;
 			case 3:
-				fit(dataset, fit_exists, pars);
+				pars = fit(dataset);
 				break;
 			case 4:
-				plot(dataset, fit_exists, pars);
+				plot(dataset, pars);
 				break;
 			case 5:
 				exit_cond = true;
@@ -135,8 +131,7 @@ void inspect(Dataset<double> &dataset) {
 			"2. First n rows\n"
 			"3. Column names\n"
 			"4. Column description\n"
-			"5. size()\n"   // ------------- secondo me questo non serve molto - sono d'accordo
-			"6. Exit\n"
+			"5. Exit\n"
 			"Enter your choice: ";
 	cin >> choice;
 
@@ -163,10 +158,6 @@ void inspect(Dataset<double> &dataset) {
 			dataset.describe();
 			break;
 		case 5:
-			cout << endl;
-			cout << dataset.size() << endl;
-			break;
-		case 6:
 			break;
 		default:
 			cout << endl;
@@ -176,9 +167,10 @@ void inspect(Dataset<double> &dataset) {
 	system(PAUSE);
 }
 
-void fit(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
+vector<double> fit(Dataset<double> &dataset) {
 	int col_x, col_y, col_sy;
 	dataset.head();
+	cout << "Column indeces are: 0, 1, 2, ..." << endl;
 	cout << "Enter column index for x-values: ";
 	cin >> col_x;
 	cout << "Enter column index for y-values: ";
@@ -189,99 +181,147 @@ void fit(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
 	cout << "Enter polynomial degree: ";
 	cin >> deg;
 
-	// initialize pars vector just in case
-	if (!pars.empty()) {
-		pars.clear();
-	}
-
-	fit_exists = false;	// if unsuccessful fit then there is no available fit
-
-	PolyFit polyfit(dataset.get_data(col_x), dataset.get_data(col_y), dataset.get_data(col_sy), deg);
+	PolyFit polyfit(dataset[col_x], dataset[col_y], dataset[col_sy], deg);
 	polyfit.fit(deg);
-	pars = polyfit.get_parameters();
-	fit_exists = true;
 
 	system(PAUSE);
+	return polyfit.get_parameters();
 }
 
-void plot(Dataset<double> &dataset, bool &fit_exists, vector<double> pars) {
-	int col_x, col_y, col_sy;
+void plot(Dataset<double> &dataset, vector<double> &pars) {
+	int col_x, col_y;
+	string outfile;
+	
 	dataset.head();
+	cout << "Column indeces are: 0, 1, 2, ..." << endl;
 	cout << "Enter column index for x-values: ";
 	cin >> col_x;
 	cout << "Enter column index for y-values: ";
 	cin >> col_y;
-	cout << "Enter column index for y-errors: ";
-	cin >> col_sy;
+	
+	cout << "Enter name for the output file: ";
+	cin >> outfile;
+	outfile = "graphs/" + outfile + ".png";
+	
+	Data<double> x = dataset[col_x];
+	Data<double> y = dataset[col_y];
 
-	vector<double> x = dataset.get_data(col_x).get_data();
-	vector<double> y = dataset.get_data(col_y).get_data();
-	vector<double> sy = dataset.get_data(col_sy).get_data();
+	// WITH FIT LINE
+	if (!pars.empty()) {
+		bool success;
+		StringReference *errorMessage = CreateStringReferenceLengthValue(0, L' ');
+		RGBABitmapImageReference *imageReference = CreateRGBABitmapImageReference();
 
-	// TGraphErrors requires a vector of errors on x
-	vector<double> sx;
-	for(double d: x)	sx.push_back(0.);
+    	// points
+    	vector<double> xs, ys;
+    	xs = x.get_data();
+    	ys = y.get_data();
 
-	if (fit_exists) {
-		int n_points = 100;	// might need some way to compute this, something like (x_max - x_min) * 100 or something
-		vector<double> xdense, ydense;	// può diventare un array (meglio per le performance)?
-		double x_min = *min_element(x.begin(), x.end());
-		double x_max = *max_element(x.begin(), x.end());
-		for (int i = 0; i < n_points; i++) {
-			xdense.push_back(x_min + i * (x_max - x_min) / 100);	// equivalent to np.linspace(x_min, x_max, n_points)
-			ydense.push_back(0.);
-			for (int j = 0; j < pars.size(); j++) {
-				ydense[i] += pars[j] * pow(xdense[i], j);
-			}
-		}
+    	ScatterPlotSeries *series = GetDefaultScatterPlotSeriesSettings();
+		series->xs = &xs;       
+		series->ys = &ys;
+		series->linearInterpolation = false;
+		series->pointType = toVector(L"dots");
+		series->color = CreateRGBColor(1, 0, 0);
 
 
-		// ROOT
-		/*
-		TCanvas * c = new TCanvas("c", "c", 600, 400);
-		TGraphErrors * g = new TGraphErrors(x.size(), &x[0], &y[0], &sx[0], &sy[0]);
+    	// line
+    	double step = (x.max() - x.min())/100;
+    	vector<double> xline, yline;
 
-		string formula("");
-		for(int i = 0; i < pars.size(); i++)	
+    	for (double i = dataset[0].min(); i <= dataset[0].max(); i+=step) 
+    	{
+    	    xline.push_back(i);
+			double ydummy = 0.;
+			for (int j = 0; j < pars.size(); j++)	ydummy += pars[j] * pow(i, j);
+			yline.push_back(ydummy);
+    	}
+
+		
+
+
+    	ScatterPlotSeries *series2 = GetDefaultScatterPlotSeriesSettings();
+		series2->xs = &xline;
+		series2->ys = &yline;
+		series2->lineType = toVector(L"solid");
+		series2->lineThickness = 2;
+		series2->color = CreateRGBColor(0, 0, 1);
+
+    	ScatterPlotSettings *settings = GetDefaultScatterPlotSettings();
+		settings->width = 600;
+		settings->height = 400;
+		settings->autoBoundaries = true;
+		settings->autoPadding = true;
+		settings->title = toVector(L"");
+		settings->xLabel = toVector(L"");
+		settings->yLabel = toVector(L"");
+		settings->scatterPlotSeries->push_back(series);
+		settings->scatterPlotSeries->push_back(series2);
+
+    	success = DrawScatterPlotFromSettings(imageReference, settings, errorMessage);
+
+		if(success)
 		{
-			formula += to_string(pars[i]) + " * x^" + to_string(i);
-			if (i != (pars.size() - 1))	formula += " + ";
+			vector<double> *pngdata = ConvertToPNG(imageReference->image);
+			WriteToFile(pngdata, outfile.c_str());
+			cout << "File graphs/main.png has been created." << endl;
+			DeleteImage(imageReference->image);
 		}
-		TF1 * f = new TF1("f", formula.c_str(), x_min, x_max);
-		
+		else
+		{
+			cerr << "Error: ";
+			for(wchar_t c : *errorMessage->string)	cerr << c;
+			cerr << endl;
+		}
 
-		c->cd();
-		g->Draw("ap");
-		f->Draw();
-		c->SaveAs("graphs/output_test.png");
-
-		delete c;
-		delete g;
-		delete f;
-		*/
-
-
-
-
-		// blocco commentato perché matplotlib ha la mamma
-		//plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
-		//plt::plot(xdense, ydense);
-	
-		//plot formatting shenanigans
-	
-		//plt::show();
-		//plt::savefig("graphs/output_test.png");  // ------- specificare nome del file
-
-
-		
-	} else {
-		//plt::plot(x, y, {{"marker", "o"}, {"linestyle", "none"}});
-	//
-		////plot formatting shenanigans
-	//
-		//plt::show();
-		//plt::savefig("graphs/output_test.png");
-		
+		system(PAUSE);
 	}
 
+	// WITHOUT FIT LINE
+	else {
+		bool success;
+		StringReference *errorMessage = CreateStringReferenceLengthValue(0, L' ');
+		RGBABitmapImageReference *imageReference = CreateRGBABitmapImageReference();
+
+    	// points
+    	vector<double> xs, ys;
+    	xs = x.get_data();
+    	ys = y.get_data();
+
+    	ScatterPlotSeries *series = GetDefaultScatterPlotSeriesSettings();
+		series->xs = &xs;       
+		series->ys = &ys;
+		series->linearInterpolation = false;
+		series->pointType = toVector(L"dots");
+		series->color = CreateRGBColor(1, 0, 0);
+
+    	ScatterPlotSettings *settings = GetDefaultScatterPlotSettings();
+		settings->width = 600;
+		settings->height = 400;
+		settings->autoBoundaries = true;
+		settings->autoPadding = true;
+		settings->title = toVector(L"");
+		settings->xLabel = toVector(L"");
+		settings->yLabel = toVector(L"");
+		settings->scatterPlotSeries->push_back(series);
+
+    	success = DrawScatterPlotFromSettings(imageReference, settings, errorMessage);
+
+		if(success)
+		{
+			vector<double> *pngdata = ConvertToPNG(imageReference->image);
+			WriteToFile(pngdata, outfile.c_str());
+			cout << "File graphs/main_unfitted.png has been created." << endl;
+			DeleteImage(imageReference->image);
+		}
+		else
+		{
+			cerr << "Error: ";
+			for(wchar_t c : *errorMessage->string)	cerr << c;
+			cerr << endl;
+		}
+
+		system(PAUSE);
+	}	
+	
 }

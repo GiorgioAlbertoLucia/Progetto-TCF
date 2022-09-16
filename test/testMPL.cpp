@@ -55,9 +55,9 @@ int main()
   	  z.at(i) = log(i);
   	}
 
-  	matplotlibcpp::figure(); // declare a new figure (optional if only one is used)
+  	//plt::figure(); // declare a new figure (optional if only one is used)
 
-  	//plt::plot(x, y); // automatic coloring: tab:blue
+  	plt::plot(x, y); // automatic coloring: tab:blue
   	//plt::show(false);
   	//plt::plot(x, w, "r--");                 // red dashed line
   	//plt::plot(x, z, {{"label", "log(x)"}}); // legend label "log(x)"
@@ -66,7 +66,7 @@ int main()
   	//plt::title("Standard usage"); // set a title
   	//plt::legend();                // enable the legend
 //
-  	//plt::savefig("graphs/standard.pdf"); // save the figure
+  	plt::savefig("graphs/standard.pdf"); // save the figure
   	//plt::show();
 
 

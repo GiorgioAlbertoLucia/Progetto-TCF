@@ -19,40 +19,28 @@ class Dataset {
 
 public:
 	Dataset() {};
-
 	Dataset(const char *, const int = 0, const char * = "");     // file_path, first_column
 	Dataset(std::string, const int = 0, const char * = "");
-
 	Dataset(const Dataset<T> &);
-
 	~Dataset();
 
 	std::vector<Data<T>> get_dataset() const { return data; };
-
 	std::vector<std::string> get_columns() const { return columns; };
-
 	Data<T> &get_data(const int i) { return data.at(i); };
-
 	Data<T> &get_data(const char *column) { return data[find(columns.begin(), columns.end(), column)]; };
 
 	const void describe() const;
-
 	const void head(int = 5) const;
-
 	const void print_columns() const;
-
 	int size() const { return data.size(); };
-
+	
 	Dataset<T> &fill(const char *, const int = 0);
-
 	Dataset<T> &concatenate(const Dataset<T> &);
-
 	Dataset<T> &add(const Data<T> &);
-
 	Dataset<T> &remove(const char *);
+	Dataset<T> &write(const char *);
 
 	Data<T> &operator[](const char *column) { return data[find(columns.begin(), columns.end(), column)]; };
-
 	Data<T> &operator[](const int column) { return data.at(column); };
 
 private:
@@ -249,6 +237,7 @@ Dataset<T> &Dataset<T>::concatenate(const Dataset<T> &dataset) {
 template<class T>
 Dataset<T> &Dataset<T>::add(const Data<T> &d) {
 	Dataset::data.push_back(d);
+	Dataset::columns.push_back(d.get_name());
 	return *this;
 }
 
@@ -269,5 +258,28 @@ Dataset<T> &Dataset<T>::remove(const char *name) {
 	return *this;
 }
 
+/**
+ * @brief Write dataset content inside a file. 
+ * 
+ * @tparam T 
+ * @param file_path 
+ * @return Dataset<T>& 
+ */
+template<class T>
+Dataset<T> &Dataset<T>::write(const char *file_path) {
+	FileFactory * ff = new FileFactory();
+	File * f = ff->create_file(file_path);
+
+	f->clear();
+	delete f;
+
+	for (int i = 0; i < Dataset::size(); i++) {
+		ff->append_column(file_path, Dataset::data[i].get_data(), Dataset::columns[i].c_str());
+	}
+	delete ff;
+	return *this;
+
+
+}
 
 #endif

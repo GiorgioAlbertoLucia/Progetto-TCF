@@ -86,8 +86,7 @@ extern inline bool check_words(const std::string line) {
  * @param err_col: is used by the template specialization with Udouble
  */
 template<typename T>
-std::vector<T>
-inline FileFactory::vector_column(const char *file_path, const int column, const int beginning, const int err_col) {
+inline std::vector<T> FileFactory::vector_column(const char *file_path, const int column, const int beginning, const int err_col) {
 	std::vector<T> vector;
 	File *file = this->create_file(file_path);
 	std::ifstream f(file->get_path());
@@ -133,8 +132,7 @@ inline FileFactory::vector_column(const char *file_path, const int column, const
  * want to fetch the name of the column
  */
 template<>
-std::vector<Udouble>
-inline FileFactory::vector_column(const char *file_path, const int val_col, const int beginning, const int err_col) {
+inline std::vector<Udouble> FileFactory::vector_column(const char *file_path, const int val_col, const int beginning, const int err_col) {
 	std::vector<Udouble> vector;
 	File *file = this->create_file(file_path);
 	std::ifstream f(file->get_path());
@@ -187,31 +185,41 @@ inline FileFactory::vector_column(const char *file_path, const int val_col, cons
 template<typename T>
 inline void FileFactory::append_column(const char *file_path, const std::vector<T> &column, const char *name) const {
 	File *file = this->create_file(file_path);
-	std::fstream f(file->get_path(), std::ios::in);
+	std::ifstream infile(file_path);
 
 	// fill a vector with the file content
 	std::string line;
 	std::vector<std::string> file_lines;
-	while (getline(f, line)) file_lines.push_back(line);
-	f.clear();
-	f.seekg(0, std::ios::beg);
+	while (getline(infile, line)) file_lines.push_back(line);
+	infile.close();
 
 	int comment = file->comment_lines();
 
-	if (check_words(file_lines.at(0))) {
-		for (int i = 0; i < file_lines.size(); i++) {
-			if (i < comment) f << file_lines.at(i) << std::endl;
-			else if (i == comment) f << file_lines.at(i) << "\t\t" << name << std::endl;
-			else f << file_lines.at(i) << "\t\t\t" << column.at(i - comment - 1) << std::endl;
+	std::ofstream outfile(file_path);
+
+	if (file_lines.size() == 0) {
+		for (int i = 0; i < column.size(); i++) {
+			if (i == 0)					outfile << name << "\n";
+			else 						outfile << column.at(i) << "\n";
 		}
-	} else {
-		for (int i = 0; i < file_lines.size(); i++) {
-			if (i < comment) f << file_lines.at(i) << std::endl;
-			else f << file_lines.at(i) << "\t\t\t" << column.at(i - comment) << std::endl;
+	}
+	else {
+		if (check_words(file_lines.at(0))) {
+			for (int i = 0; i < file_lines.size(); i++) {
+				if (i < comment)		outfile << file_lines.at(i) << "\n";
+				else if (i == comment) 	outfile << file_lines.at(i) << file->separator() << name << "\n";
+				else 					outfile << file_lines.at(i) << file->separator() << column.at(i - comment - 1) << "\n";
+			}
+		} 
+		else {
+			for (int i = 0; i < file_lines.size(); i++) {
+				if (i < comment) 		outfile << file_lines.at(i) << "\n";
+				else 					outfile << file_lines.at(i) << file->separator() << column.at(i - comment) << "\n";
+			}
 		}
 	}
 
-	f.close();
+	outfile.close();
 	delete file;
 }
 
@@ -227,35 +235,43 @@ inline void FileFactory::append_column(const char *file_path, const std::vector<
 template<>
 inline void FileFactory::append_column<Udouble>(const char *file_path, const std::vector<Udouble> &column, const char *name) const {
 	File *file = this->create_file(file_path);
-	std::fstream f(file->get_path(), std::ios::in);
+	std::ifstream infile(file_path);
 
 	// fill a vector with the file content
 	std::string line;
 	std::vector<std::string> file_lines;
-	while (getline(f, line)) file_lines.push_back(line);
-	f.clear();
-	f.seekg(0, std::ios::beg);
+	while (getline(infile, line)) file_lines.push_back(line);
+	infile.close();
 
 	int comment = file->comment_lines();
 
-	if (check_words(file_lines.at(0))) {
-		for (int i = 0; i < file_lines.size(); i++) {
-			if (i < comment) f << file_lines.at(i) << std::endl;
-			else if (i == comment) f << file_lines.at(i) << "\t\t" << name << std::endl;
-			else
-				f << file_lines.at(i) << "\t\t\t" << column.at(i - comment - 1).get_value()
-				  << column.at(i - comment - 1).get_error() << std::endl;
+	std::ofstream outfile(file_path);
+
+	if (file_lines.size() == 0) {
+		for (int i = 0; i < column.size(); i++) {
+			if (i == 0)					outfile << name << file->separator() << "s" << name << "\n";
+			else 						outfile << column.at(i).get_value() << file->separator() << column.at(i).get_error() << "\n";
 		}
-	} else {
-		for (int i = 0; i < file_lines.size(); i++) {
-			if (i < comment) f << file_lines.at(i) << std::endl;
-			else
-				f << file_lines.at(i) << "\t\t\t" << column.at(i - comment).get_value()
-				  << column.at(i - comment).get_error() << std::endl;
+	}
+	else {
+		if (check_words(file_lines.at(0))) {
+			for (int i = 0; i < file_lines.size(); i++) {
+				if (i < comment) 		outfile << file_lines.at(i) << "\n";
+				else if (i == comment) 	outfile << file_lines.at(i) << file->separator() << name << file->separator() << "s" << name << "\n";
+				else					outfile << file_lines.at(i) << file->separator() << column.at(i - comment - 1).get_value() 
+					  						<< file->separator() << column.at(i - comment - 1).get_error() << "\n";
+			}
+		} 
+		else {
+			for (int i = 0; i < file_lines.size(); i++) {
+				if (i < comment) 		outfile << file_lines.at(i) << "\n";
+				else					outfile << file_lines.at(i) << file->separator() << column.at(i - comment).get_value() 
+					  						<< file->separator() << column.at(i - comment).get_error() << "\n";
+			}
 		}
 	}
 
-	f.close();
+	outfile.close();
 	delete file;
 }
 

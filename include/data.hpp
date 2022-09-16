@@ -111,6 +111,8 @@ public:
 	};
 
 	inline std::vector<T> get_data() const { return Data::data; };
+	inline std::vector<double> get_values() const;
+	inline std::vector<double> get_errors() const;
 	inline std::string get_name() const { return Data::name; };
 
 	inline void describe() const;
@@ -377,6 +379,21 @@ inline Data<Udouble>& Data<Udouble>::set_data(const char * file_path, const int 
     delete factory;
     return *this;  
 }
+
+template <>
+inline std::vector<double> Data<Udouble>::get_values() const {
+	std::vector<double> vector;
+	for (Udouble u: Data::data)	vector.push_back(u.get_value());
+	return vector;
+}
+
+template <>
+inline std::vector<double> Data<Udouble>::get_errors() const {
+	std::vector<double> vector;
+	for (Udouble u: Data::data)	vector.push_back(u.get_error());
+	return vector;
+}
+
 
 
 
