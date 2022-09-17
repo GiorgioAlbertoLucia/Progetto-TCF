@@ -30,7 +30,7 @@ int main()
 
 
 
-    // create a new variable: z = x^2 + x
+    // create a new variable: z = y^2 + y
     Data<Udouble> z;
     z = pow(dataset[1], 2) + dataset[1];
     z.set_name("z");
