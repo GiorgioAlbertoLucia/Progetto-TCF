@@ -95,10 +95,9 @@ void menu(Dataset<double> &dataset) {
 	bool exit_cond = false;
 	do {
 		cout << "1. Inspect data\n"
-				"2. Manipulate data\n"
-				"3. Fit\n"
-				"4. Plot\n"
-				"5. Exit\n"
+				"2. Fit\n"
+				"3. Plot\n"
+				"4. Exit\n"
 				"Enter your choice: ";
 		cin >> choice;
 		system(CLS);
@@ -107,14 +106,12 @@ void menu(Dataset<double> &dataset) {
 				inspect(dataset);
 				break;
 			case 2:
-				break;
-			case 3:
 				pars = fit(dataset);
 				break;
-			case 4:
+			case 3:
 				plot(dataset, pars);
 				break;
-			case 5:
+			case 4:
 				exit_cond = true;
 				break;
 			default:

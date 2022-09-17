@@ -235,7 +235,7 @@ void manipulate(Dataset<Udouble> &dataset, string path) {
 		double err = 0.;
 		for (int j = 0; j < n_vars; j++)	
 		{
-			string var_name = "v" + to_string(i) + "[" + to_string(j) + "]";
+			string var_name = "v" + to_string(j) + "[" + to_string(i) + "]";
 			double deriv = derivative(expression, var_name);
 			err += pow(deriv * err_vec[j][i], 2);
 		}
