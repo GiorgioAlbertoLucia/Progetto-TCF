@@ -103,3 +103,7 @@ $G = G(a, b, c, ...)$
 
 $\sigma_G = \sqrt{ \left( \frac{\partial G}{\partial a} \right)^2 \sigma_a^2 + \left( \frac{\partial G}{\partial b} \right)^2 \sigma_b^2 + ... } $
 
+***
+## Polyfit
+
+Una spiegazione completa su come si arrivi a costruire un fit polinomiale tramite un'equazione matriciale può essere trovata [qui](https://young.physics.ucsc.edu/250/lsfit.pdf).
