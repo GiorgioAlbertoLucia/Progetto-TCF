@@ -38,19 +38,6 @@ vector<double> fit(Dataset<double> &dataset);
 void plot(Dataset<double> &dataset, vector<double> &pars);
 
 int main(int argc, char *argv[]) {
-	/*
-	int t = 5;
-	int *tPtr = &t;
-	t      -> t
-	&t     -> indirizzo di t
-	tPtr   -> variabile con l'indirizzo di t
-	*tPtr  -> piglia quello che sta all'indirizzo di t (ovvero t)
-	&tPtr  -> l'indirizzo della variabile tPtr
-	&*tPtr -> prendi quello che sta all'indirizzo di t (ovvero t) e dammi il suo indirizzo (ovvero l'indirizzo di t)
-	*&tPtr -> quello che sta all'indirizzo di tPtr (ovvero l'indirizzo di t)
-	*/
-
-	
 
 	system(CLS);
 
